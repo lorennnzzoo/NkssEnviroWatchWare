@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { ChannelDataFeed } from '../Interfaces/ChannelDataFeed';
 import { Observable } from 'rxjs';
@@ -31,7 +31,7 @@ export class DataFeedService {
 
     return this.http.get<ChannelDataFeed[]>(`${this.apiUrl}/GetStationFeed`, { headers, params });
   }
-  GetTwentyHourTrend(Id:number):Observable<ChannelDataResult[]>{
+  GetTwentyHourTrend(Id: number): Observable<ChannelDataResult[]> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
@@ -41,9 +41,9 @@ export class DataFeedService {
 
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + token);
-    let params=new HttpParams();
-    params=params.set('id', Id);
+    let params = new HttpParams();
+    params = params.set('id', Id);
 
-    return this.http.get<ChannelDataResult[]>(`${this.apiUrl}/Get24HourTrendForStation`, { headers,params });
+    return this.http.get<ChannelDataResult[]>(`${this.apiUrl}/Get24HourTrendForStation`, { headers, params });
   }
 }

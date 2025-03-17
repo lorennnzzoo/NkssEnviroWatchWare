@@ -2,7 +2,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { Station, StationCreation, StationEdit, StationListView } from '../Interfaces/Station';
 import { Observable } from 'rxjs';
 
@@ -63,7 +63,7 @@ export class StationService {
     return this.http.get<Station>(`${this.apiUrl}/GetStation`, { headers, params });
   }
 
-  EditStation(Station:StationEdit):Observable<any>{
+  EditStation(Station: StationEdit): Observable<any> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
@@ -83,7 +83,7 @@ export class StationService {
   }
 
 
-  DeleteStation(Station:StationListView):Observable<any>{
+  DeleteStation(Station: StationListView): Observable<any> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
@@ -106,7 +106,7 @@ export class StationService {
       return new Observable<Station[]>();  // Return an empty observable to prevent further actions
     }
 
-    let headers = new HttpHeaders();    
+    let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + token);
 
     return this.http.get<Station[]>(`${this.apiUrl}/GetAllStations`, { headers });

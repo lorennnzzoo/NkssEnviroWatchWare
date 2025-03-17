@@ -1,1 +1,67 @@
-<p>live-feed works!</p>
+<div *ngIf="stations.length > 0; else noStations">
+    <div *ngFor="let station of stations" class="my-5 border rounded-lg shadow-md p-4 bg-white">
+        <h2 class="text-lg font-semibold mb-2">{{ station.Name }}</h2>
+
+        <!-- Table with Skeleton Loader -->
+        <div *ngIf="!isLoadingMap[station.Id]; else skeletonLoader">
+            <div *ngIf="(stationDataFeedMap[station.Id] && stationDataFeedMap[station.Id].length > 0); else noChannels">
+
+                <div class="overflow-x-auto">
+                    <table class="w-full min-w-max border-collapse border border-gray-300">
+                        <thead>
+                            <tr class="bg-secondary text-primary">
+                                <th class="border border-gray-300 px-4 py-2">Channel Name</th>
+                                <th class="border border-gray-300 px-4 py-2">Value</th>
+                                <th class="border border-gray-300 px-4 py-2">Units</th>
+                                <th class="border border-gray-300 px-4 py-2">Logged Time</th>
+                                <th class="border border-gray-300 px-4 py-2">CPCB Standard</th>
+                                <th class="border border-gray-300 px-4 py-2">Hourly Average</th>
+                                <th class="border border-gray-300 px-4 py-2">Availability</th>
+                                <th class="border border-gray-300 px-4 py-2">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let feed of stationDataFeedMap[station.Id]">
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelName }}</td>
+                                <td class="border border-gray-300 px-4 py-2">
+                                    {{ feed.ChannelValue ? feed.ChannelValue : 'NA' }}
+                                </td>
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.Units }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelDataLogTime | date:
+                                    'dd-MMM-yyyy HH:mm'
+                                    }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.PcbLimit }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.Average }}</td>
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.Availability }}%</td>
+                                <td class="border border-gray-300 px-4 py-2 font-semibold"
+                                    [ngClass]="feed.Active ? 'text-green-600' : 'text-red-600'">
+                                    {{ feed.Active ? 'Active' : 'Shutdown' }}
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <app-overview-graph [Station]="station"></app-overview-graph>
+            </div>
+        </div>
+
+        <!-- No Channels Message -->
+        <ng-template #noChannels>
+            <p class="text-center text-gray-500">No Channels Available</p>
+        </ng-template>
+
+        <!-- Skeleton Loader -->
+        <ng-template #skeletonLoader>
+            <div class="animate-pulse space-y-2">
+                <div class="h-6 bg-gray-300 rounded w-1/4"></div>
+                <div class="h-6 bg-gray-300 rounded w-3/4"></div>
+                <div class="h-6 bg-gray-300 rounded w-1/2"></div>
+            </div>
+        </ng-template>
+    </div>
+</div>
+
+<!-- No Stations Message -->
+<ng-template #noStations>
+    <p class="text-center text-gray-500">No Stations Available</p>
+</ng-template>

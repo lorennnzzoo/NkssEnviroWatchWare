@@ -1,31 +1,55 @@
-import { Component } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnd, Router, RouterModule, RouterOutlet } from '@angular/router';
-import { MenuItem } from '../Interfaces/MenuItem';
+import { SidebarComponent } from './Navigation/sidebar/sidebar.component';
 import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
-import { SidebarComponent } from './Navigation/sidebar/sidebar.component';
-import { HttpClient } from '@angular/common/http';
-
+import { ToastrModule } from 'ngx-toastr';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SidebarComponent, CommonModule],
+  imports: [RouterOutlet, SidebarComponent, CommonModule, ToastrModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css'
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'NkssEnviroWatchWare';
   isCollapsed = false;
+  isLoginPage: boolean = false;
+  breadcrumbs: string[] = [];
+
+  screenIsLarge = window.innerWidth >= 768; // Assume `md` breakpoint in Tailwind
+
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+
+  ngOnInit() {
+    // Update login page status and breadcrumbs when the route changes
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
+      this.isLoginPage = this.router.url === '/login'; // Update based on your login route
+      this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root); // Update breadcrumbs
+    });
+  }
+
+  // Function to recursively fetch breadcrumb paths
+  getBreadcrumbs(route: ActivatedRoute, path: string[] = []): string[] {
+    const routeConfig = route.snapshot.routeConfig;
+    if (routeConfig && routeConfig.path) {
+      path.push(routeConfig.path); // Add the current route's path
+    }
+
+    if (route.firstChild) {
+      return this.getBreadcrumbs(route.firstChild, path); // Continue for child routes
+    }
+
+    return path;
+  }
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
 
-  isLoginPage: boolean = false;
-
-  constructor(private router: Router) {
-    this.router.events.subscribe(() => {
-      this.isLoginPage = this.router.url === '/login'; // Update based on your login route
-    });
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    this.screenIsLarge = (event.target as Window).innerWidth >= 768;
   }
 }
