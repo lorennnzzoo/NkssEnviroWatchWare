@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MenuItem } from '../../../Interfaces/MenuItem';
 import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -10,7 +10,7 @@ import { AuthService } from '../../WatchWare/Services/auth.service';
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
 })
-export class SidebarComponent {
+export class SidebarComponent implements OnInit {
 
 
 
@@ -28,6 +28,11 @@ export class SidebarComponent {
   ];
 
   constructor(private router: Router, private authService: AuthService) { }
+  ngOnInit(): void {
+    window.addEventListener('resize', () => {
+      this.isCollapsed = window.innerWidth <= 768;
+    });
+  }
 
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
