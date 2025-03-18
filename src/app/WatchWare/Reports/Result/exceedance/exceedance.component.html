@@ -1,0 +1,43 @@
+<div>
+    <div *ngIf="data && data.length > 0" class="flex items-center justify-between mb-6">
+        <div class="flex justify-start">
+            <span class="font-semibold text-lg">Data Report</span>
+            <span class="text-gray-600 text-lg mx-6">Average : {{getAggregationTypeName(aggregationType)}}</span>
+        </div>
+        <div class="flex gap-3">
+            <button
+                class="bg-accent text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-60 transition"
+                (click)="onExportExcel()">
+                <i class="fa fa-file-excel"></i> Excel
+            </button>
+            <button
+                class="bg-accent text-white px-4 py-2 rounded-lg flex items-center gap-2 hover:opacity-60 transition"
+                (click)="onExportPdf()">
+                <i class="fa fa-file-pdf"></i> PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full border border-gray-300 rounded-lg shadow-md">
+            <thead>
+                <tr class="bg-secondary text-primary">
+                    <th *ngFor="let col of columns" class="border border-gray-300 px-4 py-3 text-left">{{ col.header }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of data" class="hover:bg-gray-100 transition">
+                    <td *ngFor="let col of columns" class="border border-gray-300 px-4 py-3">
+                        {{ row[col.field] }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="!data || data.length === 0"
+    class="flex justify-center items-center h-64 bg-gray-100 text-gray-500 rounded-lg">
+    <p>No data for the selected time.</p>
+</div>

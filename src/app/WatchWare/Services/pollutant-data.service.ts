@@ -17,7 +17,7 @@ export class PollutantDataService {
   uploadCsv(file: File): Observable<any> {
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();
     }
 

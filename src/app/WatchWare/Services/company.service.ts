@@ -18,7 +18,7 @@ export class CompanyService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<Company[]>();  // Return an empty observable to prevent further actions
     }
 
@@ -33,7 +33,7 @@ export class CompanyService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -54,7 +54,7 @@ export class CompanyService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -68,7 +68,7 @@ export class CompanyService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -82,7 +82,7 @@ export class CompanyService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();

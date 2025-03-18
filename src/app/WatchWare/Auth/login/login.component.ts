@@ -4,6 +4,7 @@ import { AuthService } from '../../Services/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { forkJoin } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -35,22 +36,34 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(username, password, 'password').subscribe({
       next: (response) => {
-
         if (response?.access_token) {
-          this.toastService.success("Login Successfull");
-          this.router.navigate(['/Dashboard']);
+          this.authService.setToken(response.access_token); // ✅ Set token
+
+          // Wait for user role and username updates before navigating
+          forkJoin([
+            this.authService.getUserRole(),
+            this.authService.getUserName()
+          ]).subscribe(([roleResponse, usernameResponse]) => {
+            const username = usernameResponse?.Username || 'User'; // Get username or default to 'User'
+
+            this.toastService.success(`Welcome, ${username}!`); // ✅ Show welcome message
+
+            this.router.navigate(['/Dashboard']).then(() => {
+              console.log("✅ Navigation successful");
+            }).catch(err => console.error("❌ Navigation error", err));
+          });
+
         } else {
-          this.toastService.error(response.details?.error?.error_description, "Login failed");
+          this.toastService.error(response.error || "Invalid credentials", "Login failed");
         }
         this.loading = false;
-        this.cdRef.detectChanges();
       },
       error: (error) => {
         this.toastService.error(error.error, "Login failed");
-        console.error('Login error', error);
+        console.error('❌ Login error:', error);
         this.loading = false;
-        this.cdRef.detectChanges();
       }
     });
   }
+
 }

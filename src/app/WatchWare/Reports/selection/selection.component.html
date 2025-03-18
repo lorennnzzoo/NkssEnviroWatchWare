@@ -1,0 +1,212 @@
+<!-- Select Parameters Button -->
+
+<div class="my-5  flex justify-start space-x-4 border rounded-lg shadow-md p-4 bg-white">
+
+    <form [formGroup]="reportFilterForm" (ngSubmit)="onFetch()" class="flex space-x-4 items-end">
+        <div>
+            <label for="dataAggregation" class="block text-sm font-medium text-gray-700">Select Parameters</label>
+            <button type="button" class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition"
+                (click)="isModalOpen = true">
+                Select Parameters
+            </button>
+        </div>
+
+        <div>
+            <label for="dataAggregation" class="block text-sm font-medium text-gray-700">Fetch</label>
+            <button type="submit" [disabled]="loading|| (reportData && reportData.length > 0)"
+                class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+
+                <span *ngIf="loading">
+                    <i class="fas fa-spinner fa-spin mr-2"></i>
+                </span>
+                <span *ngIf="!loading">
+
+                </span>
+
+                <span>Fetch</span>
+            </button>
+        </div>
+
+        <div>
+            <label for="dataAggregation" class="block text-sm font-medium text-gray-700">Reset</label>
+            <button type="button" (click)="resetReport()" [disabled]="!reportData"
+                class="mt-1 px-4 py-2 bg-orange-400 disabled:bg-gray-500 disabled:cursor-not-allowed text-white rounded-md hover:bg-red-600 transition">Reset</button>
+        </div>
+
+
+        <div>
+            <label for="dataAggregation" class="block text-sm font-medium text-gray-700">Data Aggregation</label>
+            <select id="dataAggregation" formControlName="DataAggregationType"
+                class="mt-1 block w-52 px-1 py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500 disabled:bg-gray-300 disabled:cursor-not-allowed disabled:border-blue-300">
+                <option *ngFor="let option of dataAggregationOptions" [value]="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
+        </div>
+
+        <!-- Report Type Dropdown -->
+        <div>
+            <label for="reportType" class="block text-sm font-medium text-gray-700">Report Type</label>
+            <select id="reportType" formControlName="ReportType"
+                class="mt-1 block w-52 px-1  py-2 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-accent focus:border-accent disabled:bg-gray-300 disabled:cursor-not-allowed disabled:border-blue-300">
+                <option *ngFor="let option of reportTypeOptions" [value]="option.value">
+                    {{ option.label }}
+                </option>
+            </select>
+        </div>
+
+        <!-- From Date Picker -->
+        <div>
+            <label for="fromDate"
+                class="block text-sm font-medium text-gray-700 disabled:cursor-not-allowed">From</label>
+            <p-date-picker inputId="From" formControlName="From" [showTime]="true" hourFormat="
+                24"></p-date-picker>
+        </div>
+
+        <!-- To Date Picker -->
+        <div>
+            <label for="toDate" class="block text-sm font-medium text-gray-700 disabled:cursor-not-allowed">To</label>
+            <p-date-picker inputId="To" formControlName="To" [showTime]="true" hourFormat="
+            24"></p-date-picker>
+        </div>
+    </form>
+
+</div>
+<div class=" border rounded-lg shadow-md p-4 bg-white h-[700px]">
+
+    <div *ngIf="reportData">
+        <!-- <ng-container [ngSwitch]="reportFilterForm.value.ReportType"> -->
+
+
+        <app-exceedance *ngIf="+reportFilterForm.value.ReportType===ReportType.Exceedance"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-exceedance>
+
+
+        <app-data-report *ngIf="+reportFilterForm.value.ReportType===ReportType.DataReport"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-data-report>
+
+
+        <app-availability *ngIf="+reportFilterForm.value.ReportType===ReportType.DataAvailability"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-availability>
+
+
+        <app-trends *ngIf="+reportFilterForm.value.ReportType===ReportType.Trends" [from]="reportFilterForm.value.From"
+            [to]="reportFilterForm.value.To" [aggregationType]="reportFilterForm.value.DataAggregationType"
+            [data]="reportData"></app-trends>
+
+        <!-- </ng-container> -->
+    </div>
+</div>
+
+<!-- Modal -->
+<div *ngIf="isModalOpen" class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+    <div class="bg-white p-6 rounded-lg shadow-lg w-3/4 max-w-xl">
+        <h2 class="text-xl font-semibold mb-4">Select Parameters</h2>
+
+        <!-- <div *ngFor="let company of selectionModel.Companies" class="mb-4">
+            
+            <div class="flex items-center space-x-2 cursor-pointer" (click)="toggleCompany(company.Id)">
+                <input id="Company_{{company.Id}}" type="checkbox"
+                    class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                    [checked]="selectedItems.companies.get(company.Id)?.checked === true"
+                    [indeterminate]="selectedItems.companies.get(company.Id)?.checked === null"
+                    (change)="onCompanyCheckChange(company.Id)" />
+                <label for="Company_{{company.Id}}" class="font-medium">{{company.Name}}</label>
+                <span class="ml-auto text-gray-500">
+                    <i *ngIf="expandedCompanies.has(company.Id)" class="fas fa-chevron-up"></i>
+                    <i *ngIf="!expandedCompanies.has(company.Id)" class="fas fa-chevron-down"></i>
+                </span>
+            </div>
+
+            
+            <div *ngIf="expandedCompanies.has(company.Id)" class="ml-6 mt-2">
+                <div *ngFor="let station of company.Stations">
+                    <div class="flex items-center space-x-2 cursor-pointer" (click)="toggleStation(station.Id)">
+                        <input id="Station_{{station.Id}}" type="checkbox"
+                            class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                            [checked]="selectedItems.stations.get(station.Id)?.checked === true"
+                            [indeterminate]="selectedItems.stations.get(station.Id)?.checked === null"
+                            (change)="onStationCheckChange(station.Id, company.Id)" />
+                        <label for="Station_{{station.Id}}" class="text-gray-700">{{station.Name}}</label>
+                        <span class="ml-auto text-gray-500">
+                            <i *ngIf="expandedStations.has(station.Id)" class="fas fa-chevron-up"></i>
+                            <i *ngIf="!expandedStations.has(station.Id)" class="fas fa-chevron-down"></i>
+                        </span>
+                    </div>
+
+                    
+                    <div *ngIf="expandedStations.has(station.Id)" class="ml-8 mt-1">
+                        <div *ngFor="let channel of station.Channels" class="flex items-center space-x-2">
+                            <input id="Channel_{{channel.Id}}" type="checkbox"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                [checked]="selectedItems.channels.get(channel.Id)?.checked === true"
+                                (change)="onChannelCheckChange(channel.Id, station.Id, company.Id)" />
+                            <label for="Channel_{{channel.Id}}" class="text-gray-600">{{channel.Name}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div> -->
+
+        <div class="max-h-[300px] overflow-y-auto  p-2  bg-white">
+            <div *ngFor="let company of selectionModel.Companies" class="mb-4 rounded-lg p-4 bg-[#b3d583]">
+                <div class="flex items-center space-x-2 cursor-pointer" (click)="toggleCompany(company.Id)">
+                    <input id="Company_{{company.Id}}" type="checkbox"
+                        class="w-5 h-5 text-blue-600 border-gray-300 rounded focus:ring-blue-500 "
+                        [checked]="selectedItems.companies.get(company.Id)?.checked === true"
+                        [indeterminate]="selectedItems.companies.get(company.Id)?.checked === null"
+                        (change)="onCompanyCheckChange(company.Id)" />
+                    <label for="Company_{{company.Id}}" class="font-medium text-black ">{{company.Name}}</label>
+                    <span class="ml-auto text-gray-500">
+                        <i *ngIf="expandedCompanies.has(company.Id)" class="fas fa-chevron-up"></i>
+                        <i *ngIf="!expandedCompanies.has(company.Id)" class="fas fa-chevron-down"></i>
+                    </span>
+                </div>
+
+                <div *ngIf="expandedCompanies.has(company.Id)" class="ml-6 mt-2">
+                    <div *ngFor="let station of company.Stations" class="border-l pl-4">
+                        <div class="flex items-center space-x-2 cursor-pointer" (click)="toggleStation(station.Id)">
+                            <input id="Station_{{station.Id}}" type="checkbox"
+                                class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                [checked]="selectedItems.stations.get(station.Id)?.checked === true"
+                                [indeterminate]="selectedItems.stations.get(station.Id)?.checked === null"
+                                (change)="onStationCheckChange(station.Id, company.Id)" />
+                            <label for="Station_{{station.Id}}" class="text-black">{{station.Name}}</label>
+                            <span class="ml-auto text-gray-500">
+                                <i *ngIf="expandedStations.has(station.Id)" class="fas fa-chevron-up"></i>
+                                <i *ngIf="!expandedStations.has(station.Id)" class="fas fa-chevron-down"></i>
+                            </span>
+                        </div>
+
+                        <div *ngIf="expandedStations.has(station.Id)" class="ml-8 mt-1 border-l pl-4">
+                            <div *ngFor="let channel of station.Channels" class="flex items-center space-x-2">
+                                <input id="Channel_{{channel.Id}}" type="checkbox"
+                                    class="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
+                                    [checked]="selectedItems.channels.get(channel.Id)?.checked === true"
+                                    (change)="onChannelCheckChange(channel.Id, station.Id, company.Id)" />
+                                <label for="Channel_{{channel.Id}}" class="text-black">{{channel.Name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <!-- Modal Actions -->
+        <div class="flex justify-between mt-4">
+            <button class="px-4 py-2 bg-gray-400 text-white rounded-md hover:bg-gray-500 transition mr-2"
+                (click)="isModalOpen = false">
+                Cancel
+            </button>
+            <button class="px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition"
+                (click)="confirmSelection()">
+                Confirm
+            </button>
+        </div>
+    </div>
+</div>

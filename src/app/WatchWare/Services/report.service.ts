@@ -20,7 +20,7 @@ export class ReportService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<SelectionModel>();  // Return an empty observable to prevent further actions
     }
 
@@ -35,7 +35,7 @@ export class ReportService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any[]>();  // Return an empty observable to prevent further actions
     }
 
@@ -43,12 +43,23 @@ export class ReportService {
     headers = headers.set('Authorization', 'Bearer ' + token);
     let params = new HttpParams();
     params = params.set('companyId', Filter.companyId ? Filter.companyId.toString() : '')
-      .set('stationsId', Filter.stationsId.join(','))
-      .set('channelsId', Filter.channelsId.join(','))
+      // .set('stationsId', Filter.stationsId.join(','))
+      // .set('channelsId', Filter.channelsId.join(','))
       .set('dataAggregationType', Filter.dataAggregationType.toString())
       .set('from', Filter.from ? Filter.from.toISOString() : '')
       .set('to', Filter.to ? Filter.to.toISOString() : '')
       .set('ReportType', Filter.reportType.toString());
+
+    Filter.stationsId.forEach(stationId => {
+      params = params.append('stationsId', stationId.toString());
+    });
+
+    // Append channelsId properly
+    Filter.channelsId.forEach(channelId => {
+      params = params.append('channelsId', channelId.toString());
+    });
+
+    console.log(params);
 
     return this.http.post<any[]>(`${this.apiUrl}/GetReport`, params, { headers });
   }

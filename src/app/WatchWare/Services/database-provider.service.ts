@@ -16,7 +16,7 @@ export class DatabaseProviderService {
   GetProviders(): Observable<{ [key: string]: boolean }> {
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();
     }
 
@@ -27,7 +27,7 @@ export class DatabaseProviderService {
   UpdateProvider(provider: string): Observable<void> {
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<void>();
     }
 

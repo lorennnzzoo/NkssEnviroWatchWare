@@ -19,7 +19,7 @@ export class DatabaseConfigurationService {
   GetConfiguration(): Observable<{ [key: string]: any }> {
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();
     }
 
@@ -31,7 +31,7 @@ export class DatabaseConfigurationService {
   GetUploadConfiguration(configFilter: SiteConfigReportFilter): Observable<any> {
     const token = this.authService.getToken();
     if (!token) {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();
     }
 
@@ -49,7 +49,7 @@ export class DatabaseConfigurationService {
     const token = this.authService.getToken();
     if (!token) {
 
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<ConfigSetting[]>();
     }
 

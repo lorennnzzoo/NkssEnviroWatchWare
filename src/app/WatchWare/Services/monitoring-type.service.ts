@@ -15,33 +15,33 @@ export class MonitoringTypeService {
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
   GetAllMonitoringTypes(): Observable<MonitoringType[]> {
-      const token = this.authService.getToken();  // Replace with your token fetching logic
-      if (!token) {
-        // Redirect to login if no token exists
-        this.router.navigate(['/Login']);
-        return new Observable<MonitoringType[]>();  // Return an empty observable to prevent further actions
-      }
-  
-      let headers = new HttpHeaders();
-      headers = headers.set('Authorization', 'Bearer ' + token);
-  
-      return this.http.get<MonitoringType[]>(`${this.apiUrl}/GetAllMonitoringTypes`, { headers });
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<MonitoringType[]>();  // Return an empty observable to prevent further actions
     }
 
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
 
-  GetMonitoringType(Id:number):Observable<MonitoringType>{
+    return this.http.get<MonitoringType[]>(`${this.apiUrl}/GetAllMonitoringTypes`, { headers });
+  }
+
+
+  GetMonitoringType(Id: number): Observable<MonitoringType> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
-      if (!token) {
-        // Redirect to login if no token exists
-        this.router.navigate(['/Login']);
-        return new Observable<MonitoringType>();  // Return an empty observable to prevent further actions
-      }
-  
-      let headers = new HttpHeaders();
-      let params=new HttpParams()
-      .set('Id',Id);
-      headers = headers.set('Authorization', 'Bearer ' + token);
-  
-      return this.http.get<MonitoringType>(`${this.apiUrl}/GetMonitoringType`, { headers,params });
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<MonitoringType>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', Id);
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<MonitoringType>(`${this.apiUrl}/GetMonitoringType`, { headers, params });
   }
 }

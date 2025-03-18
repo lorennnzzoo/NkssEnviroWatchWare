@@ -34,7 +34,6 @@ export class OverviewGraphComponent implements OnInit {
 
     this.reportService.GetDataReport(reportFilter).subscribe({
       next: (report) => {
-        console.log(report);
         this.renderChart(report);
       },
       error: (error) => {

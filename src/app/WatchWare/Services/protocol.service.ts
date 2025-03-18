@@ -18,7 +18,7 @@ export class ProtocolService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<Analyzer[]>();  // Return an empty observable to prevent further actions
     }
 
@@ -32,7 +32,7 @@ export class ProtocolService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -46,7 +46,7 @@ export class ProtocolService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -72,7 +72,7 @@ export class ProtocolService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -95,17 +95,17 @@ export class ProtocolService {
   }
 
 
-  DeleteProtocol(Analyzer:Analyzer):Observable<any>{
-        const token = this.authService.getToken();  // Replace with your token fetching logic
-        if (!token) {
-          // Redirect to login if no token exists
-          this.router.navigate(['/Login']);
-          return new Observable<any>();  // Return an empty observable to prevent further actions
-        }
-        let headers = new HttpHeaders();
-        let params = new HttpParams()
-          .set('Id', Analyzer.Id)
-        headers = headers.set('Authorization', 'Bearer ' + token);
-        return this.http.delete(`${this.apiUrl}/DeleteAnalyzer`, { headers, params });
-      }
+  DeleteProtocol(Analyzer: Analyzer): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', Analyzer.Id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.delete(`${this.apiUrl}/DeleteAnalyzer`, { headers, params });
+  }
 }

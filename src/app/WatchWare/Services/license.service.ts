@@ -19,7 +19,7 @@ export class LicenseService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
@@ -30,18 +30,18 @@ export class LicenseService {
   }
 
   EditLicense(License: LicenseEdit): Observable<any> {
-      const token = this.authService.getToken();  // Replace with your token fetching logic
-      if (!token) {
-        // Redirect to login if no token exists
-        this.router.navigate(['/Login']);
-        return new Observable<any>();  // Return an empty observable to prevent further actions
-      }
-      let headers = new HttpHeaders();
-      let params = new HttpParams()
-        .set('LicenseType', License.LicenseType)
-        .set('LicenseKey', License.LicenseKey)
-      headers = headers.set('Authorization', 'Bearer ' + token);
-      return this.http.put(`${this.apiUrl}/UpdateLicense`, params, { headers });
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
     }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('LicenseType', License.LicenseType)
+      .set('LicenseKey', License.LicenseKey)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/UpdateLicense`, params, { headers });
+  }
 
 }

@@ -1,7 +1,8 @@
 <!-- Navbar -->
 <div
     class="fixed top-0 left-0 w-full h-16 bg-accent text-primary font-bold text-2xl tracking-wide flex justify-between items-center px-6 z-50">
-    <div class="flex items-center">
+    <div
+        class="flex items-center p-1 border-2 border-accent rounded-md hover:bg-secondary cursor-pointer hover:border-secondary transition-colors duration-300 ease-in-out">
         <!-- Logo -->
 
         NKSS WatchWare
@@ -32,7 +33,7 @@
 
     <!-- Menu List -->
 
-    <ul class="flex-1 mt-2 overflow-hidden">
+    <ul class="flex-1 mt-2 overflow-y-auto">
         <li *ngFor="let item of menuItems" class="m-2">
             <a *ngIf="!item.children" [routerLink]="item.route" routerLinkActive="active"
                 class="flex items-center p-2 rounded-md transition-all duration-200" [ngClass]="{

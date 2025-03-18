@@ -20,7 +20,7 @@ export class DataFeedService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<ChannelDataFeed[]>();  // Return an empty observable to prevent further actions
     }
 
@@ -35,7 +35,7 @@ export class DataFeedService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<ChannelDataResult[]>();  // Return an empty observable to prevent further actions
     }
 

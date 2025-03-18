@@ -45,7 +45,7 @@ export class AuthService {
 
       return this.http.post(`${this.apiUrl}/Register`, body, { headers });
     } else {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<any>();
     }
   }
@@ -131,13 +131,13 @@ export class AuthService {
   getToken(): string | null {
     let token = localStorage.getItem('authToken');
     if (token) {
-      if (this.validateToken(token)) {
-        return token;
-      }
-      else {
-        localStorage.removeItem('authToken');
-        return null;
-      }
+      // if (this.validateToken(token)) {
+      return token;
+      // }
+      // else {
+      //   localStorage.removeItem('authToken');
+      //   return null;
+      // }
     }
     else {
       return null;
@@ -155,7 +155,7 @@ export class AuthService {
         })
       );
     } else {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return of(null);
     }
   }
@@ -171,7 +171,7 @@ export class AuthService {
         })
       );
     } else {
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return of(null);
     }
   }
@@ -204,7 +204,7 @@ export class AuthService {
     const token = this.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<Role>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();

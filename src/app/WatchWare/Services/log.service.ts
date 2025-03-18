@@ -18,7 +18,7 @@ export class LogService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<ServiceLogs[]>();  // Return an empty observable to prevent further actions
     }
 
@@ -34,7 +34,7 @@ export class LogService {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
-      this.router.navigate(['/Login']);
+      this.router.navigate(['/login']);
       return new Observable<string[]>();  // Return an empty observable to prevent further actions
     }
 
