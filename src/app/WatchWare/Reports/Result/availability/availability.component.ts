@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { DataAggregationType } from '../../../Interfaces/ReportSubmitFilter';
+import { TableModule } from 'primeng/table'
+import { ButtonModule } from 'primeng/button';
+import { MenuModule } from 'primeng/menu';
 
 @Component({
   selector: 'app-availability',
-  imports: [CommonModule],
+  imports: [CommonModule, TableModule, MenuModule, ButtonModule],
   templateUrl: './availability.component.html',
   styleUrl: './availability.component.css'
 })

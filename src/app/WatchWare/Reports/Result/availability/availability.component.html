@@ -1,7 +1,7 @@
 <div>
     <div *ngIf="data && data.length > 0" class="flex items-center justify-between mb-6">
         <div class="flex justify-start">
-            <span class="font-semibold text-lg">Data Report</span>
+            <span class="font-semibold text-lg">Availability Report</span>
             <span class="text-gray-600 text-lg mx-6">Average : {{getAggregationTypeName(aggregationType)}}</span>
         </div>
         <div class="flex gap-3">
@@ -18,8 +18,8 @@
         </div>
     </div>
 
-    <div class="overflow-x-auto">
-        <table class="w-full border border-gray-300 rounded-lg shadow-md">
+    <div class="w-[1570px]">
+        <!-- <table class="w-full border border-gray-300 rounded-lg shadow-md">
             <thead>
                 <tr class="bg-secondary text-primary">
                     <th *ngFor="let col of columns" class="border border-gray-300 px-4 py-3 text-left">{{ col.header }}
@@ -33,7 +33,22 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
+        <p-table *ngIf="data && data.length > 0" showGridlines [value]="data" [paginator]="true" [rows]="10"
+            [responsiveLayout]="'scroll'">
+            <ng-template pTemplate="header">
+                <tr>
+                    <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);min-width:200px"
+                        *ngFor="let col of columns">{{col.header }}
+                    </th>
+                </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-row>
+                <tr>
+                    <td *ngFor="let col of columns">{{ row[col.field] }}%</td>
+                </tr>
+            </ng-template>
+        </p-table>
     </div>
 </div>
 

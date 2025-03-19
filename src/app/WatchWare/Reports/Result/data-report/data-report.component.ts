@@ -1,10 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnChanges, OnInit } from '@angular/core';
 import { DataAggregationType } from '../../../Interfaces/ReportSubmitFilter';
+import { TableModule } from 'primeng/table';
+import { MenuModule } from 'primeng/menu';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-data-report',
-  imports: [CommonModule],
+  imports: [CommonModule, TableModule, MenuModule, ButtonModule],
   templateUrl: './data-report.component.html',
   styleUrl: './data-report.component.css'
 })
