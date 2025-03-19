@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { filter } from 'rxjs';
 import { ToastrModule } from 'ngx-toastr';
 import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 @Component({
   selector: 'app-root',
@@ -20,7 +21,7 @@ export class AppComponent implements OnInit {
 
   screenIsLarge = window.innerWidth >= 768; // Assume `md` breakpoint in Tailwind
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private location: Location) { }
 
   ngOnInit() {
     // Update login page status and breadcrumbs when the route changes
@@ -51,5 +52,9 @@ export class AppComponent implements OnInit {
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.screenIsLarge = (event.target as Window).innerWidth >= 768;
+  }
+
+  goBack(): void {
+    this.location.back(); // Navigates to the previous page
   }
 }

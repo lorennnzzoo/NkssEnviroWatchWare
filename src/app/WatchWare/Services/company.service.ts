@@ -1,7 +1,7 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { environment } from 'src/environments/environment';
+import { environment } from '../../../environments/environment';
 import { Company, CompanyCreation, CompanyEdit } from '../Interfaces/Company';
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';

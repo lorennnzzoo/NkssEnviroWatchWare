@@ -15,14 +15,20 @@
     'pl-28': !isLoginPage && !isCollapsed, 
     'pl-72': !isLoginPage && !isCollapsed && screenIsLarge 
   }">
-      <div class="text-pretty font-semibold text-gray-600">
+      <!-- <div class="text-pretty font-semibold text-gray-600">
         <div *ngIf="breadcrumbs.length > 0" class="breadcrumbs">
           <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
             <span *ngIf="i < breadcrumbs.length - 1">{{ breadcrumb }} &gt; </span>
             <span *ngIf="i === breadcrumbs.length - 1">{{ breadcrumb }}</span>
           </ng-container>
         </div>
-      </div>
+      </div> -->
+
+      <button type="button" (click)="goBack()"
+        class="px-4 border border-accent bg-primary text-accent rounded-md hover:bg-accent hover:text-primary transition">
+        <i class="fa fa-arrow-left"></i>
+      </button>
+
       <router-outlet></router-outlet>
     </div>
 
