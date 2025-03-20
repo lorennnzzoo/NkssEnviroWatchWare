@@ -7,15 +7,18 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OxideService } from '../../Services/oxide.service';
 import { Oxide } from '../../Interfaces/Oxide';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 @Component({
   selector: 'app-list-oxides',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule, ToastrModule],
   templateUrl: './list-oxides.component.html',
-  styleUrl: './list-oxides.component.css'
+  styleUrl: './list-oxides.component.css',
+  providers: [ToastrService, ConfirmationService]
 })
 export class ListOxidesComponent implements OnInit {
 
@@ -23,6 +26,7 @@ export class ListOxidesComponent implements OnInit {
   Loading: boolean = false;
   constructor(
     private toastService: ToastrService,
+    private dialogService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
     private oxideService: OxideService
@@ -58,6 +62,27 @@ export class ListOxidesComponent implements OnInit {
     this.router.navigate(['/Oxide/Edit', oxide.Id])
   }
   onDelete(oxide: Oxide) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this oxide?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.oxideService.DeleteOxide(oxide).subscribe
+          ({
+            next: (response) => {
+              this.toastService.success('Oxide deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error(error.error, 'Unable To Delete Oxide');
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
 
+      },
+    });
   }
 }
