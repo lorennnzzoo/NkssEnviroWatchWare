@@ -19,6 +19,7 @@ import { ListUsersComponent } from './WatchWare/UsersManagement/list-users/list-
 import { AddUserComponent } from './WatchWare/UsersManagement/add-user/add-user.component';
 import { EditCompanyComponent } from './WatchWare/Company/edit-company/edit-company.component';
 import { EditStationComponent } from './WatchWare/Station/edit-station/edit-station.component';
+import { EditChannelComponent } from './WatchWare/Channel/edit-channel/edit-channel.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -32,6 +33,7 @@ export const routes: Routes = [
     { path: 'Station/Edit/:id', component: EditStationComponent, canActivate: [AuthGuard] },
     { path: 'Channels/:id', component: ListChannelsComponent, canActivate: [AuthGuard] },
     { path: 'Channel/Add/:id', component: AddChannelComponent, canActivate: [AuthGuard] },
+    { path: 'Channel/Edit/:id', component: EditChannelComponent, canActivate: [AuthGuard] },
     { path: 'Instrument/All', component: ListInstrumentsComponent, canActivate: [AuthGuard] },
     { path: 'Instrument/Add', component: AddInstrumentComponent, canActivate: [AuthGuard] },
     { path: 'Oxide/All', component: ListOxidesComponent, canActivate: [AuthGuard] },

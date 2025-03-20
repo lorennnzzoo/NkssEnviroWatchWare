@@ -122,4 +122,7 @@ export class ListChannelsComponent implements OnInit {
   onCreate() {
     this.router.navigate(['/Channel/Add', this.stationId]);
   }
+  onEdit(channel: ChannelListView) {
+    this.router.navigate(['/Channel/Edit', channel.Id]);
+  }
 }

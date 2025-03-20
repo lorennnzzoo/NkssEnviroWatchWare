@@ -1,1 +1,230 @@
-<p>edit-channel works!</p>
+<div class="my-5 p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Update Channel</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Sidebar Description -->
+        <div class="lg:col-span-3">
+            <!-- <h3 class="text-gray-900 font-medium text-lg">Basic Info</h3> -->
+            <p class="text-gray-600 text-sm">Provide essential details about the channel.</p>
+        </div>
+        <div class="lg:col-span-9">
+            <form [formGroup]="channelForm" (ngSubmit)="onSubmit()" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label for="name" class="font-medium text-gray-700 text-900">Channel Name</label>
+                        <input id="name" type="text" formControlName="Name"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required>
+                        <small *ngIf="channelForm.get('Name')?.invalid && channelForm.get('Name')?.touched"
+                            class="text-red-500 text-sm">Channel Name is required</small>
+
+                    </div>
+
+                    <!-- Logging Units -->
+                    <div>
+                        <label for="loggingUnits" class="font-medium text-gray-700 text-900">Logging Units</label>
+                        <input id="loggingUnits" type="text" formControlName="LoggingUnits"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required>
+                        <small
+                            *ngIf="channelForm.get('LoggingUnits')?.invalid && channelForm.get('LoggingUnits')?.touched"
+                            class="text-red-500 text-sm">Logging Units are required</small>
+                    </div>
+
+                    <!-- Protocol Dropdown -->
+                    <div>
+                        <label for="protocol" class="font-medium text-gray-700 text-900">Protocol</label>
+
+                        <select id="protocol" formControlName="ProtocolId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of protocols" [value]="type.Id">{{ type.ProtocolType }}
+                            </option>
+                        </select>
+                        <small *ngIf="channelForm.get('ProtocolId')?.invalid && channelForm.get('ProtocolId')?.touched"
+                            class="text-red-500 text-sm">Protocol is required</small>
+                    </div>
+
+                    <!-- Oxide Dropdown -->
+                    <div>
+                        <label for="oxide" class="font-medium text-gray-700 text-900">Oxide</label>
+
+                        <select id="oxide" formControlName="OxideId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of oxides" [value]="type.Id">{{ type.OxideName }}
+                            </option>
+                        </select>
+                        <small *ngIf="channelForm.get('OxideId')?.invalid && channelForm.get('OxideId')?.touched"
+                            class="text-red-500 text-sm">Oxide is required</small>
+                    </div>
+
+                    <!-- Channel Type Dropdown -->
+                    <div>
+                        <label for="channelType" class="font-medium text-gray-700 text-900">Channel Type</label>
+
+                        <select id="channelType" formControlName="ChannelTypeId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of channeltypes" [value]="type.Id">{{ type.ChannelTypeValue }}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="channelForm.get('ChannelTypeId')?.invalid && channelForm.get('ChannelTypeId')?.touched"
+                            class="text-red-500 text-sm">Channel Type is required</small>
+                    </div>
+
+                    <!-- Output Type Dropdown -->
+                    <div>
+                        <label for="outputType" class="font-medium text-gray-700 text-900">Output Type</label>
+
+                        <select id="outputType" formControlName="OutputType"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of outputTypes" [value]="type">{{ type }}
+                            </option>
+                        </select>
+                        <small *ngIf="channelForm.get('OutputType')?.invalid && channelForm.get('OutputType')?.touched"
+                            class="text-red-500 text-sm">Output Type is required</small>
+                    </div>
+
+                    <!-- Scaling Factor Dropdown (Visible only if Output Type is 'ANALOG') -->
+                    <div *ngIf="channelForm.get('OutputType')?.value === 'ANALOG'">
+                        <label for="scalingFactor" class="font-medium text-gray-700 text-900">Scaling Factor</label>
+
+                        <select id="scalingFactor" formControlName="ScalingFactorId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of scalingFactors" [value]="type.Id">MinInput {{type.MinInput}},
+                                MaxInput {{type.MaxInput}}, MinOutput {{type.MinOutput}},
+                                MaxOutput {{type.MaxOutput}}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="channelForm.get('ScalingFactorId')?.invalid && channelForm.get('ScalingFactorId')?.touched"
+                            class="text-red-500 text-sm">Scaling Factor is required for ANALOG output</small>
+                    </div>
+
+                    <!-- Value Position -->
+                    <div>
+                        <label for="valuePosition" class="font-medium text-gray-700 text-900">Value Position</label>
+                        <input id="valuePosition" type="number" formControlName="ValuePosition"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="0" step="1">
+                        <small
+                            *ngIf="channelForm.get('ValuePosition')?.invalid && channelForm.get('ValuePosition')?.touched"
+                            class="text-red-500 text-sm">Value Position is required</small>
+                    </div>
+
+                    <!-- Minimum Range -->
+                    <div>
+                        <label for="minimumRange" class="font-medium text-gray-700 text-900">Minimum Range</label>
+                        <input id="minimumRange" type="number" formControlName="MinimumRange"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="-1000000" step="any">
+                        <small
+                            *ngIf="channelForm.get('MinimumRange')?.invalid && channelForm.get('MinimumRange')?.touched"
+                            class="text-red-500 text-sm">Minimum Range is required</small>
+                    </div>
+
+                    <!-- Maximum Range -->
+                    <div>
+                        <label for="maximumRange" class="font-medium text-gray-700 text-900">Maximum Range</label>
+                        <input id="maximumRange" type="number" formControlName="MaximumRange"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="-1000000" step="any">
+                        <small
+                            *ngIf="channelForm.get('MaximumRange')?.invalid && channelForm.get('MaximumRange')?.touched"
+                            class="text-red-500 text-sm">Maximum Range is required</small>
+                    </div>
+
+                    <!-- Threshold -->
+                    <div>
+                        <label for="threshold" class="font-medium text-gray-700 text-900">Threshold</label>
+                        <input id="threshold" type="number" formControlName="Threshold"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="-1000000" step="any">
+                        <small *ngIf="channelForm.get('Threshold')?.invalid && channelForm.get('Threshold')?.touched"
+                            class="text-red-500 text-sm">Threshold is required</small>
+                    </div>
+
+                    <!-- Conversion Factor -->
+                    <div>
+                        <label for="conversionFactor" class="font-medium text-gray-700 text-900">Conversion
+                            Factor</label>
+                        <input id="conversionFactor" type="number" formControlName="ConversionFactor"
+                            class="w-full px-3 py-2 border  border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="-1000000" step="any">
+                        <small
+                            *ngIf="channelForm.get('ConversionFactor')?.invalid && channelForm.get('ConversionFactor')?.touched"
+                            class="text-red-500 text-sm">Conversion Factor is required</small>
+                    </div>
+
+                    <!-- Priority -->
+                    <div>
+                        <label for="priority" class="font-medium text-gray-700 text-900">Priority</label>
+                        <input id="priority" type="number" formControlName="Priority"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="0" step="1">
+                        <small *ngIf="channelForm.get('Priority')?.invalid && channelForm.get('Priority')?.touched"
+                            class="text-red-500 text-sm">Priority is required</small>
+                    </div>
+
+                    <!-- Cpcb Channel Name -->
+                    <div>
+                        <label for="cpcbChannelName" class="font-medium text-gray-700 text-900">CPCB Channel
+                            Name</label>
+                        <input id="cpcbChannelName" type="text" formControlName="CpcbChannelName"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                        <small
+                            *ngIf="channelForm.get('CpcbChannelName')?.invalid && channelForm.get('CpcbChannelName')?.touched"
+                            class="text-red-500 text-sm">CPCB Channel Name is required</small>
+                    </div>
+
+                    <!-- Spcb Channel Name -->
+                    <div>
+                        <label for="spcbChannelName" class="font-medium text-gray-700 text-900">SPCB Channel
+                            Name</label>
+                        <input id="spcbChannelName" type="text" formControlName="SpcbChannelName"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                        <small
+                            *ngIf="channelForm.get('SpcbChannelName')?.invalid && channelForm.get('SpcbChannelName')?.touched"
+                            class="text-red-500 text-sm">SPCB Channel Name is required</small>
+                    </div>
+
+                    <!-- Is CPCB Checkbox -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <!-- Is SPCB -->
+                        <div class="flex items-center">
+                            <input id="isSpcb" type="checkbox" formControlName="IsSpcb"
+                                class="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500">
+                            <label for="isSpcb" class="ml-2 text-gray-700">Is SPCB</label>
+                        </div>
+
+                        <!-- Is CPCB -->
+                        <div class="flex items-center">
+                            <input id="isCpcb" type="checkbox" formControlName="IsCpcb"
+                                class="w-4 h-4 text-blue-600 border-gray-400 rounded focus:ring-blue-500">
+                            <label for="isCpcb" class="ml-2 text-gray-700">Is CPCB</label>
+                        </div>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex gap-4 mt-4">
+                        <button type="submit" [disabled]="Loading"
+                            class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+
+                            <span *ngIf="Loading">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                            </span>
+                            <span *ngIf="!Loading">
+
+                            </span>
+
+                            <span>Update</span>
+                        </button>
+                        <button type="button" (click)="goBack()"
+                            class="mt-1 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
