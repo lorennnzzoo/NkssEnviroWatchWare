@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Station, StationListView } from '../../Interfaces/Station';
 import { MonitoringTypeService } from '../../Services/monitoring-type.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { StationService } from '../../Services/station.service';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -12,12 +12,15 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-list-stations',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+  imports: [TableModule, TagModule, IconFieldModule, ToastrModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
   templateUrl: './list-stations.component.html',
-  styleUrl: './list-stations.component.css'
+  styleUrl: './list-stations.component.css',
+  providers: [ToastrService, ConfirmationService]
 })
 export class ListStationsComponent implements OnInit {
 
@@ -27,6 +30,7 @@ export class ListStationsComponent implements OnInit {
   companyId!: number;
 
   constructor(private stationService: StationService,
+    private dialogService: ConfirmationService,
     private toastService: ToastrService,
     private route: ActivatedRoute,
     private router: Router, // Inject Router
@@ -106,6 +110,29 @@ export class ListStationsComponent implements OnInit {
     this.router.navigate(['/Station/Edit', station.Id]);
   }
   onDelete(staiton: StationListView) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this station?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.stationService.DeleteStation(staiton).subscribe
+          ({
+            next: (response) => {
 
+              this.toastService.success('Station deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error('Unable To Delete Station', 'Error');
+              console.log(error);
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
+
+      },
+    });
   }
 }
