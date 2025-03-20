@@ -5,7 +5,7 @@
         [tableStyle]="{ 'min-width': '1000px' }">
         <ng-template #caption>
             <div class="flex">
-                <button type="button"
+                <button type="button" (click)="onCreate()"
                     class=" px-4 bg-primary border border-accent text-accent rounded-md hover:bg-accent hover:text-primary transition">
                     <i class="fa fa-plus"></i>
                     Create

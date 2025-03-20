@@ -1,0 +1,94 @@
+<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+    <p-table #dt [value]="Channels" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="Loading"
+        showGridlines="" [paginator]="true" [globalFilterFields]="['Oxide', 'Name','Protocol','LoggingUnits']"
+        [tableStyle]="{ 'min-width': '1000px' }">
+        <ng-template #caption>
+            <div class="flex">
+                <button type="button" (click)="onCreate()"
+                    class=" px-4 bg-primary border border-accent text-accent rounded-md hover:bg-accent hover:text-primary transition">
+                    <i class="fa fa-plus"></i>
+                    Create
+                </button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Name
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">
+                    Oxide
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Logging
+                    Units
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:15%">Protocol
+                </th>
+
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">SPCB</th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">CPCB
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Created On
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-channel>
+            <tr>
+                <td>{{ channel.Name }}</td>
+                <td>{{ channel.Oxide }}</td>
+                <td>{{ channel.LoggingUnits }}</td>
+                <td>{{ channel.Protocol }}</td>
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': channel.IsSpcb,
+                        'text-red-500 fa-circle-xmark': !channel.IsSpcb
+                    }"></i>
+                </td>
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': channel.IsCpcb,
+                        'text-red-500 fa-circle-xmark': !channel.IsCpcb
+                    }"></i>
+                </td>
+
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': channel.Active,
+                        'text-red-500 fa-circle-xmark': !channel.Active
+                    }"></i>
+                </td>
+                <td>{{ channel.CreatedOn | date:'yyyy-MMM-dd' }}</td>
+                <td>
+                    <div class="flex gap-2">
+
+                        <button type="button"
+                            class="px-2 text-green-500 border border-green-500 rounded-md hover:bg-green-500 hover:text-white transition">
+                            <i class="fa fa-pencil-alt"></i>
+                        </button>
+
+
+                        <button type="button"
+                            class="px-2 text-red-500 border border-red-500 rounded-md hover:bg-red-500 hover:text-white transition">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="7">No Channels found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

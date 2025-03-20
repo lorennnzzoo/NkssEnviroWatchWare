@@ -2,7 +2,7 @@
 <div
     class="fixed top-0 left-0 w-full h-16 bg-accent text-primary font-bold text-2xl tracking-wide flex justify-between items-center px-6 z-50">
     <div
-        class="flex items-center p-1 border-2 border-accent rounded-md hover:bg-secondary cursor-pointer hover:border-secondary transition-colors duration-300 ease-in-out">
+        class="flex items-center p-1 border-2 border-accent rounded-md hover:bg-primary hover:text-accent cursor-pointer hover:border-primary transition-colors duration-300 ease-in-out">
         <!-- Logo -->
 
         NKSS WatchWare
@@ -61,6 +61,7 @@
                 </button>
 
                 <ul *ngIf="item.expanded && !isCollapsed" class="pl-6">
+
                     <li *ngFor="let child of item.children" class="m-2">
                         <a [routerLink]="child.route" routerLinkActive="active"
                             class="flex items-center p-2 rounded-md transition-all duration-200" [ngClass]="{
@@ -70,6 +71,9 @@
                             <i [class]="child.icon + ' text-lg'"></i>
                             <span class="ml-2">{{ child.title }}</span>
                         </a>
+                    </li>
+                    <li *ngIf="item.title === 'Industry' && CompanyLoading" class="text-gray-500 italic p-2">
+                        <i class="fas fa-spinner fa-spin"></i> Loading companies...
                     </li>
                 </ul>
             </div>

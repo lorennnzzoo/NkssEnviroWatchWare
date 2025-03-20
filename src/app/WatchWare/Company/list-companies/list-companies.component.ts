@@ -12,6 +12,7 @@ import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
 import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
+import { throwIfEmpty } from 'rxjs';
 
 @Component({
   selector: 'app-list-companies',
@@ -50,5 +51,8 @@ export class ListCompaniesComponent implements OnInit {
   }
   onStations(company: Company) {
     this.router.navigate(['Stations', company.Id])
+  }
+  onCreate() {
+    this.router.navigate(['/Company/Add'])
   }
 }

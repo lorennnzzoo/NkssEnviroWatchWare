@@ -6,10 +6,17 @@ import { ChannelTypeService } from '../../Services/channel-type.service';
 import { ProtocolService } from '../../Services/protocol.service';
 import { ToastrService } from 'ngx-toastr';
 import { Channel, ChannelListView } from '../../Interfaces/Channel';
-
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputTextModule } from 'primeng/inputtext';
+import { InputIconModule } from 'primeng/inputicon';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { SelectModule } from 'primeng/select';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-list-channels',
-  imports: [],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
   templateUrl: './list-channels.component.html',
   styleUrl: './list-channels.component.css'
 })
@@ -111,5 +118,8 @@ export class ListChannelsComponent implements OnInit {
         this.Loading = false;
       }
     );
+  }
+  onCreate() {
+    this.router.navigate(['/Channel/Add', this.stationId]);
   }
 }

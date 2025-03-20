@@ -99,4 +99,7 @@ export class ListStationsComponent implements OnInit {
   onChannels(station: StationListView) {
     this.router.navigate(['Channels', station.Id])
   }
+  onCreate() {
+    this.router.navigate(['/Station/Add', this.companyId])
+  }
 }

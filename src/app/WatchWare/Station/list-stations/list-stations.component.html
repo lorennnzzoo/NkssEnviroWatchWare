@@ -4,7 +4,7 @@
         [tableStyle]="{ 'min-width': '1000px' }">
         <ng-template #caption>
             <div class="flex">
-                <button type="button"
+                <button type="button" (click)="onCreate()"
                     class=" px-4 bg-primary border border-accent text-accent rounded-md hover:bg-accent hover:text-primary transition">
                     <i class="fa fa-plus"></i>
                     Create
@@ -22,11 +22,11 @@
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:15%">Name
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:20%">
-                    MonitoringType
+                    Monitoring Type
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">IsSpcb
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Spcb
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">IsCpcb</th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Cpcb</th>
 
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active</th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Created On

@@ -1,1 +1,85 @@
-<p>list-instruments works!</p>
+<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+    <p-table #dt [value]="Protocols" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="Loading"
+        showGridlines="" [paginator]="true"
+        [globalFilterFields]="['ProtocolType', 'CommunicationType','Manufacturer','Model']"
+        [tableStyle]="{ 'min-width': '1000px' }">
+        <ng-template #caption>
+            <div class="flex">
+                <button type="button" (click)="onCreate()"
+                    class=" px-4 bg-primary border border-accent text-accent rounded-md hover:bg-accent hover:text-primary transition">
+                    <i class="fa fa-plus"></i>
+                    Create
+                </button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Protocol
+                    Type
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">
+                    Communication Type
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Manufacturer
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:15%">Model
+                </th>
+
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">IP Address
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Port
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-protocol>
+            <tr>
+                <td>{{protocol.ProtocolType}}</td>
+                <td>{{protocol.CommunicationType}}</td>
+                <td>{{protocol.Manufacturer}}</td>
+                <td>{{protocol.Model}}</td>
+                <td>{{protocol.IpAddress}}</td>
+                <td>{{protocol.Port}}</td>
+
+
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': protocol.Active,
+                        'text-red-500 fa-circle-xmark': !protocol.Active
+                    }"></i>
+                </td>
+
+                <td>
+                    <div class="flex gap-2">
+
+                        <button type="button"
+                            class="px-2 text-green-500 border border-green-500 rounded-md hover:bg-green-500 hover:text-white transition">
+                            <i class="fa fa-pencil-alt"></i>
+                        </button>
+
+
+                        <button type="button"
+                            class="px-2 text-red-500 border border-red-500 rounded-md hover:bg-red-500 hover:text-white transition">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="7">No Analyzers found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

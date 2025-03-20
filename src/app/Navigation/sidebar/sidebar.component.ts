@@ -4,17 +4,23 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../WatchWare/Services/auth.service';
 import { Subscription } from 'rxjs';
+import { CompanyService } from '../../WatchWare/Services/company.service';
+import { Company } from '../../WatchWare/Interfaces/Company';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, CommonModule],
+  imports: [RouterModule, CommonModule, ToastrModule],
   templateUrl: './sidebar.component.html',
-  styleUrl: './sidebar.component.css'
+  styleUrl: './sidebar.component.css',
+  providers: [ToastrService]
 })
 export class SidebarComponent implements OnInit {
 
   Username: string = '';
   private usernameSubscription: Subscription | null = null;
+  Companies: Company[] = [];
+  CompanyLoading: boolean = false;
 
   isCollapsed = false;
   @Output() collapseChange = new EventEmitter<boolean>();
@@ -22,34 +28,39 @@ export class SidebarComponent implements OnInit {
     { title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard' },
     { title: 'Reports', icon: 'fas fa-chart-line', route: '/Reports' },
     {
-      title: 'Company', icon: 'fas fa-building', children: [
+      title: 'Industry', icon: 'fas fa-building', children: [
         { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
         { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
       ]
     },
     {
-      title: 'Instrument', icon: 'fas fa-microchip', children: [
-        { title: 'All Analyzers', icon: 'fas fa-flask', route: '/Instrument/All' },
-        { title: 'Add Analyzer', icon: 'fas fa-plus-circle', route: '/Instrument/Add' },
-      ]
+      // title: 'Instrument', icon: 'fas fa-microchip', children: [
+      //   { title: 'All Analyzers', icon: 'fas fa-flask', route: '/Instrument/All' },
+      //   { title: 'Add Analyzer', icon: 'fas fa-plus-circle', route: '/Instrument/Add' },
+      // ]
+      title: 'Instrument', icon: 'fas fa-microchip', route: '/Instrument/All'
     },
     {
-      title: 'Standard', icon: 'fas fa-balance-scale', children: [
-        { title: 'All Standards', icon: 'fas fa-list', route: '/Oxide/All' },
-        { title: 'Add Standard', icon: 'fas fa-plus-circle', route: '/Oxide/Add' },
-      ]
+      // title: 'Standard', icon: 'fas fa-balance-scale', children: [
+      //   { title: 'All Standards', icon: 'fas fa-list', route: '/Oxide/All' },
+      //   { title: 'Add Standard', icon: 'fas fa-plus-circle', route: '/Oxide/Add' },
+      // ]
+      title: 'Standard', icon: 'fas fa-balance-scale', route: '/Oxide/All'
+
     },
     {
-      title: 'Scaling', icon: 'fas fa-ruler-combined', children: [
-        { title: 'All Scaling Factors', icon: 'fas fa-list', route: '/ScalingFactor/All' },
-        { title: 'Add Scaling Factor', icon: 'fas fa-plus-circle', route: '/ScalingFactor/Add' },
-      ]
+      // title: 'Scaling', icon: 'fas fa-ruler-combined', children: [
+      //   { title: 'All Scaling Factors', icon: 'fas fa-list', route: '/ScalingFactor/All' },
+      //   { title: 'Add Scaling Factor', icon: 'fas fa-plus-circle', route: '/ScalingFactor/Add' },
+      // ]
+      title: 'Scaling', icon: 'fas fa-ruler-combined', route: '/ScalingFactor/All'
     },
     {
-      title: 'Users Management', icon: 'fas fa-users-cog', children: [
-        { title: 'Users', icon: 'fas fa-user', route: '/Users/All' },
-        { title: 'Create', icon: 'fas fa-user-plus', route: '/Users/Add' },
-      ]
+      // title: 'Users Management', icon: 'fas fa-users-cog', children: [
+      //   { title: 'Users', icon: 'fas fa-user', route: '/Users/All' },
+      //   { title: 'Create', icon: 'fas fa-user-plus', route: '/Users/Add' },
+      // ]
+      title: 'Users Management', icon: 'fas fa-users-cog', route: '/Users/All'
     },
     {
       title: 'System', icon: 'fas fa-cogs', children: [
@@ -69,7 +80,7 @@ export class SidebarComponent implements OnInit {
     }
   }
 
-  constructor(private router: Router, private authService: AuthService) { }
+  constructor(private router: Router, private authService: AuthService, private companyService: CompanyService, private toastService: ToastrService) { }
   ngOnInit(): void {
     window.addEventListener('resize', () => {
       this.isCollapsed = window.innerWidth <= 768;
@@ -84,6 +95,37 @@ export class SidebarComponent implements OnInit {
 
     // Load username initially
     this.loadUsername();
+    this.loadCompanies();
+
+  }
+  loadCompanies() {
+    this.CompanyLoading = true;
+    this.companyService.GetAllCompanies().subscribe(
+      (data) => {
+        this.Companies = data;
+        this.CompanyLoading = false;
+
+        // Find the "Company" menu item
+        const companyMenu = this.menuItems.find(item => item.title === 'Industry');
+        if (companyMenu && companyMenu.children) {
+          // Add companies as children under "All Industries"
+          companyMenu.children = [
+            { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
+            { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
+            ...this.Companies.map(company => ({
+              title: company.ShortName,
+              icon: 'fas fa-industry',
+              route: `/Stations/${company.Id}` // Assuming companies have an `id`
+            }))
+          ];
+        }
+      },
+      (error) => {
+        this.toastService.error('Unable to load companies', 'Error occurred');
+        console.error('Error loading companies:', error);
+        this.CompanyLoading = false;
+      }
+    );
   }
 
   toggleSidebar() {

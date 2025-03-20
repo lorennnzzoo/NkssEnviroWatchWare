@@ -1,1 +1,89 @@
-<p>list-users works!</p>
+<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+    <p-table #dt [value]="Users" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="Loading"
+        showGridlines="" [paginator]="true" [globalFilterFields]="['MinInput', 'MaxInput','MinOutput','MaxOutput']"
+        [tableStyle]="{ 'min-width': '1000px' }">
+        <ng-template #caption>
+            <div class="flex">
+                <button type="button" (click)="onCreate()"
+                    class=" px-4 bg-primary border border-accent text-accent rounded-md hover:bg-accent hover:text-primary transition">
+                    <i class="fa fa-plus"></i>
+                    Create
+                </button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Username
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Password
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Email
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Phone Number
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Role
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Created On
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">
+                    Last Logged In
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-user>
+            <tr>
+                <td>{{user.Username}}</td>
+                <td>{{user.Password}}</td>
+                <td>{{user.Email}}</td>
+                <td>{{user.PhoneNumber}}</td>
+                <td>{{user.Role}}</td>
+                <td>{{user.CreatedOn | date: 'dd-MMM-yyyy HH:mm'}}</td>
+                <td>{{user.LastLoggedIn | date: 'dd-MMM-yyyy HH:mm'}}</td>
+
+
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': user.Active,
+                        'text-red-500 fa-circle-xmark': !user.Active
+                    }"></i>
+                </td>
+
+                <td>
+                    <div class="flex gap-2">
+
+
+                        <button *ngIf="user.Active" type="button"
+                            class="px-2  text-red-500 border border-red-500 rounded-md hover:bg-red-500 hover:text-white transition">
+                            Deactivate
+                        </button>
+                        <button *ngIf="!user.Active" type="button"
+                            class="px-2  text-blue-500 border border-blue-500 rounded-md hover:bg-blue-500 hover:text-white transition">
+                            Activate
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="7">No Users found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
