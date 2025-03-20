@@ -54,4 +54,7 @@ export class ListOxidesComponent implements OnInit {
   onCreate() {
     this.router.navigate(['/Oxide/Add'])
   }
+  onEdit(oxide: Oxide) {
+    this.router.navigate(['/Oxide/Edit', oxide.Id])
+  }
 }
