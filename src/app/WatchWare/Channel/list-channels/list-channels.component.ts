@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { OxideService } from '../../Services/oxide.service';
 import { ChannelTypeService } from '../../Services/channel-type.service';
 import { ProtocolService } from '../../Services/protocol.service';
-import { ToastrService } from 'ngx-toastr';
+import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { Channel, ChannelListView } from '../../Interfaces/Channel';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -14,11 +14,14 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-list-channels',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ToastrModule, ConfirmDialogModule],
   templateUrl: './list-channels.component.html',
-  styleUrl: './list-channels.component.css'
+  styleUrl: './list-channels.component.css',
+  providers: [ToastrService, ConfirmationService]
 })
 export class ListChannelsComponent implements OnInit {
   RawChannels: Channel[] = [];
@@ -27,6 +30,7 @@ export class ListChannelsComponent implements OnInit {
   stationId!: number;
 
   constructor(private channelService: ChannelService,
+    private dialogService: ConfirmationService,
     private toastService: ToastrService,
     private route: ActivatedRoute,
     private router: Router,
@@ -126,6 +130,27 @@ export class ListChannelsComponent implements OnInit {
     this.router.navigate(['/Channel/Edit', channel.Id]);
   }
   onDelete(channel: ChannelListView) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this channel?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.channelService.DeleteChannel(channel).subscribe
+          ({
+            next: (response) => {
+              this.toastService.success('Channel deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error('Unable To Delete Channel', 'Error')
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
 
+      },
+    });
   }
 }
