@@ -11,11 +11,14 @@ import { ToastrService } from 'ngx-toastr';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ProtocolService } from '../../Services/protocol.service';
 import { Analyzer } from '../../Interfaces/Protocol';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 @Component({
   selector: 'app-list-instruments',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
   templateUrl: './list-instruments.component.html',
-  styleUrl: './list-instruments.component.css'
+  styleUrl: './list-instruments.component.css',
+  providers: [ToastrService, ConfirmationService]
 })
 export class ListInstrumentsComponent implements OnInit {
 
@@ -23,6 +26,7 @@ export class ListInstrumentsComponent implements OnInit {
   Loading: boolean = false;
   constructor(
     private toastService: ToastrService,
+    private dialogService: ConfirmationService,
     private route: ActivatedRoute,
     private router: Router,
     private protocolService: ProtocolService
@@ -57,6 +61,27 @@ export class ListInstrumentsComponent implements OnInit {
     this.router.navigate(['/Instrument/Edit', instrument.Id])
   }
   onDelete(instrument: Analyzer) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this analyzer?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.protocolService.DeleteProtocol(instrument).subscribe
+          ({
+            next: (response) => {
+              this.toastService.success('Analyzer deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error(error.error, 'Unable To Delete Analyzer');
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
 
+      },
+    });
   }
 }
