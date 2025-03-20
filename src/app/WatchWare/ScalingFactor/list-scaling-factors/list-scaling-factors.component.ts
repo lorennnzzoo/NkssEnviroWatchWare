@@ -53,4 +53,7 @@ export class ListScalingFactorsComponent implements OnInit {
   onCreate() {
     this.router.navigate(['/ScalingFactor/Add'])
   }
+  onEdit(scalingFactor: ScalingFactor) {
+    this.router.navigate(['/ScalingFactor/Edit', scalingFactor.Id])
+  }
 }
