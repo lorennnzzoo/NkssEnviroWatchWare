@@ -55,4 +55,7 @@ export class ListCompaniesComponent implements OnInit {
   onCreate() {
     this.router.navigate(['/Company/Add'])
   }
+  onEdit(company: Company) {
+    this.router.navigate(['/Company/Edit', company.Id])
+  }
 }
