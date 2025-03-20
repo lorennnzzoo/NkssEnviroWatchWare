@@ -20,6 +20,9 @@ import { AddUserComponent } from './WatchWare/UsersManagement/add-user/add-user.
 import { EditCompanyComponent } from './WatchWare/Company/edit-company/edit-company.component';
 import { EditStationComponent } from './WatchWare/Station/edit-station/edit-station.component';
 import { EditChannelComponent } from './WatchWare/Channel/edit-channel/edit-channel.component';
+import { EditInstrumentComponent } from './WatchWare/Instrument/edit-instrument/edit-instrument.component';
+import { EditOxideComponent } from './WatchWare/Oxide/edit-oxide/edit-oxide.component';
+import { EditScalingFactorComponent } from './WatchWare/ScalingFactor/edit-scaling-factor/edit-scaling-factor.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -36,11 +39,13 @@ export const routes: Routes = [
     { path: 'Channel/Edit/:id', component: EditChannelComponent, canActivate: [AuthGuard] },
     { path: 'Instrument/All', component: ListInstrumentsComponent, canActivate: [AuthGuard] },
     { path: 'Instrument/Add', component: AddInstrumentComponent, canActivate: [AuthGuard] },
+    { path: 'Instrument/Edit/:id', component: EditInstrumentComponent, canActivate: [AuthGuard] },
     { path: 'Oxide/All', component: ListOxidesComponent, canActivate: [AuthGuard] },
     { path: 'Oxide/Add', component: AddOxideComponent, canActivate: [AuthGuard] },
-
+    { path: 'Oxide/Edit/:id', component: EditOxideComponent, canActivate: [AuthGuard] },
     { path: 'ScalingFactor/All', component: ListScalingFactorsComponent, canActivate: [AuthGuard] },
     { path: 'ScalingFactor/Add', component: AddScalingFactorComponent, canActivate: [AuthGuard] },
+    { path: 'ScalingFactor/Edit/:id', component: EditScalingFactorComponent, canActivate: [AuthGuard] },
     { path: 'Users/All', component: ListUsersComponent, canActivate: [AuthGuard] },
     { path: 'Users/Add', component: AddUserComponent, canActivate: [AuthGuard] },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },

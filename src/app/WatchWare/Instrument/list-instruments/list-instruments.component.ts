@@ -53,4 +53,7 @@ export class ListInstrumentsComponent implements OnInit {
   onCreate() {
     this.router.navigate(['/Instrument/Add'])
   }
+  onEdit(instrument: Analyzer) {
+    this.router.navigate(['/Instrument/Edit', instrument.Id])
+  }
 }
