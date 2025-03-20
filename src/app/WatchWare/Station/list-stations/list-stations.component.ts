@@ -105,4 +105,7 @@ export class ListStationsComponent implements OnInit {
   onEdit(station: StationListView) {
     this.router.navigate(['/Station/Edit', station.Id]);
   }
+  onDelete(staiton: StationListView) {
+
+  }
 }

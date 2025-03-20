@@ -10,19 +10,20 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { TableModule } from 'primeng/table';
-import { Table } from 'primeng/table';
 import { Router } from '@angular/router';
-import { throwIfEmpty } from 'rxjs';
+import { ConfirmationService } from 'primeng/api';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 @Component({
   selector: 'app-list-companies',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
   templateUrl: './list-companies.component.html',
-  styleUrl: './list-companies.component.css'
+  styleUrl: './list-companies.component.css',
+  providers: [ToastrService, ConfirmationService]
 })
 export class ListCompaniesComponent implements OnInit {
 
-  constructor(private router: Router, private companyService: CompanyService, private toastService: ToastrService) { }
+  constructor(private router: Router, private companyService: CompanyService, private toastService: ToastrService, private dialogService: ConfirmationService) { }
 
   ngOnInit(): void {
     this.loadCompanies();
@@ -57,5 +58,31 @@ export class ListCompaniesComponent implements OnInit {
   }
   onEdit(company: Company) {
     this.router.navigate(['/Company/Edit', company.Id])
+  }
+  onDelete(company: Company) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this company?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.companyService.DeleteCompany(company).subscribe
+          ({
+            next: (response) => {
+
+              this.toastService.success('Company deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error('Unable To Delete Company', 'Error');
+              console.log(error);
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
+
+      },
+    });
   }
 }

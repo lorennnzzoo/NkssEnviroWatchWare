@@ -57,4 +57,7 @@ export class ListOxidesComponent implements OnInit {
   onEdit(oxide: Oxide) {
     this.router.navigate(['/Oxide/Edit', oxide.Id])
   }
+  onDelete(oxide: Oxide) {
+
+  }
 }

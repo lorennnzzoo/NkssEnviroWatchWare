@@ -125,4 +125,7 @@ export class ListChannelsComponent implements OnInit {
   onEdit(channel: ChannelListView) {
     this.router.navigate(['/Channel/Edit', channel.Id]);
   }
+  onDelete(channel: ChannelListView) {
+
+  }
 }

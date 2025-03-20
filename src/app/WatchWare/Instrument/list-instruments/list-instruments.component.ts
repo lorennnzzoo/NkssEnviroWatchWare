@@ -56,4 +56,7 @@ export class ListInstrumentsComponent implements OnInit {
   onEdit(instrument: Analyzer) {
     this.router.navigate(['/Instrument/Edit', instrument.Id])
   }
+  onDelete(instrument: Analyzer) {
+
+  }
 }
