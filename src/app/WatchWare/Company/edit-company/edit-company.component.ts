@@ -103,6 +103,7 @@ export class EditCompanyComponent implements OnInit {
 
         this.toastService.success('Company updated successfully', 'Updated');
         this.Loading = false; // Reset the form
+        this.location.back();
       },
       error: (error) => {
         // Handle error response

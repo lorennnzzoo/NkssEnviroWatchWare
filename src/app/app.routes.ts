@@ -18,6 +18,7 @@ import { AddScalingFactorComponent } from './WatchWare/ScalingFactor/add-scaling
 import { ListUsersComponent } from './WatchWare/UsersManagement/list-users/list-users.component';
 import { AddUserComponent } from './WatchWare/UsersManagement/add-user/add-user.component';
 import { EditCompanyComponent } from './WatchWare/Company/edit-company/edit-company.component';
+import { EditStationComponent } from './WatchWare/Station/edit-station/edit-station.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -28,6 +29,7 @@ export const routes: Routes = [
     { path: 'Company/Edit/:id', component: EditCompanyComponent, canActivate: [AuthGuard] },
     { path: 'Stations/:id', component: ListStationsComponent, canActivate: [AuthGuard] },
     { path: 'Station/Add/:id', component: AddStationComponent, canActivate: [AuthGuard] },
+    { path: 'Station/Edit/:id', component: EditStationComponent, canActivate: [AuthGuard] },
     { path: 'Channels/:id', component: ListChannelsComponent, canActivate: [AuthGuard] },
     { path: 'Channel/Add/:id', component: AddChannelComponent, canActivate: [AuthGuard] },
     { path: 'Instrument/All', component: ListInstrumentsComponent, canActivate: [AuthGuard] },
