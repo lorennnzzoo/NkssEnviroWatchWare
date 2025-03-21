@@ -12,6 +12,12 @@
     </div>
     <div class="flex items-center space-x-4">
         <button
+            class="w-10 h-10 flex items-center justify-center rounded-full  hover:bg-primary hover:text-accent transition-colors duration-300 ease-in-out"
+            (click)="onProfile()">
+            <i class="fa fa-user"></i>
+        </button>
+
+        <button
             class="bg-primary text-accent px-4 py-2 rounded-md font-semibold text-sm flex items-center space-x-2 hover:bg-secondary hover:text-primary transition-colors duration-300 ease-in-out"
             (click)="onLogout()">
             <i class="fas fa-sign-out-alt"></i>
@@ -105,10 +111,10 @@
         </li>
     </ul>
 
-    <div
+    <!-- <div
         class="hover:cursor-pointer hover:bg-gray-200 hover:text-accent p-4 text-center text-gray-600 text-sm border-t border-gray-300 flex items-center justify-center space-x-2">
         <i class="fas fa-user-circle text-lg"></i>
-        <span *ngIf="!isCollapsed">Welcome, {{Username}}</span>
-    </div>
+        <span *ngIf="!isCollapsed">{{Username}}</span>
+    </div> -->
 
 </div>
