@@ -25,6 +25,7 @@ import { EditOxideComponent } from './WatchWare/Oxide/edit-oxide/edit-oxide.comp
 import { EditScalingFactorComponent } from './WatchWare/ScalingFactor/edit-scaling-factor/edit-scaling-factor.component';
 import { NotFoundComponent } from './Navigation/not-found/not-found.component';
 import { ProfileComponent } from './WatchWare/Auth/profile/profile.component';
+import { ConfigurationComponent } from './WatchWare/System/configuration/configuration.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -50,6 +51,9 @@ export const routes: Routes = [
     { path: 'ScalingFactor/Edit/:id', component: EditScalingFactorComponent, canActivate: [AuthGuard] },
     { path: 'Users/All', component: ListUsersComponent, canActivate: [AuthGuard] },
     { path: 'Users/Add', component: AddUserComponent, canActivate: [AuthGuard] },
+    { path: 'Configurations/All', component: ConfigurationComponent, canActivate: [AuthGuard] },
+    { path: 'Configurations/Add', component: ConfigurationComponent, canActivate: [AuthGuard] },
+    { path: 'Configurations/Edit/:id', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },

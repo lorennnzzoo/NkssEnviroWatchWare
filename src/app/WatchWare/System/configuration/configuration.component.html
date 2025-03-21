@@ -1,1 +1,95 @@
-<p>configuration works!</p>
+<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+
+    <p-table #dt [value]="ConfigSettings" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+        [loading]="Loading" showGridlines [paginator]="true"
+        [globalFilterFields]="['GroupName', 'ContentName', 'ContentValue']" [tableStyle]="{ 'min-width': '1000px' }">
+        <ng-template #caption>
+            <div class="flex">
+                <button type="button" (click)="onCreate()"
+                    class=" px-4 bg-accent border border-accent text-primary rounded-md hover:bg-accent hover:text-primary transition">
+                    <i class="fa fa-plus"></i>
+                    Create
+                </button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+            </div>
+        </ng-template>
+        <ng-template #header>
+            <tr>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:20%">Group Name
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:20%">Content
+                    Name
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Content
+                    Value
+                </th>
+
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active</th>
+
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Action
+                </th>
+            </tr>
+        </ng-template>
+        <ng-template #body let-config>
+            <tr>
+                <td>{{ config.GroupName }}</td>
+                <td>{{ config.ContentName }}</td>
+                <td>{{ config.ContentValue }}</td>
+
+                <td>
+                    <i class="fa" [ngClass]="{
+                        'text-green-500 fa-circle-check': config.Active,
+                        'text-red-500 pi-times-circle': !config.Active
+                    }"></i>
+                </td>
+
+                <td>
+                    <div class="flex gap-2">
+
+                        <button type="button" (click)="onEdit(config)"
+                            class="px-2 text-green-500 border border-green-500 rounded-md hover:bg-green-500 hover:text-white transition">
+                            <i class="fa fa-pencil-alt"></i>
+                        </button>
+
+
+                        <button type="button" (click)="onDelete(config)"
+                            class="px-2 text-red-500 border border-red-500 rounded-md hover:bg-red-500 hover:text-white transition">
+                            <i class="fa fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+
+            </tr>
+        </ng-template>
+        <ng-template #emptymessage>
+            <tr>
+                <td colspan="8">No Configuration keys found.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>
+<p-confirmdialog #cd>
+    <ng-template #headless let-message let-onAccept="onAccept" let-onReject="onReject">
+        <div class="flex flex-col items-center p-8 bg-surface-0 dark:bg-surface-900 rounded">
+            <div
+                class="rounded-full bg-primary text-primary-contrast inline-flex justify-center items-center h-24 w-24 -mt-20">
+                <i class="fa fa-trash !text-5xl"></i>
+            </div>
+            <span class="font-bold text-2xl block mb-2 mt-6">{{ message.header }}</span>
+            <p class="mb-0">{{ message.message }}</p>
+            <div class="flex items-center gap-2 mt-6">
+                <button
+                    [ngClass]="'mt-1 px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-700 transition disabled:bg-gray-500 disabled:cursor-not-allowed'"
+                    (click)="onAccept()" class="w-32">Delete</button>
+                <button
+                    [ngClass]="'mt-1 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-700 transition disabled:bg-gray-500 disabled:cursor-not-allowed'"
+                    (click)="onReject()" class="w-32">Cancel</button>
+            </div>
+        </div>
+    </ng-template>
+</p-confirmdialog>
