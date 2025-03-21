@@ -79,23 +79,23 @@
 
 
         <app-exceedance *ngIf="+reportFilterForm.value.ReportType===ReportType.Exceedance"
-            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To" [companyId]="reportCompanyId"
             [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-exceedance>
 
 
         <app-data-report *ngIf="+reportFilterForm.value.ReportType===ReportType.DataReport"
-            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To" [companyId]="reportCompanyId"
             [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-data-report>
 
 
         <app-availability *ngIf="+reportFilterForm.value.ReportType===ReportType.DataAvailability"
-            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To"
+            [from]="reportFilterForm.value.From" [to]="reportFilterForm.value.To" [companyId]="reportCompanyId"
             [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-availability>
 
 
         <app-trends *ngIf="+reportFilterForm.value.ReportType===ReportType.Trends" [from]="reportFilterForm.value.From"
-            [to]="reportFilterForm.value.To" [aggregationType]="reportFilterForm.value.DataAggregationType"
-            [data]="reportData"></app-trends>
+            [companyId]="reportCompanyId" [to]="reportFilterForm.value.To"
+            [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-trends>
 
         <!-- </ng-container> -->
     </div>

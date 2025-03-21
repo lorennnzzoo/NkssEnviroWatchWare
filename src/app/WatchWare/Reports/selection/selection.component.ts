@@ -48,7 +48,7 @@ export class SelectionComponent implements OnInit {
     channels: new Map<number, { checked: boolean }>()
   };
 
-
+  reportCompanyId: any;
   loading: boolean = false;
   reportData: any;
   public ReportType = ReportType;
@@ -260,6 +260,7 @@ export class SelectionComponent implements OnInit {
   }
   resetReport(): void {
     this.reportData = null;
+    this.reportCompanyId = null;
     this.reportFilterForm.get('ReportType')?.enable();
     this.reportFilterForm.get('From')?.enable();
     this.reportFilterForm.get('To')?.enable();
@@ -272,6 +273,8 @@ export class SelectionComponent implements OnInit {
         next: (report) => {
           this.reportData = report;
           console.log(this.reportData);
+          this.toastService.success('Company Id : ' + filter.companyId);
+          this.reportCompanyId = filter.companyId;
           // this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Report Data Fetched successfully' }); 
           this.reportFilterForm.get('ReportType')?.disable({ emitEvent: false, onlySelf: true });
           this.reportFilterForm.get('From')?.disable({ emitEvent: false, onlySelf: true });
