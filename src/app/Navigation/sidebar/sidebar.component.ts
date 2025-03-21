@@ -7,10 +7,11 @@ import { Subscription } from 'rxjs';
 import { CompanyService } from '../../WatchWare/Services/company.service';
 import { Company } from '../../WatchWare/Interfaces/Company';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, CommonModule, ToastrModule],
+  imports: [RouterModule, CommonModule, ToastrModule, TooltipModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   providers: [ToastrService]

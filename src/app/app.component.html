@@ -10,7 +10,7 @@
   <div class="flex bg-gray-50">
 
     <app-sidebar *ngIf="!isLoginPage" (collapseChange)="isCollapsed = $event"></app-sidebar>
-    <div class="flex-1 h-screen pt-24 pb-2 pr-3 transition-all duration-300 ease-in-out" [ngClass]="{
+    <div class="flex-1 h-screen pt-[85px] pb-2 pr-3 transition-all duration-300 ease-in-out" [ngClass]="{
     'pl-0': isCollapsed, 
     'pl-28': !isLoginPage && !isCollapsed, 
     'pl-72': !isLoginPage && !isCollapsed && screenIsLarge 

@@ -34,6 +34,16 @@
     <!-- Menu List -->
 
     <ul class="flex-1 mt-2 overflow-y-auto">
+        <!-- <div class="pb-3 shadow-sm border-b">
+            <div
+                class="border border-gray-400 rounded-md m-2 h-10 flex items-center px-3 space-x-2 hover:border-accent">
+                <input type="text" class="focus:outline-none flex-1" placeholder="Search" />
+                <i class="fa fa-terminal"></i>
+            </div>
+        </div> -->
+
+
+
         <li *ngFor="let item of menuItems" class="m-2">
             <a *ngIf="!item.children" [routerLink]="item.route" routerLinkActive="active"
                 class="flex items-center p-2 rounded-md transition-all duration-200" [ngClass]="{
@@ -66,10 +76,22 @@
                         <a [routerLink]="child.route" routerLinkActive="active"
                             class="flex items-center p-2 rounded-md transition-all duration-200" [ngClass]="{
                'bg-secondary text-white': isActive(child.route),
-               'text-gray-600 hover:text-accent': !isActive(child.route)
+               'text-gray-600 hover:text-accent hover:bg-gray-200': !isActive(child.route)
              }">
                             <i [class]="child.icon + ' text-lg'"></i>
-                            <span class="ml-2">{{ child.title }}</span>
+                            <span [pTooltip]="child.title" tooltipPosition="right"
+                                class="ml-2 text-nowrap overflow-hidden text-ellipsis">{{
+                                child.title }}</span>
+                            <!-- <div class="relative overflow-hidden w-[150px] group">
+                                <span
+                                    class="ml-2 whitespace-nowrap inline-block transition-all duration-500 ease-in-out"
+                                    style="display: inline-block; transform: translateX(0); transition: transform 6s linear;"
+                                    onmouseover="this.style.transform='translateX(-100%)'"
+                                    onmouseout="this.style.transform='translateX(0)'">
+                                    {{ child.title }}
+                                </span>
+                            </div> -->
+
                         </a>
                     </li>
                     <li *ngIf="item.title === 'Industry' && CompanyLoading" class="text-gray-500 italic p-2">
