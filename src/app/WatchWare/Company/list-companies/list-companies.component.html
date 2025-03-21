@@ -1,4 +1,9 @@
+<!-- <div class="pt-4">
+    <span class="text-gray-600 text-lg">All Industries</span>
+</div> -->
+
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+
     <p-table #dt [value]="Companies" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="Loading"
         showGridlines [paginator]="true"
         [globalFilterFields]="['ShortName', 'LegalName', 'Country', 'State', 'District']"
