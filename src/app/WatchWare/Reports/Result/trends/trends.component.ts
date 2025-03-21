@@ -63,6 +63,66 @@ export class TrendsComponent implements OnInit {
     });
   }
   getAggregationTypeName(value: number): string {
-      return DataAggregationType[value] || 'Unknown';
+    return DataAggregationType[value] || 'Unknown';
+  }
+  onExport() {
+    // if (!this.chartCanvas) {
+    //   console.error("Chart canvas not found.");
+    //   return;
+    // }
+
+    // const canvas = this.chartCanvas.nativeElement as HTMLCanvasElement;
+    // const image = canvas.toDataURL("image/jpeg", 1.0); // Convert to JPEG format
+
+
+    // const link = document.createElement('a');
+    // link.href = image;
+    // link.download = 'trend_data.jpeg'; // Set filename
+    // document.body.appendChild(link);
+    // link.click();
+    // document.body.removeChild(link);
+
+
+    if (!this.chartCanvas) {
+      console.error("Chart canvas not found.");
+      return;
     }
+
+    const canvas = this.chartCanvas.nativeElement as HTMLCanvasElement;
+    const ctx = canvas.getContext('2d');
+
+    if (!ctx) {
+      console.error("Unable to get canvas context.");
+      return;
+    }
+
+
+    const tempCanvas = document.createElement('canvas');
+    tempCanvas.width = canvas.width;
+    tempCanvas.height = canvas.height;
+    const tempCtx = tempCanvas.getContext('2d');
+
+    if (!tempCtx) {
+      console.error("Unable to get temp canvas context.");
+      return;
+    }
+
+
+    tempCtx.fillStyle = 'white';
+    tempCtx.fillRect(0, 0, tempCanvas.width, tempCanvas.height);
+
+
+    tempCtx.drawImage(canvas, 0, 0);
+
+
+    const image = tempCanvas.toDataURL("image/jpeg", 1.0);
+
+
+    const link = document.createElement('a');
+    link.href = image;
+    link.download = 'trend_data.jpeg';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }
