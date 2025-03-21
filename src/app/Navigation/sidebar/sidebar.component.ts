@@ -26,7 +26,13 @@ export class SidebarComponent implements OnInit {
   isCollapsed = false;
   @Output() collapseChange = new EventEmitter<boolean>();
   menuItems: MenuItem[] = [
-    { title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard' },
+    {
+      // title: 'Dashboard', icon: 'fas fa-tachometer-alt', children: [
+      //   { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
+      // ]
+      title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard'
+
+    },
     { title: 'Reports', icon: 'fas fa-chart-line', route: '/Reports' },
     {
       title: 'Industry', icon: 'fas fa-building', children: [
@@ -108,6 +114,7 @@ export class SidebarComponent implements OnInit {
 
         // Find the "Company" menu item
         const companyMenu = this.menuItems.find(item => item.title === 'Industry');
+        // const dashBoardMenu = this.menuItems.find(item => item.title === 'Dashboard');
         if (companyMenu && companyMenu.children) {
           // Add companies as children under "All Industries"
           companyMenu.children = [
@@ -120,6 +127,17 @@ export class SidebarComponent implements OnInit {
             }))
           ];
         }
+        // if (dashBoardMenu && dashBoardMenu.children) {
+        //   // Add companies as children under "All Industries"
+        //   dashBoardMenu.children = [
+        //     { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
+        //     ...this.Companies.map(company => ({
+        //       title: company.ShortName,
+        //       icon: 'fas fa-industry',
+        //       route: `/Stations/${company.Id}` // Assuming companies have an `id`
+        //     }))
+        //   ];
+        // }
       },
       (error) => {
         this.toastService.error('Unable to load companies', 'Error occurred');
