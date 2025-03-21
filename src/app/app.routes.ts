@@ -23,6 +23,7 @@ import { EditChannelComponent } from './WatchWare/Channel/edit-channel/edit-chan
 import { EditInstrumentComponent } from './WatchWare/Instrument/edit-instrument/edit-instrument.component';
 import { EditOxideComponent } from './WatchWare/Oxide/edit-oxide/edit-oxide.component';
 import { EditScalingFactorComponent } from './WatchWare/ScalingFactor/edit-scaling-factor/edit-scaling-factor.component';
+import { NotFoundComponent } from './Navigation/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -48,6 +49,7 @@ export const routes: Routes = [
     { path: 'ScalingFactor/Edit/:id', component: EditScalingFactorComponent, canActivate: [AuthGuard] },
     { path: 'Users/All', component: ListUsersComponent, canActivate: [AuthGuard] },
     { path: 'Users/Add', component: AddUserComponent, canActivate: [AuthGuard] },
+    { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
-    { path: '**', redirectTo: 'Dashboard' }
+    { path: '**', redirectTo: 'NotFound' }
 ];
