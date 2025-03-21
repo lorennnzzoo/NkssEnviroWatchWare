@@ -8,6 +8,8 @@ import { CompanyService } from '../../WatchWare/Services/company.service';
 import { Company } from '../../WatchWare/Interfaces/Company';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { TooltipModule } from 'primeng/tooltip';
+import { UserService } from '../../WatchWare/Services/user.service';
+import { User } from '../../WatchWare/Interfaces/User';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,11 +20,12 @@ import { TooltipModule } from 'primeng/tooltip';
 })
 export class SidebarComponent implements OnInit {
 
+  showCard: boolean = false;
   Username: string = '';
   private usernameSubscription: Subscription | null = null;
   Companies: Company[] = [];
   CompanyLoading: boolean = false;
-
+  user!: User;
   isCollapsed = false;
   @Output() collapseChange = new EventEmitter<boolean>();
   menuItems: MenuItem[] = [
@@ -86,8 +89,20 @@ export class SidebarComponent implements OnInit {
       this.authService.logout();
     }
   }
-
-  constructor(private router: Router, private authService: AuthService, private companyService: CompanyService, private toastService: ToastrService) { }
+  loadUserDetails() {
+    // this.Loading = true;
+    this.userService.GetUserProfile().subscribe({
+      next: (profile) => {
+        this.user = profile;
+        // this.Loading = false;
+      },
+      error: (error) => {
+        this.toastService.error('Unable To Load Profile Data');
+        // this.Loading = false;
+      }
+    });
+  }
+  constructor(private router: Router, private authService: AuthService, private userService: UserService, private companyService: CompanyService, private toastService: ToastrService) { }
   ngOnInit(): void {
     window.addEventListener('resize', () => {
       this.isCollapsed = window.innerWidth <= 768;
@@ -103,6 +118,7 @@ export class SidebarComponent implements OnInit {
     // Load username initially
     this.loadUsername();
     this.loadCompanies();
+    this.loadUserDetails();
 
   }
   loadCompanies() {
@@ -176,5 +192,11 @@ export class SidebarComponent implements OnInit {
   }
   onProfile() {
     this.router.navigate(['/Profile'])
+  }
+  onSettings() {
+    this.toastService.info('Not implemented');
+  }
+  onHelp() {
+    this.toastService.info('Not implemented');
   }
 }

@@ -11,11 +11,55 @@
         NKSS WatchWare
     </div>
     <div class="flex items-center space-x-4">
-        <button
+        <!-- <button
             class="w-10 h-10 flex items-center justify-center rounded-full  hover:bg-primary hover:text-accent transition-colors duration-300 ease-in-out"
             (click)="onProfile()">
             <i class="fa fa-user"></i>
-        </button>
+        </button> -->
+        <!-- <div class="group">
+
+            <i class="fa fa-user hover:cursor-pointer" (mouseenter)="showCard = true"
+                (mouseleave)="showCard = false"></i>
+            <div *ngIf="showCard"
+                class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white p-4 rounded-lg shadow-lg border border-gray-200">
+                <h3 class="text-lg font-semibold">Bhanu</h3>
+                <p class="text-sm text-gray-600">EmailDetailshahha</p>
+                <p class="text-sm text-gray-600">9999999999</p>
+            </div>
+        </div> -->
+        <div class="relative inline-block">
+            <!-- User Icon -->
+            <button
+                class="w-10 h-10 flex items-center justify-center rounded-full  hover:bg-primary hover:text-accent transition-colors duration-300 ease-in-out"
+                (click)="showCard = !showCard">
+                <i class="fa fa-user"></i>
+            </button>
+            <!-- <i class="fa fa-user hover:cursor-pointer text-2xl" (mouseenter)="showCard = true"
+                (mouseleave)="showCard = false"></i> -->
+
+            <!-- Floating Card -->
+            <div *ngIf="showCard" class="absolute left-1/2 -translate-x-1/2 mt-2 w-64 bg-white p-4 rounded-xl shadow-lg border border-gray-200 z-50
+             scale-100 transition-all duration-300 ease-out
+             ">
+                <div class="pb-3">
+                    <h3 class="text-lg text-black font-semibold">{{user.Username}}</h3>
+                    <p class="text-sm text-gray-500 font-normal">{{user.Email}}</p>
+                </div>
+                <div>
+                    <h3 class="text-lg text-gray-700 font-normal hover:bg-gray-200 py-2 hover:cursor-pointer rounded-lg"
+                        (click)="onSettings()">
+                        <i class="pl-2 fa fa-gear"></i>
+                        Settings
+                    </h3>
+                    <h3 class="text-lg text-gray-700 font-normal hover:bg-gray-200 py-2 hover:cursor-pointer rounded-lg"
+                        (click)="onHelp()">
+                        <i class="pl-2 fa fa-circle-info"></i>
+                        Help
+                    </h3>
+                </div>
+
+            </div>
+        </div>
 
         <button
             class="bg-primary text-accent px-4 py-2 rounded-md font-semibold text-sm flex items-center space-x-2 hover:bg-secondary hover:text-primary transition-colors duration-300 ease-in-out"
@@ -26,7 +70,8 @@
     </div>
 
 </div>
-
+<div *ngIf="showCard" class="fixed inset-0 bg-black bg-opacity-50 z-40" (click)="showCard = false">
+</div>
 
 <!-- Sidebar -->
 <!-- Sidebar -->
