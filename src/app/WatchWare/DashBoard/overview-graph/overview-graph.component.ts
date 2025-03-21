@@ -1,45 +1,61 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ReportService } from '../../Services/report.service';
 import { Station } from '../../Interfaces/Station';
 import { DataAggregationType, ReportFilter, ReportType } from '../../Interfaces/ReportSubmitFilter';
 import { CategoryScale, Chart, ChartConfiguration, registerables } from 'chart.js';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-overview-graph',
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './overview-graph.component.html',
   styleUrl: './overview-graph.component.css'
 })
-export class OverviewGraphComponent implements OnInit {
+export class OverviewGraphComponent implements OnInit, AfterViewChecked {
   @Input() Station!: Station;
-  @ViewChild('chartCanvas', { static: true }) chartCanvas!: ElementRef;
+  @ViewChild('chartCanvas', { static: false }) chartCanvas!: ElementRef;
   chart: Chart | undefined;
+  reportData: any = null;
+  Loading: boolean = false;
+  DataExists: boolean = false;
   constructor(private reportService: ReportService) { Chart.register(...registerables, CategoryScale); }
   ngOnInit(): void {
     this.loadOverviewData(this.Station);
   }
 
   loadOverviewData(station: Station) {
+    this.Loading = true;
     const reportFilter: ReportFilter = {
       companyId: station.CompanyId,
       stationsId: [station.Id],
       channelsId: [],
       dataAggregationType: DataAggregationType.OneHour,
-      // from: new Date(new Date().setHours(new Date().getHours() - 1700)), // 24 hours ago
-      // to: new Date(),
-      from: new Date('2020-01-01T00:00:00'), // From: 2020-01-01 00:00:00
-      to: new Date('2020-01-01T23:59:59'),  // To: 2020-01-01 23:59:59
+      from: new Date(new Date().setHours(new Date().getHours() - 12)),
+      to: new Date(),
+      // from: new Date('2020-01-01T00:00:00'), // From: 2020-01-01 00:00:00
+      // to: new Date('2020-01-01T11:59:59'),  // To: 2020-01-01 23:59:59
 
       reportType: ReportType.Trends
     };
 
     this.reportService.GetDataReport(reportFilter).subscribe({
       next: (report) => {
-        this.renderChart(report);
+        this.DataExists = report.length > 0
+        this.Loading = false;
+        this.reportData = report; // Store report data
+
+        // Ensure the canvas is available before rendering the chart
+        setTimeout(() => this.renderChart(this.reportData));
       },
       error: (error) => {
+        this.Loading = false;
         console.error("Error loading chart data", error);
       }
     });
+  }
+  ngAfterViewChecked() {
+    if (this.DataExists && !this.chart && this.reportData) {
+      this.renderChart(this.reportData);
+    }
   }
 
   renderChart(reportData: any) {

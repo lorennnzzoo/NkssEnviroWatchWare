@@ -1,7 +1,26 @@
 <!-- <div class="w-full max-w-3xl mx-auto p-4 bg-white shadow-lg rounded-lg"> -->
-<h2 class="text-xl font-bold text-gray-800 m-3 ml-0">24 Hour Overview</h2>
+<!-- <h2 class="text-xl font-bold text-gray-800 m-3 ml-0">24 Hour Overview</h2>
 
-<div class="relative w-full h-64">
+<div *ngIf="true" class="relative w-full h-64">
+    <canvas #chartCanvas></canvas>
+</div> -->
+<!-- </div> -->
+
+<h2 class="text-sm font-bold text-gray-800 m-3 ml-0">12 Hour Overview</h2>
+
+
+<div *ngIf="Loading" class="w-full h-64 bg-gray-200 animate-pulse rounded-lg">
+    <div class="text-center text-gray-500 p-4">
+        Loading overview.....
+    </div>
+</div>
+
+
+<div *ngIf="!Loading && !DataExists" class="text-center text-gray-500 p-4">
+    No overview currently available.
+</div>
+
+
+<div *ngIf="!Loading && DataExists" class="relative w-full h-64">
     <canvas #chartCanvas></canvas>
 </div>
-<!-- </div> -->

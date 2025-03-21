@@ -10,10 +10,11 @@ import { ChannelDataFeed } from '../../Interfaces/ChannelDataFeed';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { OverviewGraphComponent } from '../overview-graph/overview-graph.component';
+import { OverviewExceedanceComponent } from '../overview-exceedance/overview-exceedance.component';
 
 @Component({
   selector: 'app-live-feed',
-  imports: [ToastrModule, CommonModule, ReactiveFormsModule, OverviewGraphComponent],
+  imports: [ToastrModule, CommonModule, ReactiveFormsModule, OverviewGraphComponent, OverviewExceedanceComponent],
   templateUrl: './live-feed.component.html',
   styleUrl: './live-feed.component.css'
 })
