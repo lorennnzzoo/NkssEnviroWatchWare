@@ -83,4 +83,14 @@ export class LiveFeedComponent implements OnInit {
       }
     );
   }
+  isDelayed(logTime: Date | null): boolean {
+    if (!logTime) return false; // If null, not delayed
+
+    const logDate = new Date(logTime); // Ensure it's a Date object
+    const now = new Date(); // Get current time
+    const diffInMinutes = (now.getTime() - logDate.getTime()) / (1000 * 60); // Calculate difference in minutes
+
+    return diffInMinutes > 15; // Return true if delayed more than 15 minutes
+  }
+
 }

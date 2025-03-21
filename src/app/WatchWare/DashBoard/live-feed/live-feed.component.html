@@ -17,26 +17,42 @@
                                 <th class="border border-gray-300 px-4 py-2">CPCB Standard</th>
                                 <th class="border border-gray-300 px-4 py-2">Hourly Average</th>
                                 <th class="border border-gray-300 px-4 py-2">Availability</th>
-                                <th class="border border-gray-300 px-4 py-2">Status</th>
+                                <!-- <th class="border border-gray-300 px-4 py-2">Status</th> -->
                             </tr>
                         </thead>
                         <tbody>
                             <tr *ngFor="let feed of stationDataFeedMap[station.Id]">
-                                <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelName }}</td>
-                                <td class="border border-gray-300 px-4 py-2">
+                                <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelName }}
+                                    <!-- <i *ngIf="!feed.Active" class="fa text-red-500 fa-power-off"></i> -->
+                                </td>
+                                <td class="border border-gray-300 px-4 py-2"
+                                    [ngClass]="{'text-red-500':feed.ChannelValue?false:true}">
                                     {{ feed.ChannelValue ? feed.ChannelValue : 'NA' }}
+                                    <span *ngIf="feed.ChannelValue > feed.PcbLimit">
+
+                                    </span>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.Units }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelDataLogTime | date:
                                     'dd-MMM-yyyy HH:mm'
-                                    }}</td>
+                                    }}
+                                    <span *ngIf="!feed.ChannelDataLogTime">No record</span>
+                                    <span class="text-red-500 pl-4"
+                                        *ngIf="isDelayed(feed.ChannelDataLogTime)">Delayed</span>
+                                </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.PcbLimit }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.Average }}</td>
-                                <td class="border border-gray-300 px-4 py-2">{{ feed.Availability }}%</td>
-                                <td class="border border-gray-300 px-4 py-2 font-semibold"
+                                <td class="border border-gray-300 px-4 py-2" [ngClass]="{
+                                    'text-red-500': feed.Availability === 0,
+                                    'text-orange-500': feed.Availability > 0 && feed.Availability < 50,
+                                    'text-yellow-500': feed.Availability >= 50 && feed.Availability < 80,
+                                    'text-green-500': feed.Availability >= 80
+                                  }">{{ feed.Availability > 100 ? '100%' :
+                                    feed.Availability + '%' }}</td>
+                                <!-- <td class="border border-gray-300 px-4 py-2 font-semibold"
                                     [ngClass]="feed.Active ? 'text-green-600' : 'text-red-600'">
                                     {{ feed.Active ? 'Active' : 'Shutdown' }}
-                                </td>
+                                </td> -->
                             </tr>
                         </tbody>
                     </table>
@@ -65,9 +81,23 @@
         <!-- Skeleton Loader -->
         <ng-template #skeletonLoader>
             <div class="animate-pulse space-y-2">
-                <div class="h-6 bg-gray-300 rounded w-1/4"></div>
-                <div class="h-6 bg-gray-300 rounded w-3/4"></div>
-                <div class="h-6 bg-gray-300 rounded w-1/2"></div>
+                <!-- Table header skeleton -->
+                <div class="flex space-x-2">
+                    <div class="h-10 bg-secondary rounded w-1/6"></div>
+                    <div class="h-10 bg-secondary rounded w-1/3"></div>
+                    <div class="h-10 bg-secondary rounded w-1/4"></div>
+                    <div class="h-10 bg-secondary rounded w-1/5"></div>
+                    <div class="h-10 bg-secondary rounded w-1/5"></div>
+                </div>
+
+                <!-- Table rows skeleton -->
+                <div *ngFor="let _ of [1,2,3,4,5]" class="flex space-x-2">
+                    <div class="h-6 bg-gray-200 rounded w-1/6"></div>
+                    <div class="h-6 bg-gray-200 rounded w-1/3"></div>
+                    <div class="h-6 bg-gray-200 rounded w-1/4"></div>
+                    <div class="h-6 bg-gray-200 rounded w-1/5"></div>
+                    <div class="h-6 bg-gray-200 rounded w-1/5"></div>
+                </div>
             </div>
         </ng-template>
     </div>
