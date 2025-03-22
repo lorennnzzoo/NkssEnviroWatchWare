@@ -54,7 +54,7 @@ export class LoginComponent implements OnInit {
           });
 
         } else {
-          this.toastService.error(response.error || "Invalid credentials", "Login failed");
+          this.toastService.error(response.details?.error?.error_description || "Invalid credentials", "Login failed");
         }
         this.loading = false;
       },
