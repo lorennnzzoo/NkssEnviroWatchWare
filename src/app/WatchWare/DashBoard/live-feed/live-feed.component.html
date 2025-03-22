@@ -1,3 +1,6 @@
+<div class="">
+    <h2 class="text-3xl font-normal text-gray-500">Dashboard</h2>
+</div>
 <div *ngIf="stations.length > 0; else noStations">
     <div *ngFor="let station of stations" class="my-5 border rounded-lg shadow-md p-4 bg-white">
         <h2 class="text-lg font-semibold mb-2">{{ station.Name }}</h2>

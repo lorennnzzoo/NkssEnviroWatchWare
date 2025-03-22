@@ -14,6 +14,8 @@ import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { Company } from '../../Interfaces/Company';
+import { CompanyService } from '../../Services/company.service';
 
 @Component({
   selector: 'app-list-stations',
@@ -28,9 +30,11 @@ export class ListStationsComponent implements OnInit {
   Stations: StationListView[] = [];
   Loading: boolean = false;
   companyId!: number;
+  company!: Company;
 
   constructor(private stationService: StationService,
     private dialogService: ConfirmationService,
+    private companyService: CompanyService,
     private toastService: ToastrService,
     private route: ActivatedRoute,
     private router: Router, // Inject Router
@@ -40,12 +44,23 @@ export class ListStationsComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.companyId = +id; // Convert string to number
+        this.loadCompanyDetails(this.companyId);
         this.loadStations(this.companyId);
       }
     });
   }
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
+  }
+  loadCompanyDetails(id: number) {
+    this.companyService.GetCompanyById(id).subscribe({
+      next: (data) => {
+        this.company = data;
+      },
+      error: (error) => {
+        this.toastService.error('Unable to fetch company details');
+      }
+    })
   }
   loadStations(id: number) {
     this.Loading = true;

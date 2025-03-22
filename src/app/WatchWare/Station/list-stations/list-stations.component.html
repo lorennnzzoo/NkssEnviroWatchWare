@@ -1,3 +1,6 @@
+<div *ngIf="company" class="">
+    <h2 class="text-2xl font-normal text-gray-500">Stations of {{company.LegalName}}</h2>
+</div>
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
     <p-table #dt [value]="Stations" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" [loading]="Loading"
         showGridlines="" [paginator]="true" [globalFilterFields]="['Name', 'MonitoringType']"

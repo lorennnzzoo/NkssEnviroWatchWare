@@ -16,6 +16,8 @@ import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
 import { ConfirmationService } from 'primeng/api';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { Station } from '../../Interfaces/Station';
+import { StationService } from '../../Services/station.service';
 @Component({
   selector: 'app-list-channels',
   imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ToastrModule, ConfirmDialogModule],
@@ -28,8 +30,10 @@ export class ListChannelsComponent implements OnInit {
   Channels: ChannelListView[] = [];
   Loading: boolean = false;
   stationId!: number;
+  station!: Station;
 
   constructor(private channelService: ChannelService,
+    private stationService: StationService,
     private dialogService: ConfirmationService,
     private toastService: ToastrService,
     private route: ActivatedRoute,
@@ -43,6 +47,7 @@ export class ListChannelsComponent implements OnInit {
       const id = params.get('id');
       if (id) {
         this.stationId = +id;
+        this.loadStationDetails(this.stationId);
         this.loadChannels(this.stationId);
       }
     });
@@ -51,7 +56,17 @@ export class ListChannelsComponent implements OnInit {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
+  loadStationDetails(id: number) {
+    this.stationService.GetStationById(id).subscribe({
+      next: (data) => {
+        this.station = data;
+      },
+      error: (error) => {
+        this.toastService.error('Unable to load station details');
+      }
 
+    })
+  }
   loadChannels(id: number) {
     this.Loading = true;
     this.channelService.GetAllChannelsByStation(id).subscribe(
