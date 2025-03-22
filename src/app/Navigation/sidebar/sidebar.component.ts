@@ -26,61 +26,79 @@ export class SidebarComponent implements OnInit {
   Companies: Company[] = [];
   CompanyLoading: boolean = false;
   user!: User;
+  role: string | null = null;
+  private roleSubscription!: Subscription;
   isCollapsed = false;
   @Output() collapseChange = new EventEmitter<boolean>();
-  menuItems: MenuItem[] = [
-    {
-      // title: 'Dashboard', icon: 'fas fa-tachometer-alt', children: [
-      //   { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
-      // ]
-      title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard'
+  menuItems: MenuItem[] = [];
 
-    },
-    { title: 'Reports', icon: 'fas fa-chart-line', route: '/Reports' },
-    {
-      title: 'Industry', icon: 'fas fa-building', children: [
-        { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
-        { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
-      ]
-    },
-    {
-      // title: 'Instrument', icon: 'fas fa-microchip', children: [
-      //   { title: 'All Analyzers', icon: 'fas fa-flask', route: '/Instrument/All' },
-      //   { title: 'Add Analyzer', icon: 'fas fa-plus-circle', route: '/Instrument/Add' },
-      // ]
-      title: 'Instrument', icon: 'fas fa-microchip', route: '/Instrument/All'
-    },
-    {
-      // title: 'Standard', icon: 'fas fa-balance-scale', children: [
-      //   { title: 'All Standards', icon: 'fas fa-list', route: '/Oxide/All' },
-      //   { title: 'Add Standard', icon: 'fas fa-plus-circle', route: '/Oxide/Add' },
-      // ]
-      title: 'Standard', icon: 'fas fa-balance-scale', route: '/Oxide/All'
+  private updateMenu() {
+    if (this.role === 'Admin') {
+      this.menuItems = [{
+        // title: 'Dashboard', icon: 'fas fa-tachometer-alt', children: [
+        //   { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
+        // ]
+        title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard'
 
-    },
-    {
-      // title: 'Scaling', icon: 'fas fa-ruler-combined', children: [
-      //   { title: 'All Scaling Factors', icon: 'fas fa-list', route: '/ScalingFactor/All' },
-      //   { title: 'Add Scaling Factor', icon: 'fas fa-plus-circle', route: '/ScalingFactor/Add' },
-      // ]
-      title: 'Scaling', icon: 'fas fa-ruler-combined', route: '/ScalingFactor/All'
-    },
-    {
-      // title: 'Users Management', icon: 'fas fa-users-cog', children: [
-      //   { title: 'Users', icon: 'fas fa-user', route: '/Users/All' },
-      //   { title: 'Create', icon: 'fas fa-user-plus', route: '/Users/Add' },
-      // ]
-      title: 'Users Management', icon: 'fas fa-users-cog', route: '/Users/All'
-    },
-    {
-      title: 'System', icon: 'fas fa-cogs', children: [
-        { title: 'Configuration', icon: 'fas fa-tools', route: '/Configurations/All' },
-        { title: 'Logs', icon: 'fas fa-file-alt', route: '/reports/daily' },
-        { title: 'License', icon: 'fas fa-id-badge', route: '/reports/daily' },
-        { title: 'Site Config', icon: 'fas fa-server', route: '/reports/daily' },
+      },
+      { title: 'Reports', icon: 'fas fa-chart-line', route: '/Reports' },
+      {
+        title: 'Industry', icon: 'fas fa-building', children: [
+          { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
+          { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
+        ]
+      },
+      {
+        // title: 'Instrument', icon: 'fas fa-microchip', children: [
+        //   { title: 'All Analyzers', icon: 'fas fa-flask', route: '/Instrument/All' },
+        //   { title: 'Add Analyzer', icon: 'fas fa-plus-circle', route: '/Instrument/Add' },
+        // ]
+        title: 'Instrument', icon: 'fas fa-microchip', route: '/Instrument/All'
+      },
+      {
+        // title: 'Standard', icon: 'fas fa-balance-scale', children: [
+        //   { title: 'All Standards', icon: 'fas fa-list', route: '/Oxide/All' },
+        //   { title: 'Add Standard', icon: 'fas fa-plus-circle', route: '/Oxide/Add' },
+        // ]
+        title: 'Standard', icon: 'fas fa-balance-scale', route: '/Oxide/All'
+
+      },
+      {
+        // title: 'Scaling', icon: 'fas fa-ruler-combined', children: [
+        //   { title: 'All Scaling Factors', icon: 'fas fa-list', route: '/ScalingFactor/All' },
+        //   { title: 'Add Scaling Factor', icon: 'fas fa-plus-circle', route: '/ScalingFactor/Add' },
+        // ]
+        title: 'Scaling', icon: 'fas fa-ruler-combined', route: '/ScalingFactor/All'
+      },
+      {
+        // title: 'Users Management', icon: 'fas fa-users-cog', children: [
+        //   { title: 'Users', icon: 'fas fa-user', route: '/Users/All' },
+        //   { title: 'Create', icon: 'fas fa-user-plus', route: '/Users/Add' },
+        // ]
+        title: 'Users Management', icon: 'fas fa-users-cog', route: '/Users/All'
+      },
+      {
+        title: 'System', icon: 'fas fa-cogs', children: [
+          { title: 'Configuration', icon: 'fas fa-tools', route: '/Configurations/All' },
+          { title: 'Logs', icon: 'fas fa-file-alt', route: '/reports/daily' },
+          { title: 'License', icon: 'fas fa-id-badge', route: '/reports/daily' },
+          { title: 'Site Config', icon: 'fas fa-server', route: '/reports/daily' },
+        ]
+      }]
+    }
+    else if (this.role === 'Customer') {
+      this.menuItems = this.menuItems = [{
+        // title: 'Dashboard', icon: 'fas fa-tachometer-alt', children: [
+        //   { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
+        // ]
+        title: 'Dashboard', icon: 'fas fa-tachometer-alt', route: '/Dashboard'
+
+      },
+      { title: 'Reports', icon: 'fas fa-chart-line', route: '/Reports' },
       ]
     }
-  ];
+
+  }
   loadUsername(): void {
     const username = this.authService.getUsername();
     if (username) {
@@ -114,7 +132,10 @@ export class SidebarComponent implements OnInit {
         this.Username = ''; // Reset if no username
       }
     });
-
+    this.roleSubscription = this.authService.role$.subscribe(role => {
+      this.role = role;
+      this.updateMenu();
+    });
     // Load username initially
     this.loadUsername();
     this.loadCompanies();
@@ -122,45 +143,48 @@ export class SidebarComponent implements OnInit {
 
   }
   loadCompanies() {
-    this.CompanyLoading = true;
-    this.companyService.GetAllCompanies().subscribe(
-      (data) => {
-        this.Companies = data;
-        this.CompanyLoading = false;
+    if (this.role === 'Admin') {
+      this.CompanyLoading = true;
+      this.companyService.GetAllCompanies().subscribe(
+        (data) => {
+          this.Companies = data;
+          this.CompanyLoading = false;
 
-        // Find the "Company" menu item
-        const companyMenu = this.menuItems.find(item => item.title === 'Industry');
-        // const dashBoardMenu = this.menuItems.find(item => item.title === 'Dashboard');
-        if (companyMenu && companyMenu.children) {
-          // Add companies as children under "All Industries"
-          companyMenu.children = [
-            { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
-            { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
-            ...this.Companies.map(company => ({
-              title: company.ShortName,
-              icon: 'fas fa-industry',
-              route: `/Stations/${company.Id}` // Assuming companies have an `id`
-            }))
-          ];
+          // Find the "Company" menu item
+          const companyMenu = this.menuItems.find(item => item.title === 'Industry');
+          // const dashBoardMenu = this.menuItems.find(item => item.title === 'Dashboard');
+          if (companyMenu && companyMenu.children) {
+            // Add companies as children under "All Industries"
+            companyMenu.children = [
+              { title: 'All Industries', icon: 'fas fa-industry', route: '/Company/All' },
+              { title: 'Add Industry', icon: 'fas fa-plus-circle', route: '/Company/Add' },
+              ...this.Companies.map(company => ({
+                title: company.ShortName,
+                icon: 'fas fa-industry',
+                route: `/Stations/${company.Id}` // Assuming companies have an `id`
+              }))
+            ];
+          }
+          // if (dashBoardMenu && dashBoardMenu.children) {
+          //   // Add companies as children under "All Industries"
+          //   dashBoardMenu.children = [
+          //     { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
+          //     ...this.Companies.map(company => ({
+          //       title: company.ShortName,
+          //       icon: 'fas fa-industry',
+          //       route: `/Stations/${company.Id}` // Assuming companies have an `id`
+          //     }))
+          //   ];
+          // }
+        },
+        (error) => {
+          this.toastService.error('Unable to load companies', 'Error occurred');
+          console.error('Error loading companies:', error);
+          this.CompanyLoading = false;
         }
-        // if (dashBoardMenu && dashBoardMenu.children) {
-        //   // Add companies as children under "All Industries"
-        //   dashBoardMenu.children = [
-        //     { title: 'All Stations', icon: 'fas fa-border-all', route: '/Dashboard' },
-        //     ...this.Companies.map(company => ({
-        //       title: company.ShortName,
-        //       icon: 'fas fa-industry',
-        //       route: `/Stations/${company.Id}` // Assuming companies have an `id`
-        //     }))
-        //   ];
-        // }
-      },
-      (error) => {
-        this.toastService.error('Unable to load companies', 'Error occurred');
-        console.error('Error loading companies:', error);
-        this.CompanyLoading = false;
-      }
-    );
+      );
+    }
+
   }
 
   toggleSidebar() {
