@@ -126,4 +126,17 @@ export class ChannelService {
     headers = headers.set('Authorization', 'Bearer ' + token);
     return this.http.delete(`${this.apiUrl}/DeleteChannel`, { headers, params });
   }
+
+  GetAllChannels(): Observable<Channel[]> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<Channel[]>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.get<Channel[]>(`${this.apiUrl}/GetAllChannels`, { headers });
+  }
 }

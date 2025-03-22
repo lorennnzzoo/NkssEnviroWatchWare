@@ -1,0 +1,165 @@
+<div class="">
+    <h2 class="text-2xl font-normal text-gray-500">Display Board</h2>
+</div>
+
+<!-- Container -->
+<form [formGroup]="displayForm" (ngSubmit)="onSubmit()">
+    <div class="my-5 border rounded-lg shadow-md p-4 bg-white grid grid-cols-12 gap-4">
+
+        <!-- File Settings Section -->
+        <div class="col-span-3 border-r pr-4">
+            <h2 class="text-gray-700 text-lg mb-2">Create File Template</h2>
+
+            <div class="mt-4">
+                <label for="fileName" class="block text-gray-700 text-sm">File Name</label>
+                <input type="text" id="fileName" formControlName="FileName"
+                    class="border-gray-400 mt-1 p-2 border rounded w-full"
+                    placeholder="Enter file name (without extension)" />
+                <small *ngIf="displayForm.get('FileName')?.invalid && displayForm.get('FileName')?.touched"
+                    class="text-red-500 text-sm">File Name is required.</small>
+            </div>
+
+            <div class="mt-4">
+                <label for="filePath" class="block text-gray-700 text-sm">File Path</label>
+                <input type="text" id="filePath" formControlName="FilePath"
+                    class="border-gray-400 mt-1 p-2 border rounded w-full" placeholder="Enter file path" />
+                <small *ngIf="displayForm.get('FilePath')?.invalid && displayForm.get('FilePath')?.touched"
+                    class="text-red-500 text-sm">File Path is required.</small>
+            </div>
+
+            <div class="mt-4">
+                <label for="fileType" class="block text-gray-700 text-sm">File Type</label>
+                <select id="fileType" formControlName="FileType" class="border-gray-400 mt-1 p-2 border rounded w-full">
+                    <option value="" disabled selected>Choose File type</option>
+                    <option value="txt">Txt</option>
+                    <option value="csv">Csv</option>
+                </select>
+                <small *ngIf="displayForm.get('FileType')?.invalid && displayForm.get('FileType')?.touched"
+                    class="text-red-500 text-sm">File Type is required.</small>
+            </div>
+
+            <div class="mt-4">
+                <button type="submit" [disabled]="Loading"
+                    class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed mr-2">
+                    <span *ngIf="Loading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                    </span>
+                    <span *ngIf="!Loading"></span>
+                    <span>Create Template</span>
+                </button>
+                <button type="button" [disabled]="displayForm.invalid" (click)="onPreview()"
+                    class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+                    <span>Preview</span>
+                </button>
+            </div>
+
+        </div>
+
+        <!-- Parameter Aliases & How to Use Section -->
+        <div class="col-span-9">
+            <!-- Parameter Aliases -->
+            <div class="mt-4 px-4">
+                <h2 class="text-gray-700 text-lg mb-2">Parameter Aliases</h2>
+                <div class="grid grid-cols-3 gap-4">
+                    <ng-container *ngIf="!ChannelsLoading; else loadingSkeleton">
+                        <div *ngFor="let start of getIndexArray(Channels.length, 4)">
+                            <div *ngFor="let channel of Channels.slice(start, start + 4)">
+                                <span class="text-gray-700 text-sm block bg-gray-100 px-2 py-1 rounded">
+                                    {{ channel.Name }} - <code
+                                        class="text-blue-600">&lt;Channel_{{ channel.Id }}&sol;&gt;</code>
+                                </span>
+                            </div>
+                        </div>
+                    </ng-container>
+
+                    <!-- Skeleton Loader -->
+                    <ng-template #loadingSkeleton>
+                        <div *ngFor="let i of [1, 2, 3]" class="animate-pulse space-y-2">
+                            <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
+                            <div class="bg-gray-300 h-6 w-2/3 rounded"></div>
+                            <div class="bg-gray-300 h-6 w-1/2 rounded"></div>
+                            <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
+                        </div>
+                    </ng-template>
+                </div>
+
+            </div>
+
+            <!-- How to Use Section -->
+            <div class="mt-6 px-4 p-4 rounded">
+                <h2 class="text-gray-700 text-lg mb-2">How to use</h2>
+                <p class="text-gray-600 text-sm mb-2">To access properties of Channels (Name, Units, LogTime, Standard,
+                    StationName), use the following placeholders:</p>
+
+                <table class="w-full text-sm text-gray-700 border border-gray-300 rounded">
+                    <thead>
+                        <tr class="bg-gray-200">
+                            <th class="border px-3 py-1">Property</th>
+                            <th class="border px-3 py-1">Placeholder Format</th>
+                            <th class="border px-3 py-1">Example</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Name</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelName_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code class="text-blue-600">&lt;ChannelName_1&sol;&gt;</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Station Name</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelStationName_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelStationName_1&sol;&gt;</code></td>
+                        </tr>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Units</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelUnits_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code class="text-blue-600">&lt;ChannelUnits_1&sol;&gt;</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Standard</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelStandard_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelStandard_1&sol;&gt;</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Value</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelValue_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code class="text-blue-600">&lt;ChannelValue_1&sol;&gt;</code>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="border px-3 py-1">Channel Log Time</td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelLogTime_[ChannelId]&sol;&gt;</code></td>
+                            <td class="border px-3 py-1"><code
+                                    class="text-blue-600">&lt;ChannelLogTime_1&sol;&gt;</code>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- File Template Section -->
+        <div class="col-span-12">
+            <div class="mt-6 px-4">
+                <small *ngIf="displayForm.get('Template')?.invalid && displayForm.get('Template')?.touched"
+                    class="text-red-500 text-sm">Template is required.</small>
+                <textarea id="fileTemplate" formControlName="Template"
+                    class="border-gray-400 w-full mt-1 p-2 border rounded h-96 focus:outline-none whitespace-pre-wrap"
+                    placeholder="Enter your template here..."></textarea>
+
+            </div>
+        </div>
+
+    </div>
+</form>

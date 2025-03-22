@@ -1,7 +1,7 @@
 <div class="">
     <h2 class="text-2xl font-normal text-gray-500">Configuration Settings</h2>
 </div>
-<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+<div class=" my-5 border rounded-lg shadow-md p-4 bg-white">
 
     <p-table #dt [value]="ConfigSettings" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
         [loading]="Loading" showGridlines [paginator]="true"
@@ -23,18 +23,18 @@
         </ng-template>
         <ng-template #header>
             <tr>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:20%">Group Name
-                </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:20%">Content
-                    Name
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Group Name
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Content
+                    Name
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%;">Content
                     Value
                 </th>
 
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active</th>
+                <!-- <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:30%">Active</th> -->
 
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:10%">Action
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
                 </th>
             </tr>
         </ng-template>
@@ -42,14 +42,14 @@
             <tr>
                 <td>{{ config.GroupName }}</td>
                 <td>{{ config.ContentName }}</td>
-                <td>{{ config.ContentValue }}</td>
+                <td style="text-overflow:ellipsis;">{{ config.ContentValue }}</td>
 
-                <td>
+                <!-- <td>
                     <i class="fa" [ngClass]="{
                         'text-green-500 fa-circle-check': config.Active,
                         'text-red-500 pi-times-circle': !config.Active
                     }"></i>
-                </td>
+                </td> -->
 
                 <td>
                     <div class="flex gap-2">

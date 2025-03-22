@@ -26,6 +26,7 @@ import { EditScalingFactorComponent } from './WatchWare/ScalingFactor/edit-scali
 import { NotFoundComponent } from './Navigation/not-found/not-found.component';
 import { ProfileComponent } from './WatchWare/Auth/profile/profile.component';
 import { ConfigurationComponent } from './WatchWare/System/configuration/configuration.component';
+import { DisplayBoardComponent } from './WatchWare/System/display-board/display-board.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -54,6 +55,7 @@ export const routes: Routes = [
     { path: 'Configurations/All', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Add', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Edit/:id', component: ConfigurationComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/DisplayBoard', component: DisplayBoardComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
