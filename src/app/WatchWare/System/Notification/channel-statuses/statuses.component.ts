@@ -9,18 +9,18 @@ import { InputIconModule } from 'primeng/inputicon';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { CommonModule } from '@angular/common';
-import { ChannelStatus } from '../../Interfaces/ChannelStatus';
-import { NotificationService } from '../../Services/notification.service';
+import { ChannelStatus } from '../../../Interfaces/ChannelStatus';
+import { NotificationService } from '../../../Services/notification.service';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-notifications',
+  selector: 'app-statuses',
   imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ToastrModule],
-  templateUrl: './notifications.component.html',
-  styleUrl: './notifications.component.css',
+  templateUrl: './statuses.component.html',
+  styleUrl: './statuses.component.css',
   providers: [ToastrService]
 })
-export class NotificationsComponent implements OnInit {
+export class StatusesComponent implements OnInit {
   Channels: ChannelStatus[] = [];
   Loading: boolean = false;
 

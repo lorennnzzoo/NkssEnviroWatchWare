@@ -27,7 +27,7 @@ import { NotFoundComponent } from './Navigation/not-found/not-found.component';
 import { ProfileComponent } from './WatchWare/Auth/profile/profile.component';
 import { ConfigurationComponent } from './WatchWare/System/configuration/configuration.component';
 import { DisplayBoardComponent } from './WatchWare/System/display-board/display-board.component';
-import { NotificationsComponent } from './WatchWare/System/notifications/notifications.component';
+import { StatusesComponent } from './WatchWare/System/Notification/channel-statuses/statuses.component';
 import { CreateSubscriptionComponent } from './WatchWare/System/Notification/create-subscription/create-subscription.component';
 
 export const routes: Routes = [
@@ -58,7 +58,7 @@ export const routes: Routes = [
     { path: 'Configurations/Add', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Edit/:id', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/DisplayBoard', component: DisplayBoardComponent, canActivate: [AuthGuard] },
-    { path: 'System/Configuration/Notifications', component: NotificationsComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/Notifications/Statuses', component: StatusesComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },

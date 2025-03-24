@@ -84,7 +84,7 @@ export class SidebarComponent implements OnInit {
           { title: 'License', icon: 'fas fa-id-badge', route: '/reports/daily' },
           { title: 'Site Config', icon: 'fas fa-server', route: '/reports/daily' },
           { title: 'Display Board', icon: 'fas fa-tv', route: '/System/Configuration/DisplayBoard' },
-          { title: 'Notifications', icon: 'fas fa-tv', route: '/System/Configuration/Notifications' },
+          { title: 'Notifications', icon: 'fas fa-bell', route: '/System/Configuration/Notifications/Statuses' },
         ]
       }]
     }
