@@ -23,17 +23,17 @@
                 </button>
                 <button type="button" (click)="onSubscribe()"
                     class="mx-4 px-4 bg-green-500 border border-green-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
-                    <i class="fa fa-check mr-2"></i> Subscribe
+
+                    <span *ngIf="SubscribeLoading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Subscribe
+                    </span>
+                    <span *ngIf="!SubscribeLoading">
+                        <i class="fa fa-check mr-2"></i> Subscribe
+                    </span>
                 </button>
                 <p-iconfield iconPosition="left" class="ml-auto">
                     <p-inputicon>
-
-                        <span *ngIf="SubscribeLoading">
-                            <i class="fas fa-spinner fa-spin mr-2"></i>
-                        </span>
-                        <span *ngIf="!SubscribeLoading">
-                            <i class="fa fa-search"></i>
-                        </span>
+                        <i class="fa fa-search"></i>
                     </p-inputicon>
                     <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
                 </p-iconfield>
