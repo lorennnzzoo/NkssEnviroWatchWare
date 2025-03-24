@@ -29,6 +29,7 @@ import { ConfigurationComponent } from './WatchWare/System/configuration/configu
 import { DisplayBoardComponent } from './WatchWare/System/display-board/display-board.component';
 import { StatusesComponent } from './WatchWare/System/Notification/channel-statuses/statuses.component';
 import { CreateSubscriptionComponent } from './WatchWare/System/Notification/create-subscription/create-subscription.component';
+import { CreateConditionComponent } from './WatchWare/System/Notification/create-condition/create-condition.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -60,6 +61,7 @@ export const routes: Routes = [
     { path: 'System/Configuration/DisplayBoard', component: DisplayBoardComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notifications/Statuses', component: StatusesComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/Notification/CreateCondition', component: CreateConditionComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
