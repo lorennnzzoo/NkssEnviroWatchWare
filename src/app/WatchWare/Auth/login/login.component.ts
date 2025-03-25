@@ -14,7 +14,7 @@ import { forkJoin } from 'rxjs';
   providers: [ToastrService]
 })
 export class LoginComponent implements OnInit {
-
+  hide: boolean = true;
   loading: boolean = false;
   loginForm!: FormGroup;
 
