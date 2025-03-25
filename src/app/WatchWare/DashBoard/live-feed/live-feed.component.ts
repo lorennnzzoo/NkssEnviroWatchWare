@@ -14,7 +14,7 @@ import { OverviewExceedanceComponent } from '../overview-exceedance/overview-exc
 
 @Component({
   selector: 'app-live-feed',
-  imports: [ToastrModule, CommonModule, ReactiveFormsModule, OverviewGraphComponent, OverviewExceedanceComponent],
+  imports: [ToastrModule, CommonModule, ReactiveFormsModule, OverviewGraphComponent],
   templateUrl: './live-feed.component.html',
   styleUrl: './live-feed.component.css'
 })
