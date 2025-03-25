@@ -1,29 +1,27 @@
-<!-- <h2 class="text-xl font-bold text-gray-800 m-3 ml-0">24 Hour Overview</h2>
-
+<h2 class="text-sm font-bold text-gray-800 m-3 ml-0">Exceedance Overview</h2>
 <div *ngIf="true" class="relative w-full h-64">
     <canvas #pieChartCanvas></canvas>
-</div> -->
-<h2 class="text-sm font-bold text-gray-800 m-3 ml-0">Exceedance Overview</h2>
+</div>
+<!-- 
 
 
-<!-- Loading Placeholder -->
 <div *ngIf="Loading" class="w-full h-64 bg-gray-200 animate-pulse rounded-lg">
     <div class="text-center text-gray-500 p-4">
         Loading overview...
     </div>
 </div>
 
-<!-- No Data Available Message -->
+
 <div *ngIf="!Loading && !DataExists" class="text-center text-gray-500 p-4">
     No overview currently available.
 </div>
 
-<!-- No Exceedances Message -->
+
 <div *ngIf="!Loading && DataExists && isAllExceedanceZero()" class="text-center text-gray-500 p-4">
     No exceedances detected during this period.
 </div>
 
-<!-- Render Pie Chart if There Are Exceedances -->
+
 <div *ngIf="!Loading && DataExists && !isAllExceedanceZero()" class="relative w-full h-64">
     <canvas #pieChartCanvas></canvas>
-</div>
+</div> -->

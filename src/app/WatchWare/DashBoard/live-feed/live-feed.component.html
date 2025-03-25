@@ -28,8 +28,7 @@
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.ChannelName }}
                                     <!-- <i *ngIf="!feed.Active" class="fa text-red-500 fa-power-off"></i> -->
                                 </td>
-                                <td class="border border-gray-300 px-4 py-2"
-                                    [ngClass]="{'text-red-500':feed.ChannelValue?false:true}">
+                                <td class="border border-gray-300 px-4 py-2">
                                     {{ feed.ChannelValue ? feed.ChannelValue : 'NA' }}
                                     <span *ngIf="feed.ChannelValue > feed.PcbLimit">
 
@@ -40,8 +39,7 @@
                                     'dd-MMM-yyyy HH:mm'
                                     }}
                                     <span *ngIf="!feed.ChannelDataLogTime">No record</span>
-                                    <span class="text-red-500 pl-4"
-                                        *ngIf="isDelayed(feed.ChannelDataLogTime)">Delayed</span>
+                                    <span class="pl-4" *ngIf="isDelayed(feed.ChannelDataLogTime)">Delayed</span>
                                 </td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.PcbLimit }}</td>
                                 <td class="border border-gray-300 px-4 py-2">{{ feed.Average }}</td>
@@ -62,14 +60,14 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
                     <!-- Overview Graph - Takes 100% on small screens, 75% on medium+ screens -->
-                    <div class="col-span-1 md:col-span-7">
+                    <div class="col-span-1 md:col-span-12">
                         <app-overview-graph [Station]="station"></app-overview-graph>
                     </div>
 
                     <!-- Overview Exceedance (Pie Chart) - Takes 100% on small screens, 25% on medium+ screens -->
-                    <div class="col-span-1 md:col-span-5">
+                    <!-- <div class="col-span-1 md:col-span-5">
                         <app-overview-exceedance [Station]="station"></app-overview-exceedance>
-                    </div>
+                    </div> -->
                 </div>
 
 
