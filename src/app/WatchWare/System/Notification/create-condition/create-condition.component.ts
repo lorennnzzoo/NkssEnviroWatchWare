@@ -69,6 +69,7 @@ export class CreateConditionComponent implements OnInit {
       next: (repsonse) => {
         this.Loading = false;
         this.toastService.success('Condition created successfully');
+        this.conditionForm.reset();
       },
       error: (error) => {
         this.Loading = false;

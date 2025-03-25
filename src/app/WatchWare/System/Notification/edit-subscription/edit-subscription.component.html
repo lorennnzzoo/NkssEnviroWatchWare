@@ -1,5 +1,5 @@
 <div *ngIf="!ChannelLoading; else loadingSkeleton">
-    <h2 class="text-2xl font-normal text-gray-500">Subscribe to {{ channel.Name }}</h2>
+    <h2 class="text-2xl font-normal text-gray-500">Edit Subscription of {{ channel.Name }}</h2>
 </div>
 
 <ng-template #loadingSkeleton>
@@ -25,10 +25,10 @@
                     class="mx-4 px-4 bg-green-500 border border-green-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
 
                     <span *ngIf="SubscribeLoading">
-                        <i class="fas fa-spinner fa-spin mr-2"></i>Subscribe
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Update Subscription
                     </span>
                     <span *ngIf="!SubscribeLoading">
-                        <i class="fa fa-check mr-2"></i> Subscribe
+                        <i class="fa fa-check mr-2"></i> Update Subscription
                     </span>
                 </button>
                 <p-iconfield iconPosition="left" class="ml-auto">

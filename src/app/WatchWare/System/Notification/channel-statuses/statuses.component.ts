@@ -48,7 +48,7 @@ export class StatusesComponent implements OnInit {
   onSubscribe(channel: ChannelStatus) {
     this.router.navigate(['/System/Configuration/Notification/Subscribe', channel.ChannelId])
   }
-  onUnSubscribe(channel: ChannelStatus) {
-
+  onEditSubscription(channel: ChannelStatus) {
+    this.router.navigate(['/System/Configuration/Notification/EditSubscription', channel.ChannelId])
   }
 }
