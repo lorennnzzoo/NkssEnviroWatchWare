@@ -1,50 +1,39 @@
-<div class="flex justify-center items-center min-h-screen bg-accent">
+<div class="flex justify-center items-center min-h-screen"
+    style="background: url('/assets/logo/login background.jpg') no-repeat center center / cover;">
 
 
-    <div class="bg-white p-8 rounded-lg shadow-lg w-96">
+    <div class="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-96">
 
         <div class="mb-4 text-center">
             <h2 class="text-gray-900 text-2xl font-bold mb-2">Log in</h2>
             <p class="text-gray-600 font-medium">Please enter your details</p>
         </div>
 
-        <!-- Login Form -->
+
         <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="space-y-4">
-            <!-- Username Field -->
+
             <div class="relative">
                 <input id="username" type="text" required
                     class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="Username" formControlName="username">
                 <span class="absolute inset-y-0 left-3 flex items-center text-gray-400">
-                    <!-- <i class="fas fa-user"></i> -->
+
                 </span>
             </div>
 
-            <!-- Password Field -->
             <div class="relative">
                 <input id="password" [type]="hide ? 'password' : 'text'" required
                     class="w-full p-3 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     placeholder="Password" formControlName="password">
-                <!-- <span>
-                    <i class="fa fa-lock"></i>
-                </span> -->
-                <!-- <span class="absolute inset-y-0 left-3 flex justify-end text-gray-400">
-                    <i class="fas fa-lock"></i>
-                </span> -->
             </div>
             <div class="flex justify-between">
-                <!-- <a class="text-blue-500 hover:underline text-sm">Forgot password?</a> -->
                 <button type="button" (click)="hide=!hide">
                     <i *ngIf="hide" class="fa fa-lock text-gray-600"></i>
                     <i *ngIf="!hide" class="fa fa-unlock text-gray-600"></i>
                     <span class="pl-2 text-gray-600 text-sm">Show password</span>
                 </button>
-                <a class="text-blue-500 hover:underline text-sm">Forgot password?</a>
+                <a class="text-blue-500 hover:underline hover:cursor-pointer text-sm">Forgot password?</a>
             </div>
-            <!-- Forgot Password Link -->
-            <!-- <div class="flex justify-end">
-                <a class="text-blue-500 hover:underline text-sm">Forgot password?</a>
-            </div> -->
 
 
             <button type="submit" [disabled]="loginForm.invalid || loading" class="w-full bg-accent text-white font-semibold p-3 flex justify-center items-center gap-2
