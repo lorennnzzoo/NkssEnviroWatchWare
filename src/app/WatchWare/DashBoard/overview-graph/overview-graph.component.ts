@@ -29,7 +29,7 @@ export class OverviewGraphComponent implements OnInit, AfterViewChecked {
       stationsId: [station.Id],
       channelsId: [],
       dataAggregationType: DataAggregationType.OneHour,
-      from: new Date(new Date().setHours(new Date().getHours() - 12)),
+      from: new Date(new Date().setHours(new Date().getHours() - 24)),
       to: new Date(),
       // from: new Date('2020-01-01T00:00:00'), // From: 2020-01-01 00:00:00
       // to: new Date('2020-01-01T11:59:59'),  // To: 2020-01-01 23:59:59
