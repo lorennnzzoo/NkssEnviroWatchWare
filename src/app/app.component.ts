@@ -18,6 +18,7 @@ export class AppComponent implements OnInit {
   isCollapsed = false;
   isLoginPage: boolean = false;
   isDashboard: boolean = false;
+  isLicensePage: boolean = false;
   breadcrumbs: string[] = [];
 
   screenIsLarge = window.innerWidth >= 768; // Assume `md` breakpoint in Tailwind
@@ -29,6 +30,7 @@ export class AppComponent implements OnInit {
     this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => {
       this.isLoginPage = this.router.url === '/login'; // Update based on your login route
       this.isDashboard = this.router.url === '/Dashboard'; // Update based on your login route
+      this.isLicensePage = this.router.url === '/License'; // Update based on your login route
       this.breadcrumbs = this.getBreadcrumbs(this.activatedRoute.root); // Update breadcrumbs
     });
   }

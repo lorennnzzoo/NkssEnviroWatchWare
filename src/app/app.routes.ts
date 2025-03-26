@@ -31,9 +31,11 @@ import { StatusesComponent } from './WatchWare/System/Notification/channel-statu
 import { CreateSubscriptionComponent } from './WatchWare/System/Notification/create-subscription/create-subscription.component';
 import { CreateConditionComponent } from './WatchWare/System/Notification/create-condition/create-condition.component';
 import { EditSubscriptionComponent } from './WatchWare/System/Notification/edit-subscription/edit-subscription.component';
+import { LicenseComponent } from './WatchWare/Auth/license/license.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
+    { path: 'License', component: LicenseComponent },
     { path: 'Dashboard', component: LiveFeedComponent, canActivate: [AuthGuard] },
     { path: 'Reports', component: SelectionComponent, canActivate: [AuthGuard] },
     { path: 'Company/All', component: ListCompaniesComponent, canActivate: [AuthGuard] },

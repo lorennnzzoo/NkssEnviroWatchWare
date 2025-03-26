@@ -65,5 +65,10 @@ export class LoginComponent implements OnInit {
       }
     });
   }
-
+  onLicense() {
+    console.log('going');
+    this.router.navigate(['/License']).then(() => {
+      console.log("Success");
+    });
+  }
 }
