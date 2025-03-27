@@ -15,95 +15,42 @@
         </button>
     </div>
 
-    <div class="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-[75%]">
-        <h2 class="text-gray-900 text-xl font-bold mb-4">Generate License</h2>
+    <div class="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-[50%]">
+        <h2 class="text-gray-900 text-xl font-bold mb-4">Software Registration</h2>
 
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-            <div class="lg:col-span-2">
-                <!-- <h3 class="text-gray-900 font-medium text-lg">Basic Info</h3> -->
-                <p class="text-gray-600 text-sm">Provide essential details for Product license.</p>
+        <div class="grid grid-cols-1 lg:grid-cols-8 gap-4">
+            <div class="lg:col-span-8">
+
+                <p class="text-gray-600 text-sm">Provide license for the software.</p>
             </div>
 
             <div class="lg:col-span-10">
                 <form [formGroup]="licenseForm" (ngSubmit)="onSubmit()">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-
-                        <div>
-                            <label for="companyId" class="text-gray-700 font-medium">Company Id</label>
-                            <input id="companyId" type="number" formControlName="CompanyId" required
-                                (input)="onCompanyIdChange($event)"
-                                class="w-full p-2 border border-gray-400 rounded-md bg-gray-200 focus:ring focus:ring-blue-300">
-                        </div>
-                        <div>
-                            <label for="companyName" class="text-gray-700 font-medium">Company Name</label>
-                            <input id="companyName" type="text" formControlName="CompanyName" readonly
-                                class="w-full p-2 border border-gray-400 rounded-md bg-gray-200 focus:ring focus:ring-blue-300">
-                        </div>
-                        <!-- Email -->
-                        <div>
-                            <label for="email" class="text-gray-700 font-medium">Email</label>
-                            <input id="email" type="email" formControlName="Email" required
-                                class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
-                            <small *ngIf="licenseForm.get('Email')?.invalid && licenseForm.get('Email')?.touched"
-                                class="text-red-500">Valid Email is required</small>
-                        </div>
-
-                        <!-- Phone -->
-                        <div>
-                            <label for="phone" class="text-gray-700 font-medium">Phone</label>
-                            <input id="phone" type="text" formControlName="Phone" required pattern="\d{10}"
-                                maxlength="10"
-                                class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
-                            <small *ngIf="licenseForm.get('Phone')?.invalid && licenseForm.get('Phone')?.touched"
-                                class="text-red-500">Phone must be a 10-digit number</small>
-                        </div>
+                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
 
 
 
                         <!-- State -->
                         <div>
-                            <label for="state" class="text-gray-700 font-medium">State</label>
-                            <input id="state" type="text" formControlName="State" required
+                            <label for="state" class="text-gray-700 font-medium">License</label>
+                            <input id="state" type="text" formControlName="LicenseKey" required
                                 class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
-                            <small *ngIf="licenseForm.get('State')?.invalid && licenseForm.get('State')?.touched"
-                                class="text-red-500">State is required</small>
-                        </div>
-
-                        <!-- Country -->
-                        <div>
-                            <label for="country" class="text-gray-700 font-medium">Country</label>
-                            <input id="country" type="text" formControlName="Country" required value="India" readonly
-                                class="w-full p-2 border border-gray-400 rounded-md bg-gray-200 focus:ring focus:ring-blue-300">
-                        </div>
-
-
-                        <div class="md:col-span-2">
-                            <label for="address" class="text-gray-700 font-medium">Address</label>
-                            <textarea id="address" formControlName="Address" required rows="3"
-                                class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300 resize-none"></textarea>
-                            <small *ngIf="licenseForm.get('Address')?.invalid && licenseForm.get('Address')?.touched"
-                                class="text-red-500">Address is required</small>
-                        </div>
-                        <!-- Expiry Date -->
-                        <div class="flex flex-col">
-                            <label for="expiryDate" class="text-gray-700 font-medium mb-1">Expiry Date</label>
-                            <p-date-picker showIcon="true" inputId="expiryDate"
-                                formControlName="ExpiryDate"></p-date-picker>
                             <small
-                                *ngIf="licenseForm.get('ExpiryDate')?.invalid && licenseForm.get('ExpiryDate')?.touched"
-                                class="text-red-500">Expiry Date is required</small>
+                                *ngIf="licenseForm.get('LicenseKey')?.invalid && licenseForm.get('LicenseKey')?.touched"
+                                class="text-red-500">License is required</small>
                         </div>
+
                     </div>
                     <!-- Address -->
 
                     <!-- Submit Button -->
                     <div class="mt-4 flex gap-4">
-                        <button type="submit" [disabled]="Loading"
+                        <button type="submit" [disabled]="Loading||isExpired"
                             class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
                             <span *ngIf="Loading">
                                 <i class="fas fa-spinner fa-spin mr-2"></i>
                             </span>
-                            <span>Generate</span>
+                            <span>Load Product Details</span>
                         </button>
                         <button type="button" (click)="onLogin()"
                             class="bg-gray-500 text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-gray-600">
@@ -115,3 +62,46 @@
         </div>
     </div>
 </div>
+
+<p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="true" [header]="'Registered Information'"
+    [style]="{width: '700px'}">
+    <div *ngIf="ProductDetails" class="grid grid-cols-2 gap-6">
+
+        <div>
+            <h2 class="text-base font-normal">Company Details</h2>
+            <hr class="my-3">
+            <p><strong>Name:</strong> {{ ProductDetails.CompanyDetails.Name }}</p>
+            <p><strong>Country:</strong> {{ ProductDetails.CompanyDetails.Country }}</p>
+            <p><strong>State:</strong> {{ ProductDetails.CompanyDetails.State }}</p>
+            <p><strong>Address:</strong> {{ ProductDetails.CompanyDetails.Address }}</p>
+            <p><strong>Phone:</strong> {{ ProductDetails.CompanyDetails.Phone }}</p>
+            <p><strong>Email:</strong> {{ ProductDetails.CompanyDetails.Email }}</p>
+        </div>
+
+
+        <div>
+            <h2 class="text-base font-normal">Registration Details</h2>
+            <hr class="my-3">
+            <p><strong>Email:</strong> {{ ProductDetails.Email }}</p>
+            <p><strong>Country:</strong> {{ ProductDetails.Country }}</p>
+            <p><strong>State:</strong> {{ ProductDetails.State }}</p>
+            <p><strong>Address:</strong> {{ ProductDetails.Address }}</p>
+            <p><strong>Phone:</strong> {{ ProductDetails.Phone }}</p>
+        </div>
+    </div>
+
+
+    <div class="mt-4 flex justify-center gap-4">
+        <button type="submit" [disabled]="ProductDetailsLoading" (click)="registerProduct()"
+            class="px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+            <span *ngIf="ProductDetailsLoading">
+                <i class="fas fa-spinner fa-spin mr-2"></i>
+            </span>
+            <span>Register</span>
+        </button>
+        <button (click)="displayDialog=false" type="button"
+            class="bg-gray-500 text-white px-4 py-2 rounded-md shadow hover:bg-gray-600">
+            Cancel
+        </button>
+    </div>
+</p-dialog>

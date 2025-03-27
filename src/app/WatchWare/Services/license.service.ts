@@ -5,7 +5,7 @@ import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
 import { License, LicenseEdit } from '../Interfaces/License';
-import { Registration } from '../Interfaces/ProductRegister';
+import { ProductDetails, Registration } from '../Interfaces/ProductRegister';
 
 
 @Injectable({
@@ -46,7 +46,7 @@ export class LicenseService {
   }
 
 
-  GetCompanyNameByIdSoftrack(id: number): Observable<string> {
+  GetProductDetailsByLicense(key: string): Observable<ProductDetails> {
     // const token = this.authService.getToken();  // Replace with your token fetching logic
     // if (!token) {
     //   // Redirect to login if no token exists
@@ -55,21 +55,34 @@ export class LicenseService {
     // }
     let headers = new HttpHeaders();
     let params = new HttpParams()
-      .set('id', id)
+      .set('licenseKey', key)
     // headers = headers.set('Authorization', 'Bearer ' + token);
-    return this.http.get<string>(`${this.apiUrl}/GetCompanyNameById`, { headers, params });
+    return this.http.get<ProductDetails>(`${this.apiUrl}/GetProductDetails`, { headers, params });
   }
 
-  ProductRegisterSoftrack(registraion: Registration): Observable<any> {
+  // ProductRegisterSoftrack(registraion: Registration): Observable<any> {
+  //   let headers = new HttpHeaders();
+  //   let params = new HttpParams()
+  //     .set('CompanyId', registraion.CompanyId)
+  //     .set('Email', registraion.Email)
+  //     .set('Phone', registraion.Phone)
+  //     .set('Address', registraion.Address)
+  //     .set('State', registraion.State)
+  //     .set('Country', registraion.Country)
+  //     .set('ExpiresAt', registraion.ExpiresAt.toLocaleDateString())
+  //   return this.http.post(`${this.apiUrl}/Register`, params, { headers });
+  // }
+
+
+  RegisterProduct(Product: ProductDetails): Observable<any> {
     let headers = new HttpHeaders();
-    let params = new HttpParams()
-      .set('CompanyId', registraion.CompanyId)
-      .set('Email', registraion.Email)
-      .set('Phone', registraion.Phone)
-      .set('Address', registraion.Address)
-      .set('State', registraion.State)
-      .set('Country', registraion.Country)
-      .set('ExpiresAt', registraion.ExpiresAt.toLocaleDateString())
-    return this.http.post(`${this.apiUrl}/Register`, params, { headers });
+    const params = Product;
+    return this.http.post(`${this.apiUrl}/RegisterProduct`, params, { headers });
+  }
+
+  GetLicenseStatus(): Observable<boolean> {
+    let headers = new HttpHeaders();
+
+    return this.http.get<boolean>(`${this.apiUrl}/GetLicenseStatus`, { headers });
   }
 }

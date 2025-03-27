@@ -5,32 +5,30 @@ import { Router } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LicenseService } from '../../Services/license.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { Registration } from '../../Interfaces/ProductRegister';
+import { ProductDetails, Registration } from '../../Interfaces/ProductRegister';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-license',
-  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ToastrModule],
+  imports: [CommonModule, ReactiveFormsModule, DatePickerModule, ToastrModule, DialogModule],
   templateUrl: './license.component.html',
   styleUrl: './license.component.css',
-  providers: [ToastrService]
+  providers: [ToastrService, ConfirmationService]
 })
 export class LicenseComponent implements OnInit {
   Loading: boolean = false;
+  displayDialog = false;
+  isExpired: boolean = false;
   licenseForm!: FormGroup;
-  CompanyNameLoading: boolean = false;
-  isInvalidCompanyId: boolean = false;
+  ProductDetailsLoading: boolean = false;
+  ProductDetails!: ProductDetails;
   constructor(private router: Router, private fb: FormBuilder, private licenseService: LicenseService, private toastService: ToastrService) { }
   ngOnInit(): void {
     this.licenseForm = this.fb.group({
-      CompanyId: [null, Validators.required],
-      CompanyName: [null, Validators.required],
-      Email: [null, Validators.required, Validators.email],
-      Phone: [null, [Validators.required, Validators.pattern(/^\d{10}$/), Validators.maxLength(10)]],
-      Address: [null, Validators.required],
-      State: [null, Validators.required],
-      Country: ["India", Validators.required],
-      ExpiryDate: [null, Validators.required]
+      LicenseKey: [null, Validators.required],
     })
+    this.loadStatus();
   }
 
   onLogin() {
@@ -45,60 +43,62 @@ export class LicenseComponent implements OnInit {
       return;
     }
 
-    if (this.isInvalidCompanyId) {
-      this.toastService.warning('Please enter valid company id', 'Warning');
-      this.Loading = false;
-      return;
-    }
+    this.loadProductDetails(this.licenseForm.value.LicenseKey);
+  }
 
-    const registraion: Registration = {
-      CompanyId: this.licenseForm.value.CompanyId,
-      Email: this.licenseForm.value.Email,
-      Phone: this.licenseForm.value.Phone,
-      Address: this.licenseForm.value.Address,
-      State: this.licenseForm.value.State,
-      Country: this.licenseForm.value.Country,
-      ExpiresAt: this.licenseForm.value.ExpiryDate,
-    }
-
-    this.licenseService.ProductRegisterSoftrack(registraion).subscribe({
+  loadProductDetails(key: string) {
+    this.Loading = true;
+    this.licenseService.GetProductDetailsByLicense(key).subscribe({
       next: (response) => {
+
         this.Loading = false;
-        this.toastService.success("Registration successfull");
+        this.ProductDetails = response;
+        this.displayDialog = true;
+        console.info(response);
+        // this.toastService.success("Product details loaded successfully")
       },
       error: (error) => {
-        this.Loading = false;
-        this.toastService.warning("Unable to register");
-        console.error(error);
 
+        this.Loading = false;
+        if (error.status === 404) {
+          this.toastService.error("License or Product details not found.");
+        } else {
+          this.toastService.error("Unable to load product details.");
+        }
+
+        console.error(error);
+      }
+    });
+  }
+  registerProduct() {
+    this.ProductDetailsLoading = true;
+    this.licenseService.RegisterProduct(this.ProductDetails).subscribe({
+      next: (response) => {
+        this.ProductDetailsLoading = false;
+        this.toastService.success("Registered successfully");
+      },
+      error: (error) => {
+        this.ProductDetailsLoading = false;
+        this.toastService.error("Unable to register.")
+        console.error(error);
       }
     })
   }
-  onCompanyIdChange(event: Event) {
-    this.licenseForm.patchValue({ CompanyName: "Loading" })
-    const inputElement = event.target as HTMLInputElement;
-    const companyId = Number(inputElement.value);
 
-    if (companyId) {
-      this.loadCompanyName(companyId);
-      this.CompanyNameLoading = false;
-    }
-    else {
-      this.licenseForm.patchValue({ CompanyName: null })
-    }
-  }
-
-  loadCompanyName(id: number) {
-    this.licenseService.GetCompanyNameByIdSoftrack(id).subscribe({
-      next: (response) => {
-        if (response === "Not found") {
-          this.isInvalidCompanyId = true;
+  loadStatus() {
+    this.licenseService.GetLicenseStatus().subscribe({
+      next: (isActive) => {
+        if (isActive) {
+          this.isExpired = isActive;
+          this.licenseForm.patchValue({ LicenseKey: 'License still valid' });
+          this.licenseForm.get('LicenseKey')?.disable();
         }
-        this.licenseForm.patchValue({ CompanyName: response })
+        else {
+          this.isExpired = isActive;
+        }
       },
       error: (error) => {
-        console.error(error);
-        this.toastService.error("Unable to load company name");
+        this.toastService.error("Unable to load license status.");
       }
     })
   }
