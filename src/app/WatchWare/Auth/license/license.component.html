@@ -53,7 +53,7 @@
                             <span>Load Product Details</span>
                         </button>
                         <button type="button" (click)="onLogin()"
-                            class="bg-gray-500 text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-gray-600">
+                            class="bg-accent text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-secondary transition-colors">
                             Login
                         </button>
                     </div>
@@ -62,6 +62,19 @@
         </div>
     </div>
 </div>
+<p-dialog [(visible)]="ShowUserDetails" [modal]="true" [closable]="true" [header]="'Admin login details'"
+    [style]="{width: '700px'}">
+    <div>
+        <div>
+            <p>Your admin account has been successfully generated please save these logins, You can change the password
+                later using account settings.</p>
+            <hr class="my-3">
+            <p><strong>Username:</strong> Admin</p>
+            <p><strong>Password:</strong> Admin&#64;nksquare</p>
+        </div>
+    </div>
+</p-dialog>
+
 
 <p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="true" [header]="'Registered Information'"
     [style]="{width: '700px'}">

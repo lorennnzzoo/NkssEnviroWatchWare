@@ -49,8 +49,8 @@
             </div>
 
 
-            <button type="submit" [disabled]="loginForm.invalid || loading" class="w-full bg-accent text-white font-semibold p-3 flex justify-center items-center gap-2
-    rounded-md hover:bg-secondary transition duration-300 disabled:bg-gray-300">
+            <button type="submit" [disabled]=" loading" class="w-full bg-accent text-white font-semibold p-3 flex justify-center items-center gap-2
+    rounded-md hover:bg-secondary transition duration-300 ">
 
                 <span *ngIf="loading">
                     <i class="fas fa-spinner fa-spin"></i>

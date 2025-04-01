@@ -10,10 +10,12 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { TooltipModule } from 'primeng/tooltip';
 import { UserService } from '../../WatchWare/Services/user.service';
 import { User } from '../../WatchWare/Interfaces/User';
+import { DialogModule } from 'primeng/dialog';
+import { ProfileComponent } from "../../WatchWare/Auth/profile/profile.component";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, CommonModule, ToastrModule, TooltipModule],
+  imports: [RouterModule, CommonModule, ToastrModule, TooltipModule, DialogModule],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   providers: [ToastrService]
@@ -21,6 +23,7 @@ import { User } from '../../WatchWare/Interfaces/User';
 export class SidebarComponent implements OnInit {
 
   showCard: boolean = false;
+
   Username: string = '';
   private usernameSubscription: Subscription | null = null;
   Companies: Company[] = [];
@@ -220,7 +223,8 @@ export class SidebarComponent implements OnInit {
     this.router.navigate(['/Profile'])
   }
   onSettings() {
-    this.toastService.info('Not implemented');
+    this.router.navigate(['/Profile']);
+    this.showCard = false;
   }
   onHelp() {
     this.toastService.info('Not implemented');

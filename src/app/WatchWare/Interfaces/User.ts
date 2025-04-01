@@ -30,3 +30,18 @@ export interface UserListView {
     Role: string;
     Active: boolean;
 }
+
+
+export interface UserProfile {
+    Id: string;  // Guid in C# is represented as string in TS
+    Username: string;
+    Password: string;
+    PhoneNumber: string;
+    Email: string;
+    CreatedOn: string;  // Date in C# can be represented as string in TS (ISO format)
+    LastLoggedIn: string;  // Same as above
+    RoleId: number;
+    Active: boolean;
+    IsEmailVerified: boolean;
+    IsPhoneVerified: boolean;
+}

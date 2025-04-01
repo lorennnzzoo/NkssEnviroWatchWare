@@ -8,6 +8,7 @@ import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { ProductDetails, Registration } from '../../Interfaces/ProductRegister';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService } from 'primeng/api';
+import { AddUserComponent } from "../../UsersManagement/add-user/add-user.component";
 
 @Component({
   selector: 'app-license',
@@ -18,8 +19,9 @@ import { ConfirmationService } from 'primeng/api';
 })
 export class LicenseComponent implements OnInit {
   Loading: boolean = false;
-  displayDialog = false;
+  displayDialog: boolean = false;
   isExpired: boolean = false;
+  ShowUserDetails: boolean = false;
   licenseForm!: FormGroup;
   ProductDetailsLoading: boolean = false;
   ProductDetails!: ProductDetails;
@@ -75,11 +77,13 @@ export class LicenseComponent implements OnInit {
     this.licenseService.RegisterProduct(this.ProductDetails).subscribe({
       next: (response) => {
         this.ProductDetailsLoading = false;
+        this.displayDialog = false;
+        this.ShowUserDetails = true;
         this.toastService.success("Registered successfully");
       },
       error: (error) => {
         this.ProductDetailsLoading = false;
-        this.toastService.error("Unable to register.")
+        this.toastService.error(error.error)
         console.error(error);
       }
     })

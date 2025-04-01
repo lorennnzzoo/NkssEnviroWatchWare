@@ -15,6 +15,7 @@ import { UserCreate } from '../../Interfaces/User';
   providers: [ToastrService]
 })
 export class AddUserComponent {
+  showPassword: boolean = false;
   Roles: Role[] = [];
   userForm!: FormGroup; // Reactive form for company creation
   Loading: boolean = false;
@@ -36,6 +37,10 @@ export class AddUserComponent {
       PhoneNumber: [null, [Validators.required, Validators.pattern(/^\d{10}$/), Validators.maxLength(10)]],
       RoleId: [null, Validators.required],
     });
+  }
+
+  togglePassword() {
+    this.showPassword = !this.showPassword;
   }
 
   goBack() {

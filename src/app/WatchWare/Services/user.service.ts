@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { environment } from '../../../environments/environment';
 import { AuthService } from './auth.service';
 import { Observable } from 'rxjs';
-import { User, UserListView } from '../Interfaces/User';
+import { User, UserListView, UserProfile } from '../Interfaces/User';
 
 @Injectable({
   providedIn: 'root'
@@ -57,15 +57,15 @@ export class UserService {
     return this.http.get(`${this.apiUrl}/ActivateUser`, { headers, params });
   }
 
-  GetUserProfile(): Observable<User> {
+  GetUserProfile(): Observable<UserProfile> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
       this.router.navigate(['/login']);
-      return new Observable<User>();  // Return an empty observable to prevent further actions
+      return new Observable<UserProfile>();  // Return an empty observable to prevent further actions
     }
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + token);
-    return this.http.get<User>(`${this.apiUrl}/GetUserProfile`, { headers });
+    return this.http.get<UserProfile>(`${this.apiUrl}/GetUserProfile`, { headers });
   }
 }
