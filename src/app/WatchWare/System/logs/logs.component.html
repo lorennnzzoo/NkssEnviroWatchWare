@@ -6,7 +6,7 @@
         optionLabel="label" optionValue="value" />
 
     <hr class="my-3" />
-    <p-table #dt [value]="Logs" [paginator]="true" [rows]="10"
+    <p-table #dt [value]="Logs" [paginator]="true" [rows]="8"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" showGridlines="true"
         [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['LogType', 'Message', 'Class', 'LogTimestamp']"
         [loading]="LogsLoading">
@@ -14,15 +14,15 @@
 
         <ng-template #header>
             <tr>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);">Log Type
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Log Type
 
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);">
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">
                     Message
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);">Class
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Class
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);">Timestamp
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Timestamp
                 </th>
             </tr>
         </ng-template>
