@@ -17,63 +17,137 @@
 
     <div class="bg-white bg-opacity-75 p-8 rounded-lg shadow-lg w-[50%]">
         <h2 class="text-gray-900 text-xl font-bold mb-4">Software Registration</h2>
-
-        <div class="grid grid-cols-1 lg:grid-cols-8 gap-4">
-            <div class="lg:col-span-8">
-
-                <p class="text-gray-600 text-sm">Provide license for the software.</p>
+        <div *ngIf="StatusLoading; else content">
+            <div class="animate-pulse">
+                <div class="h-4 bg-gray-300 rounded w-3/4 mb-2"></div>
+                <div class="h-4 bg-gray-300 rounded w-1/2"></div>
+                <div class="h-6 bg-gray-300 rounded w-full mt-4"></div>
             </div>
-
-            <div class="lg:col-span-10">
-                <form [formGroup]="licenseForm" (ngSubmit)="onSubmit()">
-                    <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
-
-
-
-                        <!-- State -->
-                        <div>
-                            <label for="state" class="text-gray-700 font-medium">License</label>
-                            <input id="state" type="text" formControlName="LicenseKey" required
-                                class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
-                            <small
-                                *ngIf="licenseForm.get('LicenseKey')?.invalid && licenseForm.get('LicenseKey')?.touched"
-                                class="text-red-500">License is required</small>
-                        </div>
-
-                    </div>
-                    <!-- Address -->
-
-                    <!-- Submit Button -->
-                    <div class="mt-4 flex gap-4">
-                        <button type="submit" [disabled]="Loading||isExpired"
-                            class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
-                            <span *ngIf="Loading">
-                                <i class="fas fa-spinner fa-spin mr-2"></i>
-                            </span>
-                            <span>Load Product Details</span>
-                        </button>
-                        <button type="button" (click)="onLogin()"
-                            class="bg-accent text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-secondary transition-colors">
-                            Login
-                        </button>
-                    </div>
-                </form>
-            </div>
+            <p class="text-gray-500 mt-2">Loading License Status...</p>
         </div>
+        <ng-template #content>
+            <div *ngIf="isNotExpired; else registrationForm">
+                <p class="text-green-600 font-medium">✅ Your license is valid and not expired.</p>
+                <p class="text-gray-600">You can continue using the software without re-registration.</p>
+            </div>
+            <ng-template #registrationForm>
+                <div class="grid grid-cols-1 lg:grid-cols-8 gap-4">
+                    <div class="lg:col-span-8">
+
+                        <p class="text-gray-600 text-sm">Provide license for the software.</p>
+                    </div>
+
+                    <div class="lg:col-span-10">
+                        <form [formGroup]="licenseForm" (ngSubmit)="onSubmit()">
+                            <div class="grid grid-cols-1 md:grid-cols-1 gap-4">
+
+
+
+                                <!-- State -->
+                                <div>
+                                    <label for="LicenseKey" class="text-gray-700 font-medium">License</label>
+                                    <input id="LicenseKey" type="text" formControlName="LicenseKey" required
+                                        class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
+                                    <small
+                                        *ngIf="licenseForm.get('LicenseKey')?.invalid && licenseForm.get('LicenseKey')?.touched"
+                                        class="text-red-500">License is required</small>
+                                </div>
+
+                                <!-- <div *ngIf="!isExpired"> -->
+                                <hr class="mt-4 mb-5" />
+
+                                <p class="text-gray-600 text-sm mb-5">Provide user account details.</p>
+                                <div>
+                                    <label for="Password" class="text-gray-700 font-medium">Password</label>
+                                    <input id="Password" [type]="showPassword ? 'text' : 'password'"
+                                        autocomplete="new-password" formControlName="Password" required
+                                        class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
+                                    <div class="flex justify-between mt-2">
+                                        <button type="button" (click)="togglePassword()">
+                                            <i *ngIf="!showPassword" class="fa fa-lock text-gray-600"></i>
+                                            <i *ngIf="showPassword" class="fa fa-unlock text-gray-600"></i>
+                                            <span class="pl-2 text-gray-600 text-sm">Show password</span>
+                                        </button>
+                                    </div>
+                                    <small
+                                        *ngIf="licenseForm.get('Password')?.invalid && licenseForm.get('Password')?.touched"
+                                        class="text-red-500">Password is required</small>
+                                </div>
+
+                                <div>
+                                    <label for="Email" class="text-gray-700 font-medium">Email</label>
+                                    <input id="Email" type="email" formControlName="Email" required
+                                        autocomplete="new-password"
+                                        class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
+                                    <small
+                                        *ngIf="licenseForm.get('Email')?.invalid && licenseForm.get('Email')?.touched"
+                                        class="text-red-500"><ng-container
+                                            *ngIf="licenseForm.get('Email')?.errors?.['required']">Email is
+                                            required</ng-container>
+                                        <ng-container *ngIf="licenseForm.get('Email')?.errors?.['email']">Invalid email
+                                            format</ng-container></small>
+                                </div>
+
+                                <div>
+                                    <label for="PhoneNumber" class="text-gray-700 font-medium">PhoneNumber</label>
+                                    <input id="PhoneNumber" type="number" formControlName="PhoneNumber" required
+                                        class="w-full p-2 border border-gray-400 rounded-md focus:ring focus:ring-blue-300">
+                                    <small
+                                        *ngIf="licenseForm.get('PhoneNumber')?.invalid && licenseForm.get('PhoneNumber')?.touched"
+                                        class="text-red-500"><ng-container
+                                            *ngIf="licenseForm.get('PhoneNumber')?.errors?.['required']">Phone Number is
+                                            required</ng-container>
+                                        <ng-container *ngIf="licenseForm.get('PhoneNumber')?.errors?.['pattern']">Phone
+                                            Number
+                                            must
+                                            be
+                                            10 digits</ng-container>
+                                        <ng-container
+                                            *ngIf="licenseForm.get('PhoneNumber')?.errors?.['maxLength']">Phone
+                                            Number
+                                            is
+                                            too
+                                            long</ng-container></small>
+                                </div>
+                                <!-- </div> -->
+
+
+
+                            </div>
+                            <!-- Address -->
+
+                            <!-- Submit Button -->
+                            <div class="mt-4 flex gap-4">
+                                <button type="submit" [disabled]="Loading"
+                                    class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+                                    <span *ngIf="Loading">
+                                        <i class="fas fa-spinner fa-spin mr-2"></i>
+                                    </span>
+                                    <span>Load Product Details</span>
+                                </button>
+                                <button type="button" (click)="onLogin()"
+                                    class="bg-accent text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-secondary transition-colors">
+                                    Login
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </ng-template>
+        </ng-template>
     </div>
+
+
 </div>
-<p-dialog [(visible)]="ShowUserDetails" [modal]="true" [closable]="true" [header]="'Admin login details'"
+<p-dialog [(visible)]="ShowUserDetails" [modal]="true" [closable]="true" [header]="'Admin Account Created'"
     [style]="{width: '700px'}">
     <div>
-        <div>
-            <p>Your admin account has been successfully generated please save these logins, You can change the password
-                later using account settings.</p>
-            <hr class="my-3">
-            <p><strong>Username:</strong> Admin</p>
-            <p><strong>Password:</strong> Admin&#64;nksquare</p>
-        </div>
+        <p class="text-sm"><strong>Username:</strong> Admin</p>
+        <p class="text-sm"><strong>Password:</strong> The password you entered during registration.</p>
+        <p class="text-sm">Please save these credentials securely.</p>
     </div>
 </p-dialog>
+
 
 
 <p-dialog [(visible)]="displayDialog" [modal]="true" [closable]="true" [header]="'Registered Information'"

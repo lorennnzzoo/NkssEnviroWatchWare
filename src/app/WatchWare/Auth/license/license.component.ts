@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import { DatePickerModule } from 'primeng/datepicker';
 import { LicenseService } from '../../Services/license.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { ProductDetails, Registration } from '../../Interfaces/ProductRegister';
+import { ProductDetails, Registration, User } from '../../Interfaces/ProductRegister';
 import { DialogModule } from 'primeng/dialog';
 import { ConfirmationService } from 'primeng/api';
 import { AddUserComponent } from "../../UsersManagement/add-user/add-user.component";
@@ -20,8 +20,10 @@ import { AddUserComponent } from "../../UsersManagement/add-user/add-user.compon
 export class LicenseComponent implements OnInit {
   Loading: boolean = false;
   displayDialog: boolean = false;
-  isExpired: boolean = false;
+  showPassword: boolean = false;
+  isNotExpired: boolean = false;
   ShowUserDetails: boolean = false;
+  StatusLoading: boolean = false;
   licenseForm!: FormGroup;
   ProductDetailsLoading: boolean = false;
   ProductDetails!: ProductDetails;
@@ -29,10 +31,15 @@ export class LicenseComponent implements OnInit {
   ngOnInit(): void {
     this.licenseForm = this.fb.group({
       LicenseKey: [null, Validators.required],
+      Password: [null, Validators.required],
+      Email: [null, [Validators.required, Validators.email]],
+      PhoneNumber: [null, [Validators.required, Validators.pattern(/^\d{10}$/), Validators.maxLength(10)]],
     })
     this.loadStatus();
   }
-
+  togglePassword() {
+    this.showPassword = !this.showPassword;
+  }
   onLogin() {
     this.router.navigate(['/login']);
   }
@@ -55,6 +62,7 @@ export class LicenseComponent implements OnInit {
 
         this.Loading = false;
         this.ProductDetails = response;
+
         this.displayDialog = true;
         console.info(response);
         // this.toastService.success("Product details loaded successfully")
@@ -74,6 +82,13 @@ export class LicenseComponent implements OnInit {
   }
   registerProduct() {
     this.ProductDetailsLoading = true;
+
+    const user: User = {
+      Password: this.licenseForm.value.Password,
+      Email: this.licenseForm.value.Email,
+      PhoneNumber: this.licenseForm.value.PhoneNumber
+    }
+    this.ProductDetails.UserDetails = user;
     this.licenseService.RegisterProduct(this.ProductDetails).subscribe({
       next: (response) => {
         this.ProductDetailsLoading = false;
@@ -90,19 +105,21 @@ export class LicenseComponent implements OnInit {
   }
 
   loadStatus() {
+    this.StatusLoading = true;
     this.licenseService.GetLicenseStatus().subscribe({
       next: (isActive) => {
+        this.StatusLoading = false;
         if (isActive) {
-          this.isExpired = isActive;
-          this.licenseForm.patchValue({ LicenseKey: 'License still valid' });
-          this.licenseForm.get('LicenseKey')?.disable();
+          this.isNotExpired = isActive;
         }
         else {
-          this.isExpired = isActive;
+          this.isNotExpired = isActive;
         }
       },
       error: (error) => {
+        this.StatusLoading = false;
         this.toastService.error("Unable to load license status.");
+        console.error(error);
       }
     })
   }

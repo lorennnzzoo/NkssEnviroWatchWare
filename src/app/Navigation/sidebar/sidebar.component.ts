@@ -78,7 +78,7 @@ export class SidebarComponent implements OnInit {
         //   { title: 'Users', icon: 'fas fa-user', route: '/Users/All' },
         //   { title: 'Create', icon: 'fas fa-user-plus', route: '/Users/Add' },
         // ]
-        title: 'Users Management', icon: 'fas fa-users-cog', route: '/Users/All'
+        title: 'Users', icon: 'fas fa-users-cog', route: '/Users/All'
       },
       {
         title: 'System', icon: 'fas fa-cogs', children: [

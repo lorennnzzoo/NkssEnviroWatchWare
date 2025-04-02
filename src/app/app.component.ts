@@ -52,7 +52,9 @@ export class AppComponent implements OnInit {
   toggleSidebar() {
     this.isCollapsed = !this.isCollapsed;
   }
-
+  collapseChange() {
+    this.isCollapsed = !this.isCollapsed;
+  }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
     this.screenIsLarge = (event.target as Window).innerWidth >= 768;

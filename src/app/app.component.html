@@ -11,23 +11,11 @@
 
     <app-sidebar *ngIf="!isLoginPage||!isLicensePage" (collapseChange)="isCollapsed = $event"></app-sidebar>
     <div class="flex-1 h-screen pt-[85px] pb-2 pr-3 transition-all duration-300 ease-in-out" [ngClass]="{
-    'pl-0': isCollapsed, 
-    'pl-28': !isLoginPage||!isLicensePage && !isCollapsed, 
-    'pl-72': !isLoginPage||!isLicensePage && !isCollapsed && screenIsLarge 
+    'pl-24': isCollapsed, 
+    'pl-28': (!isLoginPage && !isLicensePage) && !isCollapsed, 
+    'pl-72': (!isLoginPage && !isLicensePage) && !isCollapsed && screenIsLarge
   }">
-      <!-- <div class="text-pretty font-semibold text-gray-600">
-        <div *ngIf="breadcrumbs.length > 0" class="breadcrumbs">
-          <ng-container *ngFor="let breadcrumb of breadcrumbs; let i = index">
-            <span *ngIf="i < breadcrumbs.length - 1">{{ breadcrumb }} &gt; </span>
-            <span *ngIf="i === breadcrumbs.length - 1">{{ breadcrumb }}</span>
-          </ng-container>
-        </div>
-      </div> -->
 
-      <!-- <button *ngIf="!isDashboard" type="button" (click)="goBack()"
-        class="px-4 py-1 mb-4 border border-accent bg-primary text-accent rounded-md hover:bg-accent hover:text-primary transition">
-        <i class="fa fa-arrow-left"></i> Back
-      </button> -->
 
       <router-outlet></router-outlet>
     </div>
