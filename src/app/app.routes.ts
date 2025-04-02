@@ -32,6 +32,7 @@ import { CreateSubscriptionComponent } from './WatchWare/System/Notification/cre
 import { CreateConditionComponent } from './WatchWare/System/Notification/create-condition/create-condition.component';
 import { EditSubscriptionComponent } from './WatchWare/System/Notification/edit-subscription/edit-subscription.component';
 import { LicenseComponent } from './WatchWare/Auth/license/license.component';
+import { LogsComponent } from './WatchWare/System/logs/logs.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -66,6 +67,7 @@ export const routes: Routes = [
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/EditSubscription/:id', component: EditSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/CreateCondition', component: CreateConditionComponent, canActivate: [AuthGuard] },
+    { path: 'System/Logs', component: LogsComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
