@@ -8,7 +8,7 @@
     <hr class="my-3" />
     <p-table #dt [value]="Logs" [paginator]="true" [rows]="8"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" showGridlines="true"
-        [rowsPerPageOptions]="[10, 25, 50]" [globalFilterFields]="['LogType', 'Message', 'Class', 'LogTimestamp']"
+        [rowsPerPageOptions]="[8,10, 25, 50]" [globalFilterFields]="['LogType', 'Message', 'Class', 'LogTimestamp']"
         [loading]="LogsLoading">
 
 
