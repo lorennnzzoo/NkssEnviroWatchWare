@@ -11,6 +11,7 @@ import { AvailabilityComponent } from '../Result/availability/availability.compo
 import { DataReportComponent } from '../Result/data-report/data-report.component';
 import { ExceedanceComponent } from '../Result/exceedance/exceedance.component';
 import { TrendsComponent } from '../Result/trends/trends.component';
+import { WindroseComponent } from '../Result/windrose/windrose.component';
 
 @Component({
   selector: 'app-selection',
@@ -38,7 +39,7 @@ export class SelectionComponent implements OnInit {
     { label: 'Data Availability', value: ReportType.DataAvailability },
     { label: 'Data Report', value: ReportType.DataReport },
     { label: 'Exceedance', value: ReportType.Exceedance },
-    // { label: 'Windrose', value: ReportType.Windrose },
+    { label: 'Windrose', value: ReportType.Windrose },
     { label: 'Trends', value: ReportType.Trends }
   ];
 
@@ -273,7 +274,7 @@ export class SelectionComponent implements OnInit {
         next: (report) => {
           this.reportData = report;
           console.log(this.reportData);
-          this.toastService.success('Company Id : ' + filter.companyId);
+          // this.toastService.success('Company Id : ' + filter.companyId);
           this.reportCompanyId = filter.companyId;
           // this.messageService.add({ severity: 'info', summary: 'Success', detail: 'Report Data Fetched successfully' }); 
           this.reportFilterForm.get('ReportType')?.disable({ emitEvent: false, onlySelf: true });
