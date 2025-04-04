@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Company } from '../../../Interfaces/Company';
 import { CompanyService } from '../../../Services/company.service';
 import { ToastrService } from 'ngx-toastr';
@@ -6,6 +6,8 @@ import { DataAggregationType } from '../../../Interfaces/ReportSubmitFilter';
 import * as PlotlyJS from 'plotly.js-dist-min';
 import { PlotlyModule } from 'angular-plotly.js';
 import { CommonModule } from '@angular/common';
+
+
 
 PlotlyModule.plotlyjs = PlotlyJS;
 
@@ -22,6 +24,7 @@ export class WindroseComponent implements OnInit {
   @Input() to: any;
   @Input() aggregationType: any;
   Company!: Company;
+  @ViewChild('windroseChart', { static: false }) windroseChartRef!: ElementRef;
 
   constructor(private companyService: CompanyService, private toastService: ToastrService) { }
 
@@ -51,15 +54,36 @@ export class WindroseComponent implements OnInit {
   }
 
 
+  onExport() {
+    const chartElement = this.windroseChartRef?.nativeElement;
+
+    if (!chartElement) {
+      console.error('Chart element not found.');
+      return;
+    }
+
+    PlotlyJS.downloadImage(chartElement, {
+      format: 'jpeg',
+      filename: 'windrose',
+      height: 600,
+      width: 800,
+    }).catch((err) => {
+      console.error('Failed to export image', err);
+    });
+  }
+
+
   plotData: any[] = [];
   layout: any = {
-    title: 'Wind Rose - 24 Hours',
+    title: {
+      text: "Wind Speed & Direction"
+    },
     polar: {
       radialaxis: { ticksuffix: '%', angle: 45 },
       angularaxis: { direction: 'clockwise' },
     },
     showlegend: true,
-    margin: { t: 30, b: 30, l: 30, r: 30 }
+    margin: { t: 100, b: 30, l: 30, r: 30 }
   };
   generateWindRose(): void {
     if (!this.data || this.data.length === 0) return;

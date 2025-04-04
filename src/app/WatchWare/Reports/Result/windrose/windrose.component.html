@@ -17,12 +17,14 @@
     <!-- Chart Container -->
     <div class="overflow-x-auto">
         <div class="w-full border border-gray-300 rounded-lg shadow-md p-4 bg-white">
-            <div class="relative w-full h-96">
-                <plotly-plot [data]="plotData" [layout]="layout"
-                    [style]="{ width: '100%', height: '100%' }"></plotly-plot>
+            <div class="relative flex justify-center">
+                <plotly-plot #windroseChart [data]="plotData" [layout]="layout" class=""
+                    [style]="{ width: '50%', height: '100%' }">
+                </plotly-plot>
             </div>
         </div>
     </div>
+
 
 </div>
 
