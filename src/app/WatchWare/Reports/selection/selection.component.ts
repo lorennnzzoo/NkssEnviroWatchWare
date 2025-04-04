@@ -15,7 +15,7 @@ import { WindroseComponent } from '../Result/windrose/windrose.component';
 
 @Component({
   selector: 'app-selection',
-  imports: [ToastrModule, ReactiveFormsModule, CommonModule, NgMultiSelectDropDownModule, FormsModule, DatePickerModule, AvailabilityComponent, DataReportComponent, ExceedanceComponent, TrendsComponent],
+  imports: [ToastrModule, ReactiveFormsModule, CommonModule, NgMultiSelectDropDownModule, FormsModule, DatePickerModule, AvailabilityComponent, DataReportComponent, ExceedanceComponent, TrendsComponent, WindroseComponent],
   templateUrl: './selection.component.html',
   styleUrl: './selection.component.css',
   providers: [ToastrService]

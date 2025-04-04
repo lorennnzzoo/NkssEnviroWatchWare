@@ -99,6 +99,10 @@
             [companyId]="reportCompanyId" [to]="reportFilterForm.value.To"
             [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-trends>
 
+        <app-windrose *ngIf="+reportFilterForm.value.ReportType===ReportType.Windrose"
+            [from]="reportFilterForm.value.From" [companyId]="reportCompanyId" [to]="reportFilterForm.value.To"
+            [aggregationType]="reportFilterForm.value.DataAggregationType" [data]="reportData"></app-windrose>
+
         <!-- </ng-container> -->
     </div>
 </div>
