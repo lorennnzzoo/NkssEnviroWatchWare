@@ -89,7 +89,7 @@ export class AddStationComponent implements OnInit {
 
         this.toastService.success('Station created successfully', 'Created');
         this.Loading = false;
-        this.ngOnInit();
+        this.goBack();
       },
       error: (error) => {
         // Handle error response

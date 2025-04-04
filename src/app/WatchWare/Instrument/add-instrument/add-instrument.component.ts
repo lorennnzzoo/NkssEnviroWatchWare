@@ -131,7 +131,7 @@ export class AddInstrumentComponent implements OnInit {
         this.toastService.success('Analyzer created successfully', 'Created');
         this.Loading = false;
         this.protocolForm.reset(); // Reset the form
-        this.ngOnInit();
+        this.goBack();
       },
       error: (error) => {
 

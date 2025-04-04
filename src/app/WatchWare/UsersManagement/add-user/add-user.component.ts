@@ -87,7 +87,7 @@ export class AddUserComponent {
 
           this.toastService.success('User registered successfully');
           this.Loading = false;
-          this.userForm.reset(); // Reset the form
+          this.goBack();
         },
         error: (error) => {
           // Handle error response

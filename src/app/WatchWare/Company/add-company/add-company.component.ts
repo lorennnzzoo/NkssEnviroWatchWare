@@ -62,7 +62,7 @@ export class AddCompanyComponent implements OnInit {
         // Handle successful response        
         this.toastService.success('Company created successfully', 'Created')
         this.Loading = false;
-        this.ngOnInit();
+        this.goBack();
       },
       error: (error) => {
         // Handle error response

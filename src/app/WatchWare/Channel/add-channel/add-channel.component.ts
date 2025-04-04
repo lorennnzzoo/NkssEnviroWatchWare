@@ -190,7 +190,7 @@ export class AddChannelComponent {
         this.toastService.success('Channel created successfully', 'Created');
         this.Loading = false;
         this.channelForm.reset();
-        this.ngOnInit();
+        this.goBack();
       },
       error: (error) => {
         // Handle error response
