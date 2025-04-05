@@ -53,6 +53,10 @@ export class DisplayBoardComponent implements OnInit {
 
     // Check if the form is invalid
     if (this.displayForm.invalid) {
+      this.displayForm.get('Template')?.markAsTouched();
+      this.displayForm.get('FilePath')?.markAsTouched();
+      this.displayForm.get('FileName')?.markAsTouched();
+      this.displayForm.get('FileType')?.markAsTouched();
 
       this.toastService.warning('Please fill all required fields', 'Warning');
       this.Loading = false;
@@ -78,7 +82,33 @@ export class DisplayBoardComponent implements OnInit {
       }
     })
   }
-  onPreview() {
+  onExcelFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (!input.files?.length) return;
+
+    const file = input.files[0];
+    const fileExtension = file.name.split('.').pop(); // Get "xls", "xlsx", etc.
+
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const binaryData = reader.result as string;
+
+      // Convert binary to base64
+      const base64Data = btoa(binaryData);
+
+      // Patch both base64 data and extension into the form
+      this.displayForm.patchValue({
+        Template: base64Data,
+        FileExtension: fileExtension
+      });
+
+      console.log('Base64 Excel file and extension loaded into form controls.');
+    };
+
+    reader.readAsBinaryString(file); // Reads the file as binary string
 
   }
+
+
 }
