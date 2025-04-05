@@ -4,99 +4,156 @@
 <div class="my-5  flex justify-start space-x-4 border rounded-lg shadow-md p-4 bg-white">
 
     <div class="w-full">
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-normal text-black">Email address</h2>
-                <h2 class="text-sm text-gray-600 mt-1">The email address associated with your account.</h2>
+        <ng-template #skeletonLoader>
+            <!-- Skeleton loader UI -->
+            <div class="space-y-6 animate-pulse">
+                <!-- Email Section -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="h-4 w-32 bg-gray-300 rounded"></div>
+                        <div class="h-3 w-64 mt-2 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="flex items-center space-x-10">
+                        <div class="text-right">
+                            <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+                            <div class="h-3 w-20 bg-gray-200 rounded"></div>
+                        </div>
+                        <div class="h-8 w-20 bg-gray-300 rounded-3xl"></div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+
+                <!-- Phone Section -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="h-4 w-32 bg-gray-300 rounded"></div>
+                        <div class="h-3 w-64 mt-2 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="flex items-center space-x-10">
+                        <div class="text-right">
+                            <div class="h-4 w-40 bg-gray-300 rounded mb-2"></div>
+                            <div class="h-3 w-20 bg-gray-200 rounded"></div>
+                        </div>
+                        <div class="h-8 w-20 bg-gray-300 rounded-3xl"></div>
+                    </div>
+                </div>
+                <hr class="my-4" />
+
+                <!-- Password Section -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="h-4 w-32 bg-gray-300 rounded"></div>
+                        <div class="h-3 w-64 mt-2 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="h-8 w-32 bg-gray-300 rounded-3xl"></div>
+                </div>
+                <hr class="my-4" />
+
+                <!-- Delete Section -->
+                <div class="flex justify-between items-center">
+                    <div>
+                        <div class="h-4 w-40 bg-gray-300 rounded"></div>
+                        <div class="h-3 w-64 mt-2 bg-gray-200 rounded"></div>
+                    </div>
+                    <div class="h-8 w-24 bg-red-300 rounded-3xl"></div>
+                </div>
             </div>
-
-
-            <div class="flex items-center space-x-10">
-                <div class="text-right">
-                    <h2 class="font-normal text-black">{{user.Email}}</h2>
-                    <div *ngIf="user.IsEmailVerified">
-
-                        <h2 class="text-sm mt-1 text-green-600">Verified</h2>
-                    </div>
-                    <div *ngIf="!user.IsEmailVerified">
-
-                        <h2 class="text-sm mt-1 text-red-600">Unverified</h2>
-                    </div>
+        </ng-template>
+        <ng-container *ngIf="!Loading; else skeletonLoader">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="font-normal text-black">Email address</h2>
+                    <h2 class="text-sm text-gray-600 mt-1">The email address associated with your account.</h2>
                 </div>
 
 
-                <button
-                    class="border-gray-300 border rounded-3xl text-sm px-4 py-2 text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
-                    Edit
-                    <i class="fa fa-pencil text-sm pl-1"></i>
-                </button>
-            </div>
-        </div>
-        <hr class="my-4" />
-        <div class="flex justify-between items-center">
-            <div>
-                <h2 class="font-normal text-black">Phone number</h2>
-                <h2 class="text-sm text-gray-600 mt-1">The phone number associated with your account.</h2>
-            </div>
+                <div class="flex items-center space-x-10">
+                    <div class="text-right">
+                        <h2 class="font-normal text-black">{{user.Email}}</h2>
+                        <div *ngIf="user.IsEmailVerified">
 
+                            <h2 class="text-sm mt-1 text-green-600">Verified</h2>
+                        </div>
+                        <div *ngIf="!user.IsEmailVerified">
 
-            <div class="flex items-center space-x-10">
-                <div class="text-right">
-                    <h2 class="font-normal text-black">{{user.PhoneNumber}}</h2>
-                    <div *ngIf="user.IsPhoneVerified">
-
-                        <h2 class="text-sm mt-1 text-green-600">Verified</h2>
+                            <h2 class="text-sm mt-1 text-red-600">Unverified</h2>
+                        </div>
                     </div>
-                    <div *ngIf="!user.IsPhoneVerified">
 
-                        <h2 class="text-sm mt-1 text-red-600">Unverified</h2>
-                    </div>
+
+                    <button
+                        class="border-gray-300 border rounded-3xl text-sm px-4 py-2 text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
+                        Edit
+                        <i class="fa fa-pencil text-sm pl-1"></i>
+                    </button>
+                </div>
+            </div>
+            <hr class="my-4" />
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="font-normal text-black">Phone number</h2>
+                    <h2 class="text-sm text-gray-600 mt-1">The phone number associated with your account.</h2>
                 </div>
 
 
-                <button
-                    class="border-gray-300 border rounded-3xl text-sm px-4 py-2 text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
-                    Edit
-                    <i class="fa fa-pencil text-sm pl-1"></i>
-                </button>
-            </div>
-        </div>
-        <hr class="my-4" />
-        <div class="flex justify-between items-center">
-            <div>
+                <div class="flex items-center space-x-10">
+                    <div class="text-right">
+                        <h2 class="font-normal text-black">{{user.PhoneNumber}}</h2>
+                        <div *ngIf="user.IsPhoneVerified">
 
-                <h2 class="font-normal text-black">Password</h2>
-                <h2 class="text-sm  mt-1 text-gray-600">Set a unique password to protect your account.</h2>
-            </div>
-            <div class="text-right">
-                <button (click)="showChangePassword=!showChangePassword"
-                    class="border-gray-300 border rounded-3xl px-4 py-2 text-sm  text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
-                    Change Password
-                </button>
+                            <h2 class="text-sm mt-1 text-green-600">Verified</h2>
+                        </div>
+                        <div *ngIf="!user.IsPhoneVerified">
 
-            </div>
-        </div>
-        <hr class="my-4" />
-        <div class="flex justify-between items-center">
-            <div>
+                            <h2 class="text-sm mt-1 text-red-600">Unverified</h2>
+                        </div>
+                    </div>
 
-                <h2 class="font-normal text-black">Delete Account</h2>
-                <h2 class="text-sm text-gray-600">This will delete your account. Your account will be
-                    permanently deleted from this device.</h2>
-            </div>
-            <div class="text-right">
-                <button
-                    class=" border-red-300 border rounded-3xl px-4 py-2 text-sm  text-red-600 hover:bg-red-600 hover:text-primary hover:border-red-600 transition-colors ">
-                    Delete
-                </button>
 
+                    <button
+                        class="border-gray-300 border rounded-3xl text-sm px-4 py-2 text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
+                        Edit
+                        <i class="fa fa-pencil text-sm pl-1"></i>
+                    </button>
+                </div>
             </div>
-        </div>
+            <hr class="my-4" />
+            <div class="flex justify-between items-center">
+                <div>
+
+                    <h2 class="font-normal text-black">Password</h2>
+                    <h2 class="text-sm  mt-1 text-gray-600">Set a unique password to protect your account.</h2>
+                </div>
+                <div class="text-right">
+                    <button (click)="showChangePassword=!showChangePassword"
+                        class="border-gray-300 border rounded-3xl px-4 py-2 text-sm  text-gray-600 hover:bg-accent hover:text-primary hover:border-accent transition-colors">
+                        Change Password
+                    </button>
+
+                </div>
+            </div>
+            <hr class="my-4" />
+            <div class="flex justify-between items-center">
+                <div>
+
+                    <h2 class="font-normal text-black">Delete Account</h2>
+                    <h2 class="text-sm text-gray-600">This will delete your account. Your account will be
+                        permanently deleted from this device.</h2>
+                </div>
+                <div class="text-right">
+                    <button
+                        class=" border-red-300 border rounded-3xl px-4 py-2 text-sm  text-red-600 hover:bg-red-600 hover:text-primary hover:border-red-600 transition-colors ">
+                        Delete
+                    </button>
+
+                </div>
+            </div>
+        </ng-container>
     </div>
 </div>
 
 <p-dialog header="Change password" [modal]="true" [(visible)]="showChangePassword" [style]="{ width: '50rem' }">
-    <form [formGroup]="changePasswordForm">
+    <form [formGroup]="changePasswordForm" (ngSubmit)="onSubmit()">
         <div class="space-y-6">
 
 
@@ -112,8 +169,9 @@
                     class="text-red-500 text-base">
                     <small *ngIf="changePasswordForm.get('newPassword')?.hasError('required')">Password is
                         required.</small>
-                    <small *ngIf="changePasswordForm.get('newPassword')?.hasError('minlength')">Password must be at
-                        least 6 characters long.</small>
+                    <ng-container *ngIf="changePasswordForm.get('newPassword')?.hasError('minlength')">
+                        Password must be more than 6 characters.
+                    </ng-container>
                 </small>
             </div>
 
@@ -128,8 +186,7 @@
                     class="text-red-500 text-base">
                     <small *ngIf="changePasswordForm.get('confirmPassword')?.hasError('required')">Confirm password is
                         required.</small>
-                    <small *ngIf="changePasswordForm.get('confirmPassword')?.hasError('mismatch')">Passwords must
-                        match.</small>
+
                 </small>
             </div>
 
@@ -139,8 +196,19 @@
                     class="px-6 py-2 bg-gray-300 text-gray-700 rounded-lg hover:bg-gray-400 transition-colors"
                     (click)="showChangePassword = false">Cancel</button>
                 <button type="submit"
-                    class="px-6 py-2 bg-accent text-white rounded-lg hover:bg-secondary hover:cursor-pointer transition-colors"
-                    [disabled]="changePasswordForm.invalid">Save</button>
+                    class="px-6 py-2 bg-accent text-white rounded-lg hover:bg-secondary hover:cursor-pointer transition-colors flex items-center justify-center gap-2"
+                    [disabled]="ChangePasswordLoading">
+
+                    <ng-container *ngIf="ChangePasswordLoading; else saveText">
+                        <i class="fa fa-spinner fa-spin"></i>
+                        <span>Updating...</span>
+                    </ng-container>
+
+                    <ng-template #saveText>
+                        <span>Update</span>
+                    </ng-template>
+                </button>
+
             </div>
 
         </div>

@@ -18,19 +18,15 @@ export class ProfileComponent implements OnInit {
   changePasswordForm!: FormGroup;
   user!: UserProfile;
   showChangePassword: boolean = false;
+  ChangePasswordLoading: boolean = false;
   Loading: boolean = false;
   constructor(private userService: UserService, private fb: FormBuilder, private toastService: ToastrService) { }
   ngOnInit(): void {
     this.changePasswordForm = this.fb.group({
-      newPassword: [null, Validators.required, Validators.minLength(6)],
+      newPassword: [null, Validators.required],
       confirmPassword: [null, Validators.required]
-    }, { validator: this.passwordMatchValidator });
+    });
     this.loadUserDetails();
-  }
-  passwordMatchValidator(group: FormGroup): { [key: string]: boolean } | null {
-    const password = group.get('newPassword')?.value;
-    const confirmPassword = group.get('confirmPassword')?.value;
-    return password && confirmPassword && password !== confirmPassword ? { mismatch: true } : null;
   }
 
   loadUserDetails() {
@@ -45,5 +41,36 @@ export class ProfileComponent implements OnInit {
         this.Loading = false;
       }
     });
+  }
+
+  onSubmit(): void {
+    this.ChangePasswordLoading = true;
+    if (this.changePasswordForm.invalid) {
+      this.toastService.warning("Please enter password.")
+      this.ChangePasswordLoading = false;
+      return;
+    };
+
+    const { newPassword, confirmPassword } = this.changePasswordForm.value;
+    if (newPassword !== confirmPassword) {
+      this.toastService.warning("Passwords must match");
+      this.ChangePasswordLoading = false;
+      return;
+    }
+
+
+    this.userService.ChangePassword(newPassword).subscribe({
+      next: (response) => {
+        this.ChangePasswordLoading = false;
+        this.showChangePassword = false;
+        this.toastService.success("Password changed successfully, Please logout and login.");
+      },
+      error: (error) => {
+        this.ChangePasswordLoading = false;
+        console.error(error);
+        this.toastService.warning(error.error);
+      }
+    })
+    // Proceed with password change logic here
   }
 }

@@ -68,4 +68,18 @@ export class UserService {
     headers = headers.set('Authorization', 'Bearer ' + token);
     return this.http.get<UserProfile>(`${this.apiUrl}/GetUserProfile`, { headers });
   }
+
+  ChangePassword(newpassword: string): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
+    }
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.put(`${this.apiUrl}/ChangePassword?newPassword=${encodeURIComponent(newpassword)}`, null, { headers });
+
+  }
 }
