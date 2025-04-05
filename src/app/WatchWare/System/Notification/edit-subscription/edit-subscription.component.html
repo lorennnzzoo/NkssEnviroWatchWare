@@ -9,7 +9,7 @@
 </ng-template>
 
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
-    <p-table #dt [value]="Conditions" dataKey="GeneratedId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+    <p-table #dt [value]="Conditions" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
         [(selection)]="selectedConditions" [loading]="Loading" showGridlines="" [paginator]="true"
         [globalFilterFields]="['ConditionName', 'ConditionType','Operator','Threshold','Cooldown','Duration']"
         [tableStyle]="{ 'min-width': '1000px' }">
@@ -21,16 +21,28 @@
 
                     Create Condition
                 </button>
-                <button type="button" (click)="onSubscribe()"
+                <button type="button" (click)="onUpdateSubscription()"
                     class="mx-4 px-4 bg-green-500 border border-green-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
 
                     <span *ngIf="SubscribeLoading">
                         <i class="fas fa-spinner fa-spin mr-2"></i>Update Subscription
                     </span>
                     <span *ngIf="!SubscribeLoading">
-                        <i class="fa fa-check mr-2"></i> Update Subscription
+                        <i class="fa fa-pen mr-2"></i> Update Subscription
                     </span>
                 </button>
+
+                <!-- <button type="button" (click)="onUnSubscribe(subscription.Id)"
+                    class=" px-4 bg-red-500 border border-red-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
+
+                    <span *ngIf="UnsubscribeLoading">
+                        <i class="fas fa-spinner fa-spin mr-2"></i>Unsubscribe
+                    </span>
+                    <span *ngIf="!UnsubscribeLoading">
+                        <i class="fa fa-trash mr-2"></i> Unsubscribe
+                    </span>
+                </button> -->
+
                 <p-iconfield iconPosition="left" class="ml-auto">
                     <p-inputicon>
                         <i class="fa fa-search"></i>

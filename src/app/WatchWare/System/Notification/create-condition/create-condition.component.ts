@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Condition, ConditionType, Operator } from '../../../Interfaces/NotificationCondition';
+import { ConditionCreate, ConditionType, Operator } from '../../../Interfaces/NotificationCondition';
 import { CommonModule, Location } from '@angular/common';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { NotificationService } from '../../../Services/notification.service';
@@ -57,7 +57,7 @@ export class CreateConditionComponent implements OnInit {
       this.Loading = false;
       return;
     }
-    const condition: Condition = {
+    const condition: ConditionCreate = {
       ConditionName: this.conditionForm.value.ConditionName,
       ConditionType: this.conditionForm.value.ConditionType,
       Cooldown: this.conditionForm.value.Cooldown,

@@ -8,7 +8,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { SelectModule } from 'primeng/select';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
-import { Condition, ConditionType, Operator } from '../../../Interfaces/NotificationCondition';
+import { Condition, ConditionType, NotificationSubscription, Operator } from '../../../Interfaces/NotificationCondition';
 import { Channel } from '../../../Interfaces/Channel';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChannelService } from '../../../Services/channel.service';
@@ -27,9 +27,11 @@ export class EditSubscriptionComponent implements OnInit {
   Loading: boolean = false;
   SubscribeLoading: boolean = false;
   ChannelLoading: boolean = false;
+  UnsubscribeLoading: boolean = false;
   channel!: Channel;
   subscriptionForm!: FormGroup;
   selectedConditions: Condition[] = [];
+  subscription!: NotificationSubscription;
 
   constructor(private channelService: ChannelService, private router: Router, private notificationService: NotificationService, private fb: FormBuilder, private toastService: ToastrService, private route: ActivatedRoute) { }
   ngOnInit(): void {
@@ -62,10 +64,7 @@ export class EditSubscriptionComponent implements OnInit {
     this.notificationService.GetConditions().subscribe({
       next: (data) => {
         // Assign a unique ID using index
-        this.Conditions = data.map((condition, index) => ({
-          ...condition,
-          GeneratedId: index + 1, // Unique ID
-        }));
+        this.Conditions = data;
         this.Loading = false;
       },
       error: (error) => {
@@ -89,7 +88,7 @@ export class EditSubscriptionComponent implements OnInit {
   getOperatorName(operator: Operator): string {
     return Operator[operator]; // Converts enum value to name
   }
-  onSubscribe() {
+  onUpdateSubscription() {
     this.SubscribeLoading = true;
     if (this.selectedConditions.length === 0) {
       this.toastService.warning("Please select atleast one condition to subscribe.");
@@ -97,14 +96,20 @@ export class EditSubscriptionComponent implements OnInit {
       return;
     }
 
-    this.notificationService.Subscribe(this.channelId, this.selectedConditions).subscribe({
+    const subsciption: NotificationSubscription = {
+      Id: this.subscription.Id,
+      ChannelId: this.subscription.ChannelId,
+      Conditions: this.selectedConditions
+    }
+
+    this.notificationService.UpdateSubscription(subsciption).subscribe({
       next: (response) => {
         this.SubscribeLoading = false;
-        this.toastService.success("Successfully subscribed");
+        this.toastService.success("Successfully Updated subscription");
       },
       error: (error) => {
         this.SubscribeLoading = false;
-        this.toastService.error("Unable to subscribe");
+        this.toastService.error("Unable to update subscription");
         console.error(error);
       }
     })
@@ -112,10 +117,11 @@ export class EditSubscriptionComponent implements OnInit {
 
   loadSubscribedConditions(channelId: number) {
     this.Loading = true;
-    this.notificationService.GetSubscribedConditionsOfChannel(channelId).subscribe({
+    this.notificationService.GetSubscriptionOfChannel(channelId).subscribe({
       next: (response) => {
         this.Loading = false;
-        this.selectedConditions = response;
+        this.subscription = response;
+        this.selectedConditions = this.subscription.Conditions;
       },
       error: (error) => {
         this.Loading = false;
@@ -124,4 +130,20 @@ export class EditSubscriptionComponent implements OnInit {
       }
     })
   }
+
+  // onUnSubscribe(Id: string) {
+  //   this.UnsubscribeLoading = true;
+  //   this.notificationService.Unsubscribe(Id).subscribe({
+  //     next: (response) => {
+  //       this.UnsubscribeLoading = false;
+  //       this.toastService.success("Successfully unsubscribed.");
+  //       this.router.navigate(['/System/Configuration/Notifications/Statuses'])
+  //     },
+  //     error: (error) => {
+  //       this.UnsubscribeLoading = false;
+  //       this.toastService.error("Unable to unsubscribe");
+  //       console.error(error);
+  //     }
+  //   })
+  // }
 }

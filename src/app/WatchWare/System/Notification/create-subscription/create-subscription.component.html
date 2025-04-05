@@ -9,7 +9,7 @@
 </ng-template>
 
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
-    <p-table #dt [value]="Conditions" dataKey="GeneratedId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
+    <p-table #dt [value]="Conditions" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
         [(selection)]="selectedConditions" [loading]="Loading" showGridlines="" [paginator]="true"
         [globalFilterFields]="['ConditionName', 'ConditionType','Operator','Threshold','Cooldown','Duration']"
         [tableStyle]="{ 'min-width': '1000px' }">

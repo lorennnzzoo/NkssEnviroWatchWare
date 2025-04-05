@@ -63,10 +63,7 @@ export class CreateSubscriptionComponent implements OnInit {
     this.notificationService.GetConditions().subscribe({
       next: (data) => {
         // Assign a unique ID using index
-        this.Conditions = data.map((condition, index) => ({
-          ...condition,
-          GeneratedId: index + 1, // Unique ID
-        }));
+        this.Conditions = data;
         this.Loading = false;
       },
       error: (error) => {
@@ -102,6 +99,7 @@ export class CreateSubscriptionComponent implements OnInit {
       next: (response) => {
         this.SubscribeLoading = false;
         this.toastService.success("Successfully subscribed");
+        this.router.navigate(['/System/Configuration/Notifications/Statuses'])
       },
       error: (error) => {
         this.SubscribeLoading = false;
