@@ -14,12 +14,15 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { ChannelService } from '../../../Services/channel.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NotificationService } from '../../../Services/notification.service';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-edit-subscription',
-  imports: [CommonModule, ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule],
+  imports: [CommonModule, ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, ConfirmDialogModule],
   templateUrl: './edit-subscription.component.html',
-  styleUrl: './edit-subscription.component.css'
+  styleUrl: './edit-subscription.component.css',
+  providers: [ConfirmationService]
 })
 export class EditSubscriptionComponent implements OnInit {
   channelId!: number;
@@ -33,7 +36,7 @@ export class EditSubscriptionComponent implements OnInit {
   selectedConditions: Condition[] = [];
   subscription!: NotificationSubscription;
 
-  constructor(private channelService: ChannelService, private router: Router, private notificationService: NotificationService, private fb: FormBuilder, private toastService: ToastrService, private route: ActivatedRoute) { }
+  constructor(private channelService: ChannelService, private router: Router, private notificationService: NotificationService, private dialogService: ConfirmationService, private fb: FormBuilder, private toastService: ToastrService, private route: ActivatedRoute) { }
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
@@ -106,6 +109,7 @@ export class EditSubscriptionComponent implements OnInit {
       next: (response) => {
         this.SubscribeLoading = false;
         this.toastService.success("Successfully Updated subscription");
+        this.router.navigate(['/System/Configuration/Notifications/Statuses'])
       },
       error: (error) => {
         this.SubscribeLoading = false;
@@ -131,19 +135,31 @@ export class EditSubscriptionComponent implements OnInit {
     })
   }
 
-  // onUnSubscribe(Id: string) {
-  //   this.UnsubscribeLoading = true;
-  //   this.notificationService.Unsubscribe(Id).subscribe({
-  //     next: (response) => {
-  //       this.UnsubscribeLoading = false;
-  //       this.toastService.success("Successfully unsubscribed.");
-  //       this.router.navigate(['/System/Configuration/Notifications/Statuses'])
-  //     },
-  //     error: (error) => {
-  //       this.UnsubscribeLoading = false;
-  //       this.toastService.error("Unable to unsubscribe");
-  //       console.error(error);
-  //     }
-  //   })
-  // }
+  onUnSubscribe(Id: string) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to unsubscribe to this channel?',
+      header: 'Confirm Unsubscribe',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.UnsubscribeLoading = true;
+        // User clicked "Yes"
+        this.notificationService.Unsubscribe(Id).subscribe({
+          next: (response) => {
+            this.UnsubscribeLoading = false;
+            this.toastService.success("Successfully unsubscribed.");
+            this.router.navigate(['/System/Configuration/Notifications/Statuses'])
+          },
+          error: (error) => {
+            this.UnsubscribeLoading = false;
+            this.toastService.error("Unable to unsubscribe");
+            console.error(error);
+          }
+        })
+      },
+      reject: () => {
+        // User clicked "No"
+
+      },
+    });
+  }
 }
