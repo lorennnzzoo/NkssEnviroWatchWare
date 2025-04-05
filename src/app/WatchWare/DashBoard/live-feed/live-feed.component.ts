@@ -45,6 +45,9 @@ export class LiveFeedComponent implements OnInit {
     this.loadStationsAndFeed();
   }
 
+  onRefresh() {
+    this.ngOnInit();
+  }
 
   loadStationsAndFeed() {
     this.stationService.GetAllStations().subscribe(
@@ -58,6 +61,9 @@ export class LiveFeedComponent implements OnInit {
           this.stations.forEach(station => {
             this.isLoadingMap[station.Id] = true;
             this.loadDataFeed(station.Id);
+            setInterval(() => {
+              this.loadDataFeedInterval(station.Id);
+            }, 60000); // 60 seconds
           });
         } else {
           this.toastService.warning('No stations');
@@ -69,7 +75,18 @@ export class LiveFeedComponent implements OnInit {
       }
     );
   }
-
+  loadDataFeedInterval(stationId: number): void {
+    console.log('fetching interval');
+    this.dataFeedService.GetStationFeed(stationId).subscribe(
+      (response) => {
+        this.stationDataFeedMap[stationId] = response;
+      },
+      (error) => {
+        console.error(`Error loading data feed for station ${stationId}:`, error);
+        this.toastService.error(`Error loading data feed for station ${stationId}.`);
+      }
+    );
+  }
   loadDataFeed(stationId: number): void {
     this.dataFeedService.GetStationFeed(stationId).subscribe(
       (response) => {

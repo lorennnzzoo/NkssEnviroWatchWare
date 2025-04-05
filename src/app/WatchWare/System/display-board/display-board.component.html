@@ -34,6 +34,7 @@
                     <option value="txt">Text</option>
                     <option value="csv">Csv</option>
                     <option value="xlsx">Excel</option>
+                    <option value="json">Json</option>
                 </select>
                 <small *ngIf="displayForm.get('FileType')?.invalid && displayForm.get('FileType')?.touched"
                     class="text-red-500 text-sm">File Type is required.</small>
