@@ -7,16 +7,20 @@
         [tableStyle]="{ 'min-width': '1000px' }">
         <ng-template #caption>
             <div class="flex">
-                <!-- <button type="text"
-                    class=" px-4 bg-accent border border-accent text-primary rounded-md hover:bg-accent hover:text-primary transition">
-                    Subscription Status
-                </button> -->
+
                 <p-iconfield iconPosition="left" class="mr-auto">
                     <p-inputicon>
                         <i class="fa fa-search"></i>
                     </p-inputicon>
                     <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
                 </p-iconfield>
+                <button type="button" (click)="onManageContacts()"
+                    class="flex items-center gap-2 px-4 ml-auto bg-accent border border-accent text-primary rounded-md hover:bg-secondary hover:border-secondary hover:text-primary transition">
+                    <i class="fas fa-address-book"></i>
+                    Manage Contacts
+                </button>
+
+
             </div>
         </ng-template>
         <ng-template #header>

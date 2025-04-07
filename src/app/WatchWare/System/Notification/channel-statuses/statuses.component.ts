@@ -45,6 +45,9 @@ export class StatusesComponent implements OnInit {
       }
     })
   }
+  onManageContacts() {
+    this.router.navigate(['/System/Configuration/Notification/Contacts'])
+  }
   onSubscribe(channel: ChannelStatus) {
     this.router.navigate(['/System/Configuration/Notification/Subscribe', channel.ChannelId])
   }

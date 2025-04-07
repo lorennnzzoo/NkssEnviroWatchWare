@@ -6,6 +6,7 @@ import { AuthService } from './auth.service';
 import { ChannelStatus } from '../Interfaces/ChannelStatus';
 import { Observable } from 'rxjs';
 import { Condition, ConditionCreate, NotificationSubscription } from '../Interfaces/NotificationCondition';
+import { Contact, ContactCreation, ContactDeletion, ContactEdition, ContactType } from '../Interfaces/Contact';
 
 @Injectable({
   providedIn: 'root'
@@ -123,4 +124,69 @@ export class NotificationService {
 
     return this.http.get<NotificationSubscription>(`${this.apiUrl}/GetSubscriptionOfChannel?channelId=${ChannelId}`, { headers });
   }
+
+
+  GetContacts(type: ContactType): Observable<Contact[]> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<Contact[]>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<Contact[]>(`${this.apiUrl}/GetContacts?type=${type}`, { headers });
+  }
+
+  CreateContact(creation: ContactCreation): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
+    }
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    const payload = {
+      type: creation.type,
+      address: creation.address  // Send the array of conditions
+    };
+    return this.http.post(`${this.apiUrl}/CreateContact`, payload, { headers });
+  }
+
+  DeleteContact(deletion: ContactDeletion): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    const options = {
+      headers: headers,
+      body: {
+        type: deletion.type,
+        id: deletion.id
+      }
+    };
+
+    return this.http.delete(`${this.apiUrl}/DeleteContact`, options);
+  }
+
+
+  EditContact(edition: ContactEdition): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/EditContact`, edition, { headers });
+  }
+
 }
