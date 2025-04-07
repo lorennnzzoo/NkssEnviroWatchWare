@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
@@ -12,21 +12,31 @@ import { CommonModule } from '@angular/common';
 import { ChannelStatus } from '../../../Interfaces/ChannelStatus';
 import { NotificationService } from '../../../Services/notification.service';
 import { Router } from '@angular/router';
+import { DialogModule } from 'primeng/dialog';
+import { ConfirmationService } from 'primeng/api';
+import { NotificationPreference, UpdatePreference } from '../../../Interfaces/Preference';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 @Component({
   selector: 'app-statuses',
-  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ToastrModule],
+  imports: [TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ToastrModule, RadioButtonModule, DialogModule, FormsModule, ReactiveFormsModule],
   templateUrl: './statuses.component.html',
   styleUrl: './statuses.component.css',
-  providers: [ToastrService]
+  providers: [ToastrService, ConfirmationService]
 })
 export class StatusesComponent implements OnInit {
   Channels: ChannelStatus[] = [];
   Loading: boolean = false;
+  UpdatePreferenceLoading: boolean = false;
 
-  constructor(private fb: FormBuilder, private notificationService: NotificationService, private toastService: ToastrService, private router: Router) { }
+  constructor(private fb: FormBuilder, private notificationService: NotificationService, private toastService: ToastrService, private router: Router) {
+    this.preferenceForm = this.fb.group({
+      preference: [NotificationPreference.OnePerChannel] // default
+    });
+  }
   ngOnInit(): void {
     this.loadChannels();
+    this.loadPreference();
   }
   onGlobalFilter(table: any, event: Event) {
     table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
@@ -54,4 +64,50 @@ export class StatusesComponent implements OnInit {
   onEditSubscription(channel: ChannelStatus) {
     this.router.navigate(['/System/Configuration/Notification/EditSubscription', channel.ChannelId])
   }
+
+
+
+  notificationOptions = [
+    { label: 'One per Channel', value: NotificationPreference.OnePerChannel },
+    { label: 'Group by Station', value: NotificationPreference.GroupByStation },
+    { label: 'Group All', value: NotificationPreference.GroupAll }
+  ];
+  showPreferenceDialog = false;
+  preferenceForm!: FormGroup;
+  loadPreference() {
+    this.notificationService.GetPreference().subscribe({
+      next: (response) => {
+        this.preferenceForm.patchValue({
+          preference: response
+        });
+      },
+      error: (error) => {
+        console.error(error);
+        this.toastService.error("Unable to fetch preference");
+      }
+    });
+  }
+
+
+  savePreference() {
+    this.UpdatePreferenceLoading = true;
+
+    const preference: UpdatePreference = {
+      Preference: this.preferenceForm.value.preference
+    }
+
+    this.notificationService.UpdatePreference(preference).subscribe({
+      next: () => {
+        this.toastService.success('Preference updated successfully');
+        this.UpdatePreferenceLoading = false;
+        this.loadPreference();
+      },
+      error: (error) => {
+        console.error(error);
+        this.toastService.error('Failed to update preference');
+        this.UpdatePreferenceLoading = false;
+      }
+    });
+  }
+
 }

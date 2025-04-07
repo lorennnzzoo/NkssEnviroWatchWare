@@ -7,6 +7,7 @@ import { ChannelStatus } from '../Interfaces/ChannelStatus';
 import { Observable } from 'rxjs';
 import { Condition, ConditionCreate, NotificationSubscription } from '../Interfaces/NotificationCondition';
 import { Contact, ContactCreation, ContactDeletion, ContactEdition, ContactType } from '../Interfaces/Contact';
+import { NotificationPreference, UpdatePreference } from '../Interfaces/Preference';
 
 @Injectable({
   providedIn: 'root'
@@ -187,6 +188,34 @@ export class NotificationService {
     let headers = new HttpHeaders();
     headers = headers.set('Authorization', 'Bearer ' + token);
     return this.http.put(`${this.apiUrl}/EditContact`, edition, { headers });
+  }
+
+
+
+  GetPreference(): Observable<NotificationPreference> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<NotificationPreference>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<NotificationPreference>(`${this.apiUrl}/GetPreference`, { headers });
+  }
+
+  UpdatePreference(preference: UpdatePreference): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    return this.http.put(`${this.apiUrl}/UpdatePreference`, preference, { headers });
   }
 
 }
