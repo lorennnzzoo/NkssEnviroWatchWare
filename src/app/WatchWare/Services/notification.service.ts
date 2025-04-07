@@ -218,4 +218,33 @@ export class NotificationService {
     return this.http.put(`${this.apiUrl}/UpdatePreference`, preference, { headers });
   }
 
+
+  MultiChannelSubscribing(ids: number[]): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    const payload = {
+      ChannelIds: ids,
+    };
+    return this.http.post(`${this.apiUrl}/MultiChannelSubscribe`, ids, { headers });
+  }
+
+  GetMultiChannelSubscriptionStatus(): Observable<ChannelStatus[]> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<ChannelStatus[]>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<ChannelStatus[]>(`${this.apiUrl}/LoadMultiChannelSubscriptionStatus`, { headers });
+  }
 }

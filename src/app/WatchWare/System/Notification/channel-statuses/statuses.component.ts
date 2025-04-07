@@ -28,6 +28,8 @@ export class StatusesComponent implements OnInit {
   Channels: ChannelStatus[] = [];
   Loading: boolean = false;
   UpdatePreferenceLoading: boolean = false;
+  SelectedChannels: ChannelStatus[] = [];
+  MultiSubscribeLoading: boolean = false;
 
   constructor(private fb: FormBuilder, private notificationService: NotificationService, private toastService: ToastrService, private router: Router) {
     this.preferenceForm = this.fb.group({
@@ -35,6 +37,7 @@ export class StatusesComponent implements OnInit {
     });
   }
   ngOnInit(): void {
+    this.loadMultiChannelStatus();
     this.loadChannels();
     this.loadPreference();
   }
@@ -98,6 +101,7 @@ export class StatusesComponent implements OnInit {
 
     this.notificationService.UpdatePreference(preference).subscribe({
       next: () => {
+        this.showPreferenceDialog = false;
         this.toastService.success('Preference updated successfully');
         this.UpdatePreferenceLoading = false;
         this.loadPreference();
@@ -110,4 +114,48 @@ export class StatusesComponent implements OnInit {
     });
   }
 
+
+  onMultiSubscribe() {
+    this.MultiSubscribeLoading = true;
+    if (this.SelectedChannels.length === 0) {
+      this.toastService.warning("Please select atleast one channel to subscribe.");
+      this.MultiSubscribeLoading = false;
+      return;
+    }
+
+    const ids: number[] = this.SelectedChannels.map(c => c.ChannelId);
+
+    this.notificationService.MultiChannelSubscribing(ids).subscribe({
+      next: (response) => {
+        this.MultiSubscribeLoading = false;
+        this.toastService.success("Successfully subscribed");
+        this.loadMultiChannelStatus();
+        this.loadChannels();
+      },
+      error: (error) => {
+        this.MultiSubscribeLoading = false;
+        console.error(error);
+        this.toastService.error("Unable to subscribe");
+      }
+    })
+  }
+
+  loadMultiChannelStatus() {
+    this.Loading = true;
+    this.notificationService.GetMultiChannelSubscriptionStatus().subscribe({
+      next: (response) => {
+        this.Loading = false;
+        this.SelectedChannels = response;
+      },
+      error: (error) => {
+        this.Loading = false;
+        this.toastService.error("Unable to load multi status");
+      }
+    })
+  }
+
+
+  onCreateCondition() {
+    this.router.navigate(['/System/Configuration/Notification/CreateCondition'])
+  }
 }

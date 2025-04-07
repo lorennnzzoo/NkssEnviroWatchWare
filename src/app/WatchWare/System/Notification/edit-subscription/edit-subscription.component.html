@@ -22,7 +22,7 @@
                     Create Condition
                 </button>
                 <button type="button" (click)="onUpdateSubscription()"
-                    class="mx-4 px-4 bg-green-500 border border-green-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
+                    class="mx-4 px-4 bg-green-500 border border-green-500 text-primary rounded-md hover:bg-green-700 border-none hover:text-primary transition">
 
                     <span *ngIf="SubscribeLoading">
                         <i class="fas fa-spinner fa-spin mr-2"></i>Update Subscription
@@ -33,7 +33,7 @@
                 </button>
 
                 <button type="button" (click)="onUnSubscribe(subscription.Id)"
-                    class=" px-4 bg-red-500 border border-red-500 text-primary rounded-md hover:bg-accent border-none hover:text-primary transition">
+                    class=" px-4 bg-red-500 border border-red-500 text-primary rounded-md hover:bg-red-700 border-none hover:text-primary transition">
 
                     <span *ngIf="UnsubscribeLoading">
                         <i class="fas fa-spinner fa-spin mr-2"></i>Unsubscribe
