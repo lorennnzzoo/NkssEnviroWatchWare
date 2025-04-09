@@ -12,10 +12,12 @@ import { UserService } from '../../WatchWare/Services/user.service';
 import { User } from '../../WatchWare/Interfaces/User';
 import { DialogModule } from 'primeng/dialog';
 import { ProfileComponent } from "../../WatchWare/Auth/profile/profile.component";
+import { DrawerModule } from 'primeng/drawer';
+import { NotificationsComponent } from "../notifications/notifications.component";
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterModule, CommonModule, ToastrModule, TooltipModule, DialogModule],
+  imports: [RouterModule, CommonModule, ToastrModule, TooltipModule, DialogModule, DrawerModule, NotificationsComponent],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css',
   providers: [ToastrService]
@@ -23,6 +25,7 @@ import { ProfileComponent } from "../../WatchWare/Auth/profile/profile.component
 export class SidebarComponent implements OnInit {
 
   showCard: boolean = false;
+  showNotifications: boolean = false;
 
   Username: string = '';
   private usernameSubscription: Subscription | null = null;

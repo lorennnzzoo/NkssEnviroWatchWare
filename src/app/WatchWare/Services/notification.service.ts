@@ -8,6 +8,7 @@ import { Observable } from 'rxjs';
 import { Condition, ConditionCreate, NotificationSubscription } from '../Interfaces/NotificationCondition';
 import { Contact, ContactCreation, ContactDeletion, ContactEdition, ContactType } from '../Interfaces/Contact';
 import { NotificationPreference, UpdatePreference } from '../Interfaces/Preference';
+import { NotificationHistory } from '../Interfaces/NotificationHistory';
 
 @Injectable({
   providedIn: 'root'
@@ -247,4 +248,32 @@ export class NotificationService {
 
     return this.http.get<ChannelStatus[]>(`${this.apiUrl}/LoadMultiChannelSubscriptionStatus`, { headers });
   }
+
+
+  GetAllNotifications(): Observable<NotificationHistory[]> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<NotificationHistory[]>();  // Return an empty observable to prevent further actions
+    }
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<NotificationHistory[]>(`${this.apiUrl}/GetAllNotifications`, { headers });
+  }
+
+  ReadNotification(id: number): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+
+    const headers = new HttpHeaders().set('Authorization', 'Bearer ' + token);
+
+    return this.http.put(`${this.apiUrl}/ReadNotification?id=${id}`, null, { headers });
+  }
+
 }
