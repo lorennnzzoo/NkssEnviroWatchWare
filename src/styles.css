@@ -13,3 +13,36 @@
     /* Hover/Accent */
     --color-accent: #1478B4;
 }
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/inter/Inter-Regular-400.otf') format('opentype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/inter/Inter-Italic-400.otf') format('opentype');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/inter/Inter-Bold-700.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Inter';
+    src: url('/assets/fonts/inter/Inter-Bold-Italic-700.otf') format('opentype');
+    font-weight: 700;
+    font-style: italic;
+}
+
+/* Apply globally */
+body {
+    font-family: 'Inter', sans-serif;
+}
