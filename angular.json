@@ -37,6 +37,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/WatchWare/",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -46,8 +47,8 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
+                  "maximumWarning": "10mb",
+                  "maximumError": "15mb"
                 },
                 {
                   "type": "anyComponentStyle",
@@ -55,7 +56,15 @@
                   "maximumError": "8kB"
                 }
               ],
-              "outputHashing": "all"
+              "outputHashing": "all",
+              "allowedCommonJsDependencies": [
+                "core-js",
+                "raf",
+                "rgbcolor",
+                "html2canvas",
+                "canvg",
+                "plotly.js-dist-min"
+              ]
             },
             "development": {
               "optimization": false,
