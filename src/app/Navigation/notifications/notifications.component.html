@@ -95,13 +95,13 @@
 
                         <div
                             class="flex-shrink-0 w-10 h-10 bg-blue-100 rounded-md flex items-center justify-center text-blue-500">
-                            <i *ngIf="notif.ConditionType === ConditionType.LogTime" class="fa fa-clock"></i>
+                            <i *ngIf="notif.ConditionType === 'LogTime'" class="fa fa-clock"></i>
 
                             <!-- Value condition -->
-                            <i *ngIf="notif.ConditionType === ConditionType.Value" class="fa fa-chart-line"></i>
+                            <i *ngIf="notif.ConditionType === 'Value'" class="fa fa-chart-line"></i>
 
                             <!-- Fallback -->
-                            <i *ngIf="notif.ConditionType !== ConditionType.LogTime && notif.ConditionType !== ConditionType.Value"
+                            <i *ngIf="notif.ConditionType !== 'LogTime' && notif.ConditionType !== 'Value'"
                                 class="fa fa-bell"></i>
                         </div>
 
@@ -112,12 +112,12 @@
                             <div class="flex items-center justify-between mt-1 w-full">
                                 <p class="text-xs text-gray-500">
                                     {{ notif.RaisedTime | date: 'MMM d, y' }} · {{ notif.RaisedTime | date: 'hh:mm a' }}
-                                    <span class="ml-2" *ngIf="notif.SentTime; else notDelivered">
+                                    <!-- <span class="ml-2" *ngIf="notif.SentTime; else notDelivered">
                                         Delivered to customer at: {{ notif.SentTime | date: 'MMM d, y, hh:mm a' }}
                                     </span>
                                     <ng-template #notDelivered>
                                         <span class="ml-2">Not Delivered To Customers</span>
-                                    </ng-template>
+                                    </ng-template> -->
                                 </p>
 
                                 <div class="text-xs text-right text-blue-600">
