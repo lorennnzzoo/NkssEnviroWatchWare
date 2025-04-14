@@ -1,0 +1,109 @@
+<div class="my-5 border rounded-lg shadow-md p-4 bg-white">
+    <span class="text-xl font-bold text-gray-900 mb-4">Edit Auto Mail Report Subscription</span>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-3">
+            <!-- <div class="text-gray-900 font-medium text-lg">Protocol Information</div> -->
+            <p class="text-gray-600 text-sm">Configure station and report settings for scheduled email delivery.</p>
+
+
+        </div>
+        <div class="lg:col-span-9">
+            <form [formGroup]="subscriptionForm" (ngSubmit)="onSubmit()">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label for="StationId" class="block text-gray-700 font-medium">Station</label>
+                        <select id="StationId" formControlName="StationId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let station of Stations" [value]="station.Id">{{ station.Name }}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="subscriptionForm.get('StationId')?.invalid && subscriptionForm.get('StationId')?.touched"
+                            class="text-red-500 text-sm">Station is required</small>
+                    </div>
+
+
+                    <div>
+                        <label for="Interval" class="font-medium text-gray-700 text-900">Report
+                            Interval</label>
+
+                        <select id="Interval" formControlName="Interval"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let option of intervalOptions" [value]="option.value">{{ option.label }}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="subscriptionForm.get('Interval')?.invalid && subscriptionForm.get('Interval')?.touched"
+                            class="text-red-500 text-sm">
+                            Report Interval is required.
+                        </small>
+                    </div>
+
+                    <div>
+                        <label for="Range" class="font-medium text-gray-700 text-900">Report
+                            Range</label>
+
+                        <select id="Range" formControlName="Range"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let option of rangeOptions" [value]="option.value">{{ option.label }}
+                            </option>
+                        </select>
+                        <small *ngIf="subscriptionForm.get('Range')?.invalid && subscriptionForm.get('Range')?.touched"
+                            class="text-red-500 text-sm">
+                            Report Range is required.
+                        </small>
+                    </div>
+
+                    <div>
+                        <label for="EmailScheduleTime"
+                            class="block  font-medium text-gray-700 disabled:cursor-not-allowed">Email Schedule
+                            Time</label>
+                        <p-datepicker id="EmailScheduleTime" formControlName="EmailScheduleTime"
+                            inputId="calendar-timeonly" [timeOnly]="true" />
+                        <small
+                            *ngIf="subscriptionForm.get('EmailScheduleTime')?.invalid && subscriptionForm.get('EmailScheduleTime')?.touched"
+                            class="text-red-500 text-sm">
+                            Email Schedule Time is required.
+                        </small>
+                    </div>
+
+                    <div>
+                        <label for="Frequency" class="font-medium text-gray-700 text-900">Email Frequency</label>
+
+                        <select id="Frequency" formControlName="Frequency"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let option of frequencyOptions" [value]="option.value">{{ option.label }}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="subscriptionForm.get('Frequency')?.invalid && subscriptionForm.get('Frequency')?.touched"
+                            class="text-red-500 text-sm">
+                            Email Frequency is required.
+                        </small>
+                    </div>
+                </div>
+
+
+                <div class="flex gap-4 mt-4">
+                    <button type="submit" [disabled]="Loading"
+                        class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+
+                        <span *ngIf="Loading">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                        </span>
+                        <span *ngIf="!Loading">
+
+                        </span>
+
+                        <span>Update</span>
+                    </button>
+                    <button type="button" (click)="goBack()"
+                        class="mt-1 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

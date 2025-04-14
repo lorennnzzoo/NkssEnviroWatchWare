@@ -34,6 +34,9 @@ import { EditSubscriptionComponent } from './WatchWare/System/Notification/edit-
 import { LicenseComponent } from './WatchWare/Auth/license/license.component';
 import { LogsComponent } from './WatchWare/System/logs/logs.component';
 import { ContactsComponent } from './WatchWare/System/Notification/contacts/contacts.component';
+import { SubscriptionsComponent } from './WatchWare/System/AutoMailReport/subscriptions/subscriptions.component';
+import { CreateSusbcriptionComponent } from './WatchWare/System/AutoMailReport/create-susbcription/create-susbcription.component';
+import { EditSusbcriptionComponent } from './WatchWare/System/AutoMailReport/edit-susbcription/edit-susbcription.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -70,6 +73,9 @@ export const routes: Routes = [
     { path: 'System/Configuration/Notification/CreateCondition', component: CreateConditionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Contacts', component: ContactsComponent, canActivate: [AuthGuard] },
     { path: 'System/Logs', component: LogsComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/AutoMailReport/Subscriptions', component: SubscriptionsComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/AutoMailReport/CreateSubscription', component: CreateSusbcriptionComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/AutoMailReport/EditSubscription/:id', component: EditSusbcriptionComponent, canActivate: [AuthGuard] },
     { path: 'Profile', component: ProfileComponent, canActivate: [AuthGuard] },
     { path: 'NotFound', component: NotFoundComponent },
     { path: '', pathMatch: 'full', redirectTo: 'Dashboard' },
