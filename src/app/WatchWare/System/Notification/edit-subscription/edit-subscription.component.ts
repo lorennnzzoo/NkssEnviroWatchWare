@@ -137,8 +137,8 @@ export class EditSubscriptionComponent implements OnInit {
 
   onUnSubscribe(Id: string) {
     this.dialogService.confirm({
-      message: 'Are you sure you want to unsubscribe to this channel?',
-      header: 'Confirm Unsubscribe',
+      message: 'Are you sure you want to delete subscription to this channel?',
+      header: 'Confirm Deletion',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
         this.UnsubscribeLoading = true;
@@ -152,6 +152,36 @@ export class EditSubscriptionComponent implements OnInit {
           error: (error) => {
             this.UnsubscribeLoading = false;
             this.toastService.error("Unable to unsubscribe");
+            console.error(error);
+          }
+        })
+      },
+      reject: () => {
+        // User clicked "No"
+
+      },
+    });
+  }
+  onEdit(condition: Condition) {
+    this.router.navigate(['/System/Configuration/Notification/EditCondition', condition.Id])
+  }
+  onDelete(condition: Condition) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this condition?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        this.UnsubscribeLoading = true;
+        // User clicked "Yes"
+        this.notificationService.DeleteCondition(condition.Id).subscribe({
+          next: (response) => {
+            this.UnsubscribeLoading = false;
+            this.toastService.success("Successfully Deleted.");
+            this.ngOnInit();
+          },
+          error: (error) => {
+            this.UnsubscribeLoading = false;
+            this.toastService.error("Unable to delete");
             console.error(error);
           }
         })

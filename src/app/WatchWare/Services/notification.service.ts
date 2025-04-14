@@ -275,5 +275,52 @@ export class NotificationService {
 
     return this.http.put(`${this.apiUrl}/ReadNotification?id=${id}`, null, { headers });
   }
+  GetConditionById(Id: string): Observable<Condition> {
+    const token = this.authService.getToken();
+    if (!token) {
 
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', Id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.get<Condition>(`${this.apiUrl}/GetCondition`, { headers, params });
+  }
+
+
+  UpdateCondition(condition: Condition): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', condition.Id)
+      .set('ConditionName', condition.ConditionName)
+      .set('ConditionType', condition.ConditionType)
+      .set('Cooldown', condition.Cooldown)
+      .set('Duration', condition.Duration)
+      .set('Operator', condition.Operator)
+      .set('Threshold', condition.Threshold)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/UpdateCondition`, params, { headers });
+  }
+
+  DeleteCondition(id: string): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.delete(`${this.apiUrl}/DeleteCondition`, { headers, params });
+  }
 }

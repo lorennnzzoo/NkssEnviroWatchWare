@@ -1,0 +1,116 @@
+<div>
+    <h2 class="text-2xl font-normal text-gray-500">Notification Condition</h2>
+</div>
+<div class="my-5 border p-6 bg-white rounded-lg shadow-lg">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Edit Condition</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <div class="lg:col-span-3">
+            <p class="text-gray-600 text-sm">Define the condition details and parameters.</p>
+            <p class="text-gray-600 text-xs mt-2">
+                <strong>Tip:</strong> For <span class="font-semibold">LogTime</span> condition type,
+                selecting <span class="font-semibold">LessThan</span> with a
+                <span class="font-semibold">Threshold of 30</span> means the system
+                will check if the channel has been delayed more than <span class="font-semibold">30 minutes</span>.
+            </p>
+            <p class="text-gray-600 text-xs mt-4">
+                <strong>Duration:</strong> This defines how long the condition must persist
+                before triggering a notification. For example, setting
+                <span class="font-semibold">2 minutes</span> means the condition must be met
+                for at least <span class="font-semibold">2 minutes</span> before an alert is sent.
+            </p>
+
+            <p class="text-gray-600 text-xs mt-4">
+                <strong>Cooldown:</strong> After a notification is triggered, this determines
+                how long the system should wait before sending another alert for the same
+                <span class="font-semibold">ChannelId</span>. For example, setting
+                <span class="font-semibold">10 minutes</span> means the system will wait
+                <span class="font-semibold">10 minutes</span> before checking the condition again.
+            </p>
+        </div>
+        <div class="lg:col-span-9">
+            <form [formGroup]="conditionForm" (ngSubmit)="onSubmit()" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+                    <div>
+                        <label for="conditionName" class="font-medium text-gray-700">Condition Name</label>
+                        <input id="conditionName" type="text" formControlName="ConditionName"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required>
+                        <small
+                            *ngIf="conditionForm.get('ConditionName')?.invalid && conditionForm.get('ConditionName')?.touched"
+                            class="text-red-500 text-sm">Condition Name is required</small>
+                    </div>
+
+                    <div>
+                        <label for="conditionType" class="font-medium text-gray-700">Condition Type</label>
+                        <select id="conditionType" formControlName="ConditionType"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let type of conditionTypes" [value]="type.value">{{ type.label }}</option>
+                        </select>
+                        <small
+                            *ngIf="conditionForm.get('ConditionType')?.invalid && conditionForm.get('ConditionType')?.touched"
+                            class="text-red-500 text-sm">Condition Type is required</small>
+                    </div>
+
+                    <!-- Operator Selection -->
+                    <div>
+                        <label for="operator" class="font-medium text-gray-700">Operator</label>
+                        <select id="operator" formControlName="Operator"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let op of operators" [value]="op.value">{{ op.label }}</option>
+                        </select>
+                        <small *ngIf="conditionForm.get('Operator')?.invalid && conditionForm.get('Operator')?.touched"
+                            class="text-red-500 text-sm">Operator is required</small>
+                    </div>
+
+                    <div>
+                        <label for="threshold" class="font-medium text-gray-700">Threshold (minutes / value)</label>
+                        <input id="threshold" type="number" formControlName="Threshold"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="-1000000" step="any">
+                        <small
+                            *ngIf="conditionForm.get('Threshold')?.invalid && conditionForm.get('Threshold')?.touched"
+                            class="text-red-500 text-sm">Threshold is required</small>
+                    </div>
+
+                    <div>
+                        <label for="cooldown" class="font-medium text-gray-700">Cooldown Period (minutes)</label>
+                        <input id="cooldown" type="number" formControlName="Cooldown"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="1" step="1">
+                        <small *ngIf="conditionForm.get('Cooldown')?.invalid && conditionForm.get('Cooldown')?.touched"
+                            class="text-red-500 text-sm">Cooldown period is required</small>
+                    </div>
+
+                    <div>
+                        <label for="cooldown" class="font-medium text-gray-700">Duration Period (minutes)</label>
+                        <input id="cooldown" type="number" formControlName="Duration"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500"
+                            required min="1" step="1">
+                        <small *ngIf="conditionForm.get('Duration')?.invalid && conditionForm.get('Duration')?.touched"
+                            class="text-red-500 text-sm">Duration period is required</small>
+                    </div>
+
+                    <div class="flex gap-4 mt-4">
+                        <button type="submit" [disabled]="Loading"
+                            class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+
+                            <span *ngIf="Loading">
+                                <i class="fas fa-spinner fa-spin mr-2"></i>
+                            </span>
+                            <span *ngIf="!Loading">
+
+                            </span>
+
+                            <span>Update</span>
+                        </button>
+                        <button type="button" (click)="goBack()"
+                            class="bg-gray-500 text-white px-4 py-2 mt-1 rounded-md shadow hover:bg-gray-600">
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

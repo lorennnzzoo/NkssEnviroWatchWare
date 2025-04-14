@@ -37,6 +37,7 @@ import { ContactsComponent } from './WatchWare/System/Notification/contacts/cont
 import { SubscriptionsComponent } from './WatchWare/System/AutoMailReport/subscriptions/subscriptions.component';
 import { CreateSusbcriptionComponent } from './WatchWare/System/AutoMailReport/create-susbcription/create-susbcription.component';
 import { EditSusbcriptionComponent } from './WatchWare/System/AutoMailReport/edit-susbcription/edit-susbcription.component';
+import { EditConditionComponent } from './WatchWare/System/Notification/edit-condition/edit-condition.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -71,6 +72,7 @@ export const routes: Routes = [
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/EditSubscription/:id', component: EditSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/CreateCondition', component: CreateConditionComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/Notification/EditCondition/:id', component: EditConditionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Contacts', component: ContactsComponent, canActivate: [AuthGuard] },
     { path: 'System/Logs', component: LogsComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/AutoMailReport/Subscriptions', component: SubscriptionsComponent, canActivate: [AuthGuard] },
