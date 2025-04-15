@@ -93,7 +93,13 @@ export class SidebarComponent implements OnInit {
           { title: 'Notifications', icon: 'fas fa-bell', route: '/System/Configuration/Notifications/Statuses' },
           { title: 'Auto Mail Reports', icon: 'fas fa-envelopes-bulk', route: '/System/Configuration/AutoMailReport/Subscriptions' },
         ]
-      }]
+      },
+      {
+        title: 'PCB Uploading', icon: 'fas fa-upload', children: [
+          { title: 'CPCB-NKSS', icon: 'fas fa-smog', route: '/PCB/CPCBNKSS/Uploading/StationsStatus' },
+        ]
+      }
+      ]
     }
     else if (this.role === 'Customer') {
       this.menuItems = this.menuItems = [{

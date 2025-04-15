@@ -10,21 +10,14 @@
 
 </div>
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
-    <p-table #dt [value]="Channels" dataKey="ChannelId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]" 
+    <p-table #dt [value]="Channels" dataKey="ChannelId" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
         [loading]="Loading" [(selection)]="SelectedChannels" showGridlines="" [paginator]="true"
         [globalFilterFields]="['ChannelName','StationName','Units']" [tableStyle]="{ 'min-width': '1000px' }">
         <ng-template #caption>
             <div class="flex">
 
-
-                <p-iconfield iconPosition="left" class="mr-4">
-                    <p-inputicon>
-                        <i class="fa fa-search"></i>
-                    </p-inputicon>
-                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
-                </p-iconfield>
                 <button type="button" (click)="onMultiSubscribe()" [disabled]="MultiSubscribeLoading"
-                    class="flex items-center gap-2 px-4 mr-auto bg-accent border border-accent text-primary rounded-md hover:bg-secondary hover:border-secondary hover:text-primary transition">
+                    class=" px-4 bg-accent border border-accent text-primary rounded-md hover:bg-accent hover:text-primary transition">
 
                     <i *ngIf="MultiSubscribeLoading; else iconCheck" class="fas fa-spinner fa-spin"></i>
                     <ng-template #iconCheck>
@@ -35,10 +28,17 @@
                 </button>
 
                 <button type="button" (click)="onManageContacts()"
-                    class="flex items-center gap-2 px-4 ml-auto bg-accent border border-accent text-primary rounded-md hover:bg-secondary hover:border-secondary hover:text-primary transition">
+                    class="flex items-center gap-2 px-4 mx-4 bg-accent border border-accent text-primary rounded-md hover:bg-secondary hover:border-secondary hover:text-primary transition">
                     <i class="fas fa-address-book"></i>
                     Manage Contacts
                 </button>
+                <p-iconfield iconPosition="left" class="ml-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" placeholder="Search keyword" />
+                </p-iconfield>
+
 
 
             </div>
