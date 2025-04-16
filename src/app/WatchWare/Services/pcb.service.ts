@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
 import { ChannelConfiguration, ChannelConfigurationCreate, ChannelConfigurationEdit, StationConfiguration, StationConfigurationCreate, StationConfigurationEdit } from '../Interfaces/PCB/CPCB/Configurations';
 import { Observable } from 'rxjs';
+import { UploadSettings } from '../Interfaces/PCB/UploadSettings';
 
 @Injectable({
   providedIn: 'root'
@@ -180,5 +181,41 @@ export class PCBService {
       .set('id', id)
     headers = headers.set('Authorization', 'Bearer ' + token);
     return this.http.delete(`${this.apiUrl}/DeleteCPCBChannelConfiguration`, { headers, params });
+  }
+
+  GetCPCBUploadSettings(): Observable<UploadSettings> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<UploadSettings>();
+    }
+
+    let headers = new HttpHeaders();
+
+
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<UploadSettings>(`${this.apiUrl}/GetCPCBUploadSettings`, { headers });
+  }
+
+  UpdateCPCBUploadSettings(UploadSettings: UploadSettings): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('LiveUrl', UploadSettings.LiveUrl)
+      .set('DelayUrl', UploadSettings.DelayUrl)
+      .set('LiveInterval', UploadSettings.LiveInterval)
+      .set('DelayInterval', UploadSettings.DelayInterval)
+      .set('LiveRecords', UploadSettings.LiveRecords)
+      .set('DelayRecords', UploadSettings.DelayRecords)
+
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/UpdateCPCBUploadSettings`, params, { headers });
   }
 }

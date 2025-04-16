@@ -1,5 +1,9 @@
-<div class="">
+<div class="flex justify-between items-center">
     <h2 class="text-2xl font-normal text-gray-500">CPCB Stations Configuration</h2>
+    <div class="flex">
+        <button (click)="showUploadSettingsForm()" class="px-4 py-1  bg-accent text-white  flex justify-center items-center gap-2
+        rounded-md hover:bg-secondary transition duration-300"><i class="fa-solid fa-gear"></i>Upload Settings</button>
+    </div>
 </div>
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
     <p-table #dt [value]="StationConfigurations" dataKey="Id" [rows]="10" [rowsPerPageOptions]="[10, 25, 50]"
@@ -34,7 +38,7 @@
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">CPCB
                     Password
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:2%">Action
                 </th>
             </tr>
         </ng-template>
@@ -97,3 +101,104 @@
         </div>
     </ng-template>
 </p-confirmdialog>
+
+
+<p-dialog header="Upload Settings" [(visible)]="ShowUploadOptions" [modal]="true" [style]="{ width: '500px' }"
+    [contentStyle]="{ padding: '1rem' }" [closable]="true">
+    <form [formGroup]="uploadForm" (ngSubmit)="saveUploadSettings()">
+        <div class="space-y-4">
+
+            <div>
+                <label for="liveUrl" class="block text-sm font-medium text-gray-700">Live URL</label>
+                <input id="liveUrl" type="text" formControlName="liveUrl"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('liveUrl')?.touched) && uploadForm.get('liveUrl')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('liveUrl')?.hasError('required')">This field is
+                        required.</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="delayUrl" class="block text-sm font-medium text-gray-700">Delay URL</label>
+                <input id="delayUrl" type="text" formControlName="delayUrl"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('delayUrl')?.touched) && uploadForm.get('delayUrl')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('delayUrl')?.hasError('required')">This field is
+                        required.</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="liveInterval" class="block text-sm font-medium text-gray-700">Live Interval (in
+                    seconds)</label>
+                <input id="liveInterval" min="60" type="number" formControlName="liveInterval"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('liveInterval')?.touched) && uploadForm.get('liveInterval')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('liveInterval')?.hasError('required')">This field is required.</span>
+                    <span *ngIf="uploadForm.get('liveInterval')?.hasError('min')">Must be greater 60 seconds or
+                        more.</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="delayInterval" class="block text-sm font-medium text-gray-700">Delay Interval (in
+                    seconds)</label>
+                <input id="delayInterval" min="60" type="number" formControlName="delayInterval"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('delayInterval')?.touched) && uploadForm.get('delayInterval')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('delayInterval')?.hasError('required')">This field is required.</span>
+                    <span *ngIf="uploadForm.get('delayInterval')?.hasError('min')">Must be greater 60 seconds or
+                        more.</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="liveNumberOfRecords" class="block text-sm font-medium text-gray-700">Live Number of
+                    Records</label>
+                <input id="liveNumberOfRecords" min="1" type="number" formControlName="liveNumberOfRecords"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('liveNumberOfRecords')?.touched) && uploadForm.get('liveNumberOfRecords')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('liveNumberOfRecords')?.hasError('required')">This field is
+                        required.</span>
+                    <span *ngIf="uploadForm.get('liveNumberOfRecords')?.hasError('min')">Must be 1 record or
+                        more.</span>
+                </div>
+            </div>
+
+            <div>
+                <label for="delayNumberOfRecords" class="block text-sm font-medium text-gray-700">Delay Number of
+                    Records</label>
+                <input id="delayNumberOfRecords" min="1" type="number" formControlName="delayNumberOfRecords"
+                    class="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring focus:ring-blue-200" />
+                <div *ngIf="(uploadForm.get('delayNumberOfRecords')?.touched) && uploadForm.get('delayNumberOfRecords')?.invalid"
+                    class="text-sm text-red-500 mt-1">
+                    <span *ngIf="uploadForm.get('delayNumberOfRecords')?.hasError('required')">This field is
+                        required.</span>
+                    <span *ngIf="uploadForm.get('delayNumberOfRecords')?.hasError('min')">Must be 1 record or
+                        more.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="mt-6 flex justify-end space-x-2">
+            <button type="button" class="px-4 py-2 rounded-md border border-gray-300 text-gray-700 hover:bg-gray-100"
+                (click)="closeUploadSettingsForm()">
+                Cancel
+            </button>
+            <button type="submit" [disabled]="uploadOptionLoading"
+                class="px-4 py-2 rounded-md bg-accent text-white hover:bg-secondary transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center space-x-2">
+
+                <i *ngIf="uploadOptionLoading" class="fa fa-spinner fa-spin"></i>
+                <span>{{ uploadOptionLoading ? 'Saving...' : 'Save' }}</span>
+
+            </button>
+
+
+        </div>
+    </form>
+</p-dialog>

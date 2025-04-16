@@ -15,10 +15,13 @@ import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Router } from '@angular/router';
 import { ConfirmationService } from 'primeng/api';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { DialogModule } from 'primeng/dialog';
+import { UploadSettings } from '../../../Interfaces/PCB/UploadSettings';
 
 @Component({
   selector: 'app-stations-status',
-  imports: [ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
+  imports: [ToastrModule, TableModule, TagModule, ReactiveFormsModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule, DialogModule],
   templateUrl: './stations-status.component.html',
   styleUrl: './stations-status.component.css',
   providers: [ToastrService, ConfirmationService]
@@ -28,9 +31,21 @@ export class StationsStatusComponent implements OnInit {
 
   StationConfigurations: StationConfiguration[] = [];
   StationConfigurationsLoading: boolean = false;
+  ShowUploadOptions: boolean = false;
+  uploadOptionLoading: boolean = false;
+  uploadForm!: FormGroup;
+  uploadFormLoading: boolean = false;
 
-  constructor(private toastService: ToastrService, private pcbService: PCBService, private router: Router, private dialogService: ConfirmationService) { }
+  constructor(private toastService: ToastrService, private pcbService: PCBService, private router: Router, private fb: FormBuilder, private dialogService: ConfirmationService) { }
   ngOnInit(): void {
+    this.uploadForm = this.fb.group({
+      liveUrl: ['', Validators.required],
+      delayUrl: ['', Validators.required],
+      liveInterval: [60, [Validators.required, Validators.min(60)]],
+      delayInterval: [60, [Validators.required, Validators.min(60)]],
+      liveNumberOfRecords: [1, [Validators.required, Validators.min(1)]],
+      delayNumberOfRecords: [1, [Validators.required, Validators.min(1)]],
+    });
     this.loadStationConfigurations();
   }
 
@@ -84,5 +99,62 @@ export class StationsStatusComponent implements OnInit {
   }
   onChannels(configuration: StationConfiguration) {
     this.router.navigate(['/PCB/CPCBNKSS/Uploading/ChannelsStatus', configuration.StationId]);
+  }
+  saveUploadSettings() {
+    this.uploadOptionLoading = true;
+    if (!this.uploadForm.valid) {
+      this.toastService.warning('Please fill all required fields', 'Warning');
+      this.uploadOptionLoading = false;
+      this.uploadForm.markAllAsTouched();
+      return;
+    }
+    const uploadSettings: UploadSettings = {
+      LiveUrl: this.uploadForm.value.liveUrl,
+      DelayUrl: this.uploadForm.value.delayUrl,
+      LiveInterval: this.uploadForm.value.liveInterval,
+      DelayInterval: this.uploadForm.value.delayInterval,
+      LiveRecords: this.uploadForm.value.liveNumberOfRecords,
+      DelayRecords: this.uploadForm.value.delayNumberOfRecords,
+    }
+
+
+
+    this.pcbService.UpdateCPCBUploadSettings(uploadSettings).subscribe({
+      next: (response) => {
+        this.toastService.success('Updated successfully.');
+        this.uploadOptionLoading = false;
+        this.ShowUploadOptions = false;
+      },
+      error: (error) => {
+        this.uploadOptionLoading = false;
+        console.error(error);
+        this.toastService.error(error.error);
+      }
+    })
+  }
+  closeUploadSettingsForm() {
+    this.ShowUploadOptions = false;
+  }
+  showUploadSettingsForm() {
+    this.ShowUploadOptions = true;
+    this.uploadFormLoading = true;
+    this.pcbService.GetCPCBUploadSettings().subscribe({
+      next: (settings) => {
+        this.uploadForm.patchValue({
+          liveUrl: settings.LiveUrl,
+          delayUrl: settings.DelayUrl,
+          liveInterval: settings.LiveInterval,
+          delayInterval: settings.DelayInterval,
+          liveNumberOfRecords: settings.LiveRecords,
+          delayNumberOfRecords: settings.DelayRecords
+        })
+        this.uploadFormLoading = false;
+      },
+      error: (error) => {
+        this.uploadFormLoading = false;
+        console.error(error);
+        this.toastService.error("unable to load upload settings");
+      }
+    })
   }
 }
