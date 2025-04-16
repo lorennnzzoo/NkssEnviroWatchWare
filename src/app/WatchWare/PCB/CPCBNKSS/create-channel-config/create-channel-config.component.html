@@ -1,0 +1,81 @@
+<div class="my-5 border bg-white shadow-lg rounded-lg p-6">
+    <h2 class="text-xl font-bold text-gray-900 mb-4">Create CPCB Channel Configuration</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        <!-- Sidebar Description -->
+        <div class="lg:col-span-3">
+            <!-- <h3 class="text-gray-900 font-medium text-lg">Basic Info</h3> -->
+            <p class="text-gray-600 text-sm">Provide essential details about the cpcb channel configuration.</p>
+        </div>
+
+        <!-- Form Section -->
+        <div class="lg:col-span-9">
+            <form [formGroup]="ChannelConfigForm" (ngSubmit)="onSubmit()" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="ChannelId" class="block text-gray-700 font-medium">Channel</label>
+                        <select id="ChannelId" formControlName="ChannelId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                            <option *ngFor="let station of Channels" [value]="station.Id">{{ station.Name }}
+                            </option>
+                        </select>
+                        <small
+                            *ngIf="ChannelConfigForm.get('ChannelId')?.invalid && ChannelConfigForm.get('ChannelId')?.touched"
+                            class="text-red-500 text-sm">Channel is required</small>
+                    </div>
+                    <div>
+                        <label for="CPCB_ChannelId" class="font-medium text-gray-700 text-900">CPCB ChannelId</label>
+                        <input id="CPCB_ChannelId" type="text" formControlName="CPCB_ChannelId"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                        <small
+                            *ngIf="ChannelConfigForm.get('CPCB_ChannelId')?.invalid && ChannelConfigForm.get('CPCB_ChannelId')?.touched"
+                            class="text-red-500 text-sm">
+                            CPCB ChannelId is required.
+                        </small>
+                    </div>
+
+                    <div>
+                        <label for="CPCB_ChannelName" class="font-medium text-gray-700 text-900">CPCB
+                            ChannelName</label>
+                        <input id="CPCB_ChannelName" type="text" formControlName="CPCB_ChannelName"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                        <small
+                            *ngIf="ChannelConfigForm.get('CPCB_ChannelName')?.invalid && ChannelConfigForm.get('CPCB_ChannelName')?.touched"
+                            class="text-red-500 text-sm">
+                            CPCB ChannelName is required.
+                        </small>
+                    </div>
+                    <div>
+                        <label for="CPCB_Units" class="font-medium text-gray-700 text-900">CPCB Units</label>
+                        <input id="CPCB_Units" type="text" formControlName="CPCB_Units"
+                            class="w-full px-3 py-2 border border-gray-400 rounded-md focus:ring-2 focus:ring-blue-400 focus:border-blue-500">
+                        <small
+                            *ngIf="ChannelConfigForm.get('CPCB_Units')?.invalid && ChannelConfigForm.get('CPCB_Units')?.touched"
+                            class="text-red-500 text-sm">
+                            CPCB Units is required.
+                        </small>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="flex gap-4 mt-4">
+                    <button type="submit" [disabled]="Loading"
+                        class="mt-1 px-4 py-2 bg-accent text-white rounded-md hover:bg-secondary transition disabled:bg-gray-500 disabled:cursor-not-allowed">
+
+                        <span *ngIf="Loading">
+                            <i class="fas fa-spinner fa-spin mr-2"></i>
+                        </span>
+                        <span *ngIf="!Loading">
+
+                        </span>
+
+                        <span>Create</span>
+                    </button>
+                    <button type="button" (click)="goBack()"
+                        class="mt-1 px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

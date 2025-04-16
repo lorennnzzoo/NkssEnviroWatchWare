@@ -40,6 +40,8 @@ import { EditSusbcriptionComponent } from './WatchWare/System/AutoMailReport/edi
 import { EditConditionComponent } from './WatchWare/System/Notification/edit-condition/edit-condition.component';
 import { StationsStatusComponent } from './WatchWare/PCB/CPCBNKSS/stations-status/stations-status.component';
 import { CreateStationConfigComponent } from './WatchWare/PCB/CPCBNKSS/create-station-config/create-station-config.component';
+import { ChannelsStatusComponent } from './WatchWare/PCB/CPCBNKSS/channels-status/channels-status.component';
+import { CreateChannelConfigComponent } from './WatchWare/PCB/CPCBNKSS/create-channel-config/create-channel-config.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -79,6 +81,8 @@ export const routes: Routes = [
     { path: 'System/Logs', component: LogsComponent, canActivate: [AuthGuard] },
     { path: 'PCB/CPCBNKSS/Uploading/StationsStatus', component: StationsStatusComponent, canActivate: [AuthGuard] },
     { path: 'PCB/CPCBNKSS/Uploading/CreateStationConfig', component: CreateStationConfigComponent, canActivate: [AuthGuard] },
+    { path: 'PCB/CPCBNKSS/Uploading/ChannelsStatus/:id', component: ChannelsStatusComponent, canActivate: [AuthGuard] },
+    { path: 'PCB/CPCBNKSS/Uploading/CreateChannelConfig/:id', component: CreateChannelConfigComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/AutoMailReport/Subscriptions', component: SubscriptionsComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/AutoMailReport/CreateSubscription', component: CreateSusbcriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/AutoMailReport/EditSubscription/:id', component: EditSusbcriptionComponent, canActivate: [AuthGuard] },

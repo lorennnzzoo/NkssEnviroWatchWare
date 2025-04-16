@@ -23,3 +23,10 @@ export interface StationConfigurationCreate {
     CPCB_UserName: string;
     CPCB_Password: string;
 }
+export interface ChannelConfigurationCreate {
+    ChannelId: number;
+    StationId: number;
+    CPCB_ChannelId: number;
+    CPCB_ChannelName: string;
+    CPCB_Units: string;
+}

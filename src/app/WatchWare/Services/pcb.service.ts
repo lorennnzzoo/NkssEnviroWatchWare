@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { ChannelConfiguration, StationConfiguration, StationConfigurationCreate } from '../Interfaces/PCB/CPCB/Configurations';
+import { ChannelConfiguration, ChannelConfigurationCreate, StationConfiguration, StationConfigurationCreate } from '../Interfaces/PCB/CPCB/Configurations';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -64,5 +64,28 @@ export class PCBService {
     headers = headers.set('Authorization', 'Bearer ' + token);
 
     return this.http.post(`${this.apiUrl}/CreateCPCBStationConfiguration`, params, { headers });
+  }
+
+
+
+  CreateCPCBChannelConfiguration(configuration: ChannelConfigurationCreate): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+
+    let params = new HttpParams()
+      .set('ChannelId', configuration.ChannelId)
+      .set('StationId', configuration.StationId)
+      .set('CPCB_ChannelId', configuration.CPCB_ChannelId)
+      .set('CPCB_ChannelName', configuration.CPCB_ChannelName)
+      .set('CPCB_Units', configuration.CPCB_Units)
+
+    let headers = new HttpHeaders();
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.post(`${this.apiUrl}/CreateCPCBChannelConfiguration`, params, { headers });
   }
 }

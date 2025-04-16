@@ -60,4 +60,7 @@ export class StationsStatusComponent implements OnInit {
   onDelete(configuration: StationConfiguration) {
 
   }
+  onChannels(configuration: StationConfiguration) {
+    this.router.navigate(['/PCB/CPCBNKSS/Uploading/ChannelsStatus', configuration.StationId]);
+  }
 }
