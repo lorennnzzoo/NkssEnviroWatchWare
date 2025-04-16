@@ -14,13 +14,14 @@ import { CommonModule } from '@angular/common';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Station } from '../../../Interfaces/Station';
 import { StationService } from '../../../Services/station.service';
+import { ConfirmationService } from 'primeng/api';
 
 @Component({
   selector: 'app-channels-status',
   imports: [ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
   templateUrl: './channels-status.component.html',
   styleUrl: './channels-status.component.css',
-  providers: [ToastrService]
+  providers: [ToastrService, ConfirmationService]
 })
 export class ChannelsStatusComponent implements OnInit {
 
@@ -28,7 +29,7 @@ export class ChannelsStatusComponent implements OnInit {
   station!: Station;
   ChannelConfigurations: ChannelConfiguration[] = [];
   ChannelConfigurationsLoading: boolean = false;
-  constructor(private toastService: ToastrService, private route: ActivatedRoute, private stationService: StationService, private pcbService: PCBService, private router: Router) { }
+  constructor(private toastService: ToastrService, private route: ActivatedRoute, private stationService: StationService, private pcbService: PCBService, private router: Router, private dialogService: ConfirmationService) { }
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
@@ -73,9 +74,35 @@ export class ChannelsStatusComponent implements OnInit {
     this.router.navigate(['/PCB/CPCBNKSS/Uploading/CreateChannelConfig', this.stationId]);
   }
   onEdit(configuration: ChannelConfiguration) {
+    this.router.navigate([
+      '/PCB/CPCBNKSS/Uploading/EditChannelConfig',
+      configuration.Id,
+      configuration.StationId
+    ]);
 
   }
   onDelete(configuration: ChannelConfiguration) {
+    this.dialogService.confirm({
+      message: 'Are you sure you want to delete this configuration?',
+      header: 'Confirm Deletion',
+      icon: 'pi pi-exclamation-triangle',
+      accept: () => {
+        // User clicked "Yes"
+        this.pcbService.DeleteCPCBChannelConfiguration(configuration.Id).subscribe
+          ({
+            next: (response) => {
+              this.toastService.success('configuration deleted successfully', 'Deleted');
+              this.ngOnInit();
+            },
+            error: (error) => {
+              this.toastService.error(error.error, 'Unable To Delete configuration');
+            }
+          })
+      },
+      reject: () => {
+        // User clicked "No"
 
+      },
+    });
   }
 }

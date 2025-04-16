@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { ChannelConfiguration, ChannelConfigurationCreate, StationConfiguration, StationConfigurationCreate } from '../Interfaces/PCB/CPCB/Configurations';
+import { ChannelConfiguration, ChannelConfigurationCreate, ChannelConfigurationEdit, StationConfiguration, StationConfigurationCreate, StationConfigurationEdit } from '../Interfaces/PCB/CPCB/Configurations';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -87,5 +87,98 @@ export class PCBService {
     headers = headers.set('Authorization', 'Bearer ' + token);
 
     return this.http.post(`${this.apiUrl}/CreateCPCBChannelConfiguration`, params, { headers });
+  }
+
+  GetCPCBStationConfigurationById(id: string): Observable<StationConfiguration> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('id', id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.get<StationConfiguration>(`${this.apiUrl}/GetCPCBStationConfigurationById`, { headers, params });
+  }
+
+  GetCPCBChannelConfigurationById(id: string): Observable<ChannelConfiguration> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('id', id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.get<ChannelConfiguration>(`${this.apiUrl}/GetCPCBChannelConfigurationById`, { headers, params });
+  }
+
+  UpdateCPCBStationConfiguration(stationConfiguration: StationConfigurationEdit): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', stationConfiguration.Id)
+      .set('StationId', stationConfiguration.StationId)
+      .set('CPCB_StationId', stationConfiguration.CPCB_StationId)
+      .set('CPCB_UserName', stationConfiguration.CPCB_UserName)
+      .set('CPCB_Password', stationConfiguration.CPCB_Password)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/UpdateCPCBStationConfiguration`, params, { headers });
+  }
+
+  UpdateCPCBChannelConfiguration(ChannelConfiguration: ChannelConfigurationEdit): Observable<any> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('Id', ChannelConfiguration.Id)
+      .set('ChannelId', ChannelConfiguration.ChannelId)
+      .set('StationId', ChannelConfiguration.StationId)
+      .set('CPCB_ChannelId', ChannelConfiguration.CPCB_ChannelId)
+      .set('CPCB_ChannelName', ChannelConfiguration.CPCB_ChannelName)
+      .set('CPCB_Units', ChannelConfiguration.CPCB_Units)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.put(`${this.apiUrl}/UpdateCPCBChannelConfiguration`, params, { headers });
+  }
+
+  DeleteCPCBStationConfiguration(id: string): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+      // Redirect to login if no token exists
+      this.router.navigate(['/login']);
+      return new Observable<any>();  // Return an empty observable to prevent further actions
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('id', id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.delete(`${this.apiUrl}/DeleteCPCBStationConfiguration`, { headers, params });
+  }
+
+  DeleteCPCBChannelConfiguration(id: string): Observable<any> {
+    const token = this.authService.getToken();  // Replace with your token fetching logic
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<any>();
+    }
+    let headers = new HttpHeaders();
+    let params = new HttpParams()
+      .set('id', id)
+    headers = headers.set('Authorization', 'Bearer ' + token);
+    return this.http.delete(`${this.apiUrl}/DeleteCPCBChannelConfiguration`, { headers, params });
   }
 }
