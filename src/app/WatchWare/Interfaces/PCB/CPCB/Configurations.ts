@@ -47,3 +47,11 @@ export interface ChannelConfigurationEdit {
     CPCB_ChannelName: string;
     CPCB_Units: string;
 }
+
+export interface SyncStatus {
+    Id: string;
+    ChannelId: number;
+    ChannelName: String;
+    LastChannelDataId: number;
+    LastRunTime: string;
+}

@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthService } from './auth.service';
-import { ChannelConfiguration, ChannelConfigurationCreate, ChannelConfigurationEdit, StationConfiguration, StationConfigurationCreate, StationConfigurationEdit } from '../Interfaces/PCB/CPCB/Configurations';
+import { ChannelConfiguration, ChannelConfigurationCreate, ChannelConfigurationEdit, StationConfiguration, StationConfigurationCreate, StationConfigurationEdit, SyncStatus } from '../Interfaces/PCB/CPCB/Configurations';
 import { Observable } from 'rxjs';
 import { UploadSettings } from '../Interfaces/PCB/UploadSettings';
 
@@ -217,5 +217,21 @@ export class PCBService {
 
     headers = headers.set('Authorization', 'Bearer ' + token);
     return this.http.put(`${this.apiUrl}/UpdateCPCBUploadSettings`, params, { headers });
+  }
+
+  GetCPCBChannelSyncStatuses(): Observable<SyncStatus[]> {
+    const token = this.authService.getToken();
+    if (!token) {
+
+      this.router.navigate(['/login']);
+      return new Observable<SyncStatus[]>();
+    }
+
+    let headers = new HttpHeaders();
+
+
+    headers = headers.set('Authorization', 'Bearer ' + token);
+
+    return this.http.get<SyncStatus[]>(`${this.apiUrl}/GetCPCBChannelSyncStatuses`, { headers });
   }
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ChannelConfiguration } from '../../../Interfaces/PCB/CPCB/Configurations';
+import { ChannelConfiguration, SyncStatus } from '../../../Interfaces/PCB/CPCB/Configurations';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { PCBService } from '../../../Services/pcb.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -15,10 +15,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { Station } from '../../../Interfaces/Station';
 import { StationService } from '../../../Services/station.service';
 import { ConfirmationService } from 'primeng/api';
+import { DialogModule } from 'primeng/dialog';
 
 @Component({
   selector: 'app-channels-status',
-  imports: [ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, ConfirmDialogModule],
+  imports: [ToastrModule, TableModule, TagModule, IconFieldModule, InputTextModule, InputIconModule, MultiSelectModule, SelectModule, CommonModule, DialogModule, ConfirmDialogModule],
   templateUrl: './channels-status.component.html',
   styleUrl: './channels-status.component.css',
   providers: [ToastrService, ConfirmationService]
@@ -28,6 +29,8 @@ export class ChannelsStatusComponent implements OnInit {
   stationId!: number;
   station!: Station;
   ChannelConfigurations: ChannelConfiguration[] = [];
+  ChannelSyncStatuses: SyncStatus[] = [];
+  ShowSyncStatus: boolean = false;
   ChannelConfigurationsLoading: boolean = false;
   constructor(private toastService: ToastrService, private route: ActivatedRoute, private stationService: StationService, private pcbService: PCBService, private router: Router, private dialogService: ConfirmationService) { }
   ngOnInit(): void {
@@ -104,5 +107,21 @@ export class ChannelsStatusComponent implements OnInit {
 
       },
     });
+  }
+
+  showSyncStatus() {
+    this.ShowSyncStatus = true;
+    this.pcbService.GetCPCBChannelSyncStatuses().subscribe({
+      next: (response) => {
+        this.ChannelSyncStatuses = response;
+      },
+      error: (error) => {
+        console.error(error);
+        this.toastService.error("Unable to load Sync Status for channels");
+      }
+    })
+  }
+  closeSyncStatus() {
+    this.ShowSyncStatus = false;
   }
 }
