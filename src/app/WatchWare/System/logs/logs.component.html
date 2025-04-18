@@ -8,13 +8,25 @@
     <hr class="my-3" />
     <p-table #dt [value]="Logs" [paginator]="true" [rows]="8"
         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} entries" showGridlines="true"
-        [rowsPerPageOptions]="[8,10, 25, 50]" [globalFilterFields]="['LogType', 'Message', 'Class', 'LogTimestamp']"
-        [loading]="LogsLoading">
+        [rowsPerPageOptions]="[8,10, 25, 50]" [globalFilterFields]="['Message']" [loading]="LogsLoading">
 
+        <ng-template #caption>
+            <div class="flex">
+
+                <p-iconfield iconPosition="left" class="mr-auto">
+                    <p-inputicon>
+                        <i class="fa fa-search"></i>
+                    </p-inputicon>
+                    <input pInputText type="text" (input)="onGlobalFilter(dt, $event)"
+                        placeholder="Search Log Message" />
+                </p-iconfield>
+            </div>
+        </ng-template>
 
         <ng-template #header>
             <tr>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Log Type
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Log
+                    Type
 
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">
@@ -22,7 +34,8 @@
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Class
                 </th>
-                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">Timestamp
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width: 5%;">
+                    Timestamp
                 </th>
             </tr>
         </ng-template>

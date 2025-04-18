@@ -10,11 +10,13 @@ import { RippleModule } from 'primeng/ripple';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
+import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
 
 @Component({
   selector: 'app-logs',
   imports: [ToastrModule, SelectButtonModule, FormsModule, TableModule, TagModule,
-
+    InputIconModule, IconFieldModule,
     RippleModule, CommonModule,
     ButtonModule,
     InputTextModule],
@@ -67,7 +69,7 @@ export class LogsComponent implements OnInit {
   loadLogs(software: string) {
     if (!software) return;  // Prevent unnecessary API calls
     this.LogsLoading = true;
-    this.logService.GetPast24HourLogs(software).subscribe({
+    this.logService.GetPastLastMinuteLogs(software).subscribe({
       next: (logs) => {
         this.LogsLoading = false;
         this.Logs = logs;
@@ -78,6 +80,9 @@ export class LogsComponent implements OnInit {
         console.error(error);
       }
     })
+  }
+  onGlobalFilter(table: any, event: Event) {
+    table.filterGlobal((event.target as HTMLInputElement).value, 'contains');
   }
 
 }

@@ -135,7 +135,7 @@ export class StatusesComponent implements OnInit {
       error: (error) => {
         this.MultiSubscribeLoading = false;
         console.error(error);
-        this.toastService.error("Unable to subscribe");
+        this.toastService.error(error.error);
       }
     })
   }

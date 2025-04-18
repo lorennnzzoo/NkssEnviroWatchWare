@@ -38,6 +38,10 @@
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Port
                 </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Com Port
+                </th>
+                <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Baud Rate
+                </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Active
                 </th>
                 <th style="background-color:  var(--color-secondary) ;color: var(--color-primary);width:5%">Action
@@ -52,7 +56,8 @@
                 <td>{{protocol.Model}}</td>
                 <td>{{protocol.IpAddress}}</td>
                 <td>{{protocol.Port}}</td>
-
+                <td>{{protocol.ComPort}}</td>
+                <td>{{protocol.BaudRate}}</td>
 
                 <td>
                     <i class="fa" [ngClass]="{

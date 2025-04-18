@@ -51,6 +51,7 @@ export class AddUserComponent {
       {
         next: (data) => {
           this.Roles = data;
+          this.Roles = this.Roles.filter(role => role.Name.toLowerCase() !== 'admin')
         },
         error: (error) => {
 

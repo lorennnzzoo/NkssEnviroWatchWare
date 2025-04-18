@@ -14,7 +14,7 @@ export class LogService {
   private apiUrl: string = environment.apiUrl + 'ServiceLogs';
   constructor(private http: HttpClient, private router: Router, private authService: AuthService) { }
 
-  GetPast24HourLogs(Type: string): Observable<ServiceLogs[]> {
+  GetPastLastMinuteLogs(Type: string): Observable<ServiceLogs[]> {
     const token = this.authService.getToken();  // Replace with your token fetching logic
     if (!token) {
       // Redirect to login if no token exists
@@ -27,7 +27,7 @@ export class LogService {
       .set('Type', Type);
     headers = headers.set('Authorization', 'Bearer ' + token);
 
-    return this.http.get<ServiceLogs[]>(`${this.apiUrl}/GetPast24HourLogs`, { headers, params });
+    return this.http.get<ServiceLogs[]>(`${this.apiUrl}/GetLastMinuteLogs`, { headers, params });
   }
 
   GetSoftwareTypes(): Observable<string[]> {
