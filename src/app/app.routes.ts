@@ -26,7 +26,7 @@ import { EditScalingFactorComponent } from './WatchWare/ScalingFactor/edit-scali
 import { NotFoundComponent } from './Navigation/not-found/not-found.component';
 import { ProfileComponent } from './WatchWare/Auth/profile/profile.component';
 import { ConfigurationComponent } from './WatchWare/System/configuration/configuration.component';
-import { DisplayBoardComponent } from './WatchWare/System/display-board/display-board.component';
+import { DisplayBoardCreateTemplateComponent } from './WatchWare/System/DisplayBoard/display-board-create-template/display-board-create-template.component';
 import { StatusesComponent } from './WatchWare/System/Notification/channel-statuses/statuses.component';
 import { CreateSubscriptionComponent } from './WatchWare/System/Notification/create-subscription/create-subscription.component';
 import { CreateConditionComponent } from './WatchWare/System/Notification/create-condition/create-condition.component';
@@ -73,7 +73,7 @@ export const routes: Routes = [
     { path: 'Configurations/All', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Add', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Edit/:id', component: ConfigurationComponent, canActivate: [AuthGuard] },
-    { path: 'System/Configuration/DisplayBoard', component: DisplayBoardComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/DisplayBoard/CreateTemplate', component: DisplayBoardCreateTemplateComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notifications/Statuses', component: StatusesComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/EditSubscription/:id', component: EditSubscriptionComponent, canActivate: [AuthGuard] },

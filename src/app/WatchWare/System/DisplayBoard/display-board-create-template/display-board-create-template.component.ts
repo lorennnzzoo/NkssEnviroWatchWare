@@ -1,20 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { Channel } from '../../Interfaces/Channel';
-import { ChannelService } from '../../Services/channel.service';
+import { Channel } from '../../../Interfaces/Channel';
+import { ChannelService } from '../../../Services/channel.service';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Template } from '../../Interfaces/DisplayBoard';
-import { DisplayBoardService } from '../../Services/display-board.service';
+import { Template } from '../../../Interfaces/DisplayBoard';
+import { DisplayBoardService } from '../../../Services/display-board.service';
 
 @Component({
   selector: 'app-display-board',
   imports: [ToastrModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './display-board.component.html',
-  styleUrl: './display-board.component.css',
+  templateUrl: './display-board-create-template.component.html',
+  styleUrl: './display-board-create-template.component.css',
   providers: [ToastrService]
 })
-export class DisplayBoardComponent implements OnInit {
+export class DisplayBoardCreateTemplateComponent implements OnInit {
 
   displayForm!: FormGroup;
   Channels: Channel[] = [];
