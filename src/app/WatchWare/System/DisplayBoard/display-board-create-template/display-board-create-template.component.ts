@@ -84,6 +84,20 @@ export class DisplayBoardCreateTemplateComponent implements OnInit {
       }
     })
   }
+  onFileTypeChange(event: Event): void {
+    const selectedFileType = (event.target as HTMLSelectElement).value;
+
+    // If user switches to a new file type, clear the template content
+    if (selectedFileType) {
+      this.displayForm.patchValue({
+        Template: null  // Clear the template content
+      });
+
+      // Optionally, reset other fields (like existingFileName) if needed
+      this.existingFileName = null;
+    }
+  }
+
   // onExcelFileSelected(event: Event): void {
   //   const input = event.target as HTMLInputElement;
   //   if (!input.files?.length) return;
