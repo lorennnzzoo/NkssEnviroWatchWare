@@ -7,6 +7,8 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Template, TemplateCreate } from '../../../Interfaces/DisplayBoard';
 import { DisplayBoardService } from '../../../Services/display-board.service';
 import { Location } from '@angular/common';
+import { Station } from '../../../Interfaces/Station';
+import { StationService } from '../../../Services/station.service';
 
 @Component({
   selector: 'app-display-board',
@@ -18,11 +20,15 @@ import { Location } from '@angular/common';
 export class DisplayBoardCreateTemplateComponent implements OnInit {
   existingFileName: string | null = null;
   displayForm!: FormGroup;
+  Stations: Station[] = [];
   Channels: Channel[] = [];
   Loading: boolean = false;
   ChannelsLoading: boolean = false;
+  StationsLoading: boolean = false;
+  StationChannels: { [stationId: number]: Channel[] } = {};
 
-  constructor(private fb: FormBuilder, private channelService: ChannelService, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
+
+  constructor(private fb: FormBuilder, private channelService: ChannelService, private stationService: StationService, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
   ngOnInit(): void {
     this.displayForm = this.fb.group({
       FileName: [null, Validators.required],
@@ -30,22 +36,35 @@ export class DisplayBoardCreateTemplateComponent implements OnInit {
       FileType: [null, Validators.required],
       Template: [null, Validators.required],
     });
-    this.loadChannels();
+    this.loadAllChannelsGroupedByStation();
   }
-  loadChannels() {
-    this.ChannelsLoading = true;
-    this.channelService.GetAllChannels().subscribe({
-      next: (data) => {
-        this.Channels = data;
-        this.ChannelsLoading = false;
+  loadAllChannelsGroupedByStation() {
+    this.StationsLoading = true;
+    this.stationService.GetAllStations().subscribe({
+      next: (stations) => {
+        this.Stations = stations;
+        this.StationsLoading = false;
+
+        // Load channels per station
+        stations.forEach((station) => {
+          this.channelService.GetAllChannelsByStation(station.Id).subscribe({
+            next: (channels) => {
+              this.StationChannels[station.Id] = channels;
+            },
+            error: (error) => {
+              this.toastService.error(error.error, 'Error loading channels');
+            }
+          });
+        });
       },
       error: (error) => {
-        this.toastService.error(error.error, 'Error');
-        console.log(error);
-        this.ChannelsLoading = false;
+        this.toastService.error(error.error, 'Error loading stations');
+        this.StationsLoading = false;
       }
-    })
+    });
   }
+
+
   getIndexArray(total: number, size: number): number[] {
     return Array.from({ length: Math.ceil(total / size) }, (_, i) => i * size);
   }

@@ -58,7 +58,7 @@
         <!-- Parameter Aliases & How to Use Section -->
         <div class="col-span-9">
             <!-- Parameter Aliases -->
-            <div class="mt-4 px-4">
+            <!-- <div class="mt-4 px-4">
                 <h2 class="text-gray-700 text-lg mb-2">Parameter Aliases</h2>
                 <div class="grid grid-cols-3 gap-4">
                     <ng-container *ngIf="!ChannelsLoading; else loadingSkeleton">
@@ -72,7 +72,7 @@
                         </div>
                     </ng-container>
 
-                    <!-- Skeleton Loader -->
+                    
                     <ng-template #loadingSkeleton>
                         <div *ngFor="let i of [1, 2, 3]" class="animate-pulse space-y-2">
                             <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
@@ -83,7 +83,44 @@
                     </ng-template>
                 </div>
 
+            </div> -->
+            <div class="mt-4 px-4">
+                <h2 class="text-gray-700 text-lg mb-2">Parameter Aliases</h2>
+
+                <div *ngIf="!StationsLoading; else loadingSkeleton">
+                    <div *ngFor="let station of Stations" class="mb-6">
+                        <h3 class="text-gray-800 font-semibold mb-2">Channels of {{ station.Name }}</h3>
+
+                        <div class="grid grid-cols-3 gap-4">
+                            <ng-container *ngIf="StationChannels[station.Id]?.length; else noChannels">
+                                <div *ngFor="let start of getIndexArray(StationChannels[station.Id].length, 4)">
+                                    <div *ngFor="let channel of StationChannels[station.Id].slice(start, start + 4)">
+                                        <span class="text-gray-700 text-sm block bg-gray-100 px-2 py-1 rounded">
+                                            {{ channel.Name }} -
+                                            <code class="text-blue-600">&lt;Channel_{{ channel.Id }}&sol;&gt;</code>
+                                        </span>
+                                    </div>
+                                </div>
+                            </ng-container>
+
+                            <ng-template #noChannels>
+                                <div class="text-sm text-gray-500">No channels found for this station.</div>
+                            </ng-template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Skeleton Loader -->
+                <ng-template #loadingSkeleton>
+                    <div *ngFor="let i of [1, 2, 3]" class="animate-pulse space-y-2">
+                        <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
+                        <div class="bg-gray-300 h-6 w-2/3 rounded"></div>
+                        <div class="bg-gray-300 h-6 w-1/2 rounded"></div>
+                        <div class="bg-gray-300 h-6 w-3/4 rounded"></div>
+                    </div>
+                </ng-template>
             </div>
+
 
             <!-- How to Use Section -->
             <div class="mt-6 px-4 p-4 rounded">
