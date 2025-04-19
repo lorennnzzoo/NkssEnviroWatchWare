@@ -44,6 +44,8 @@ import { ChannelsStatusComponent } from './WatchWare/PCB/CPCBNKSS/channels-statu
 import { CreateChannelConfigComponent } from './WatchWare/PCB/CPCBNKSS/create-channel-config/create-channel-config.component';
 import { EditStationConfigComponent } from './WatchWare/PCB/CPCBNKSS/edit-station-config/edit-station-config.component';
 import { EditChannelConfigComponent } from './WatchWare/PCB/CPCBNKSS/edit-channel-config/edit-channel-config.component';
+import { DisplayBoardTemplatesComponent } from './WatchWare/System/DisplayBoard/display-board-templates/display-board-templates.component';
+import { DisplayBoardEditTemplateComponent } from './WatchWare/System/DisplayBoard/display-board-edit-template/display-board-edit-template.component';
 
 export const routes: Routes = [
     { path: 'login', component: LoginComponent },
@@ -74,6 +76,8 @@ export const routes: Routes = [
     { path: 'Configurations/Add', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'Configurations/Edit/:id', component: ConfigurationComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/DisplayBoard/CreateTemplate', component: DisplayBoardCreateTemplateComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/DisplayBoard/Templates', component: DisplayBoardTemplatesComponent, canActivate: [AuthGuard] },
+    { path: 'System/Configuration/DisplayBoard/EditTemplate/:id', component: DisplayBoardEditTemplateComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notifications/Statuses', component: StatusesComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/Subscribe/:id', component: CreateSubscriptionComponent, canActivate: [AuthGuard] },
     { path: 'System/Configuration/Notification/EditSubscription/:id', component: EditSubscriptionComponent, canActivate: [AuthGuard] },

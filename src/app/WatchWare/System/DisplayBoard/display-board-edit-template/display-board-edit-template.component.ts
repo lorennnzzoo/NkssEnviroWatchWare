@@ -1,30 +1,40 @@
 import { Component, OnInit } from '@angular/core';
-import { Channel } from '../../../Interfaces/Channel';
-import { ChannelService } from '../../../Services/channel.service';
-import { ToastrModule, ToastrService } from 'ngx-toastr';
-import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Template, TemplateCreate } from '../../../Interfaces/DisplayBoard';
+import { Channel } from '../../../Interfaces/Channel';
 import { DisplayBoardService } from '../../../Services/display-board.service';
+import { ToastrService } from 'ngx-toastr';
+import { ChannelService } from '../../../Services/channel.service';
+import { ActivatedRoute } from '@angular/router';
+import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
+import { Template } from '../../../Interfaces/DisplayBoard';
 
 @Component({
-  selector: 'app-display-board',
-  imports: [ToastrModule, CommonModule, ReactiveFormsModule],
-  templateUrl: './display-board-create-template.component.html',
-  styleUrl: './display-board-create-template.component.css',
+  selector: 'app-display-board-edit-template',
+  imports: [ReactiveFormsModule, CommonModule],
+  templateUrl: './display-board-edit-template.component.html',
+  styleUrl: './display-board-edit-template.component.css',
   providers: [ToastrService]
 })
-export class DisplayBoardCreateTemplateComponent implements OnInit {
+export class DisplayBoardEditTemplateComponent implements OnInit {
+  templateId!: string;
   existingFileName: string | null = null;
+
   displayForm!: FormGroup;
   Channels: Channel[] = [];
   Loading: boolean = false;
   ChannelsLoading: boolean = false;
-
-  constructor(private fb: FormBuilder, private channelService: ChannelService, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
+  constructor(private fb: FormBuilder, private channelService: ChannelService, private route: ActivatedRoute, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
   ngOnInit(): void {
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.templateId = id;
+        this.loadTemplate(this.templateId);
+      }
+    });
     this.displayForm = this.fb.group({
+      Id: [null, Validators.required],
       FileName: [null, Validators.required],
       FilePath: [null, Validators.required],
       FileType: [null, Validators.required],
@@ -46,44 +56,29 @@ export class DisplayBoardCreateTemplateComponent implements OnInit {
       }
     })
   }
-  getIndexArray(total: number, size: number): number[] {
-    return Array.from({ length: Math.ceil(total / size) }, (_, i) => i * size);
-  }
-  onSubmit() {
-    this.Loading = true;
-
-    // Check if the form is invalid
-    if (this.displayForm.invalid) {
-      this.displayForm.get('Template')?.markAsTouched();
-      this.displayForm.get('FilePath')?.markAsTouched();
-      this.displayForm.get('FileName')?.markAsTouched();
-      this.displayForm.get('FileType')?.markAsTouched();
-
-      this.toastService.warning('Please fill all required fields', 'Warning');
-      this.Loading = false;
-      return;
-    }
-
-    const template: TemplateCreate = {
-      FileName: this.displayForm.value.FileName,
-      FilePath: this.displayForm.value.FilePath,
-      FileType: this.displayForm.value.FileType,
-      TemplateContent: this.displayForm.value.Template
-    };
-    console.log(template);
-    this.displayBoardService.CreateDisplayBoardTemplate(template).subscribe({
-      next: (response) => {
-        this.toastService.success('Template created successfully', 'Created')
-        this.Loading = false;
-        this.ngOnInit();
-        this.location.back();
+  loadTemplate(id: string) {
+    this.displayBoardService.GetTemplateById(id).subscribe({
+      next: (template) => {
+        if (template.TemplateContent) {
+          this.existingFileName = `${template.FileName}.${template.FileType}`;
+        }
+        this.displayForm.patchValue({
+          Id: template.Id,
+          FileName: template.FileName,
+          FilePath: template.FilePath,
+          FileType: template.FileType,
+          Template: template.TemplateContent,
+        })
       },
       error: (error) => {
-        this.toastService.error(error.error, 'Error')
-        this.Loading = false;
+        this.toastService.error("unable to load template")
       }
     })
   }
+  getIndexArray(total: number, size: number): number[] {
+    return Array.from({ length: Math.ceil(total / size) }, (_, i) => i * size);
+  }
+
   // onExcelFileSelected(event: Event): void {
   //   const input = event.target as HTMLInputElement;
   //   if (!input.files?.length) return;
@@ -111,7 +106,6 @@ export class DisplayBoardCreateTemplateComponent implements OnInit {
   //   reader.readAsBinaryString(file); // Reads the file as binary string
 
   // }
-
   onExcelFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (!input.files?.length) return;
@@ -155,5 +149,35 @@ export class DisplayBoardCreateTemplateComponent implements OnInit {
     }
   }
 
+  onSubmit() {
+    this.Loading = true;
+    if (!this.displayForm.valid) {
+      this.displayForm.markAllAsTouched();
+      this.toastService.warning('Please fill all required fields', 'Warning');
+      this.Loading = false;
+      return;
+    }
 
+    const template: Template = {
+      Id: this.displayForm.value.Id,
+      FileName: this.displayForm.value.FileName,
+      FilePath: this.displayForm.value.FilePath,
+      FileType: this.displayForm.value.FileType,
+      TemplateContent: this.displayForm.value.Template
+    }
+
+    this.displayBoardService.UpdateTemplate(template).subscribe({
+      next: (response) => {
+        this.toastService.success('Updated successfully.');
+        this.Loading = false;
+        this.location.back();
+      },
+      error: (error) => {
+        this.Loading = false;
+        console.error(error);
+        this.toastService.error("Unable to update");
+      }
+    })
+
+  }
 }
