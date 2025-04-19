@@ -89,6 +89,7 @@ export class CreateSusbcriptionComponent implements OnInit {
       next: (resposne) => {
         this.Loading = false;
         this.toastService.success("Subscription Created Successfully.");
+        this.goBack();
       },
       error: (error) => {
         this.Loading = false;

@@ -31,6 +31,7 @@ export class LogsComponent implements OnInit {
   Logs: ServiceLogs[] = [];
   SoftwaresLoading: boolean = false;
   LogsLoading: boolean = false;
+  SelectedType!: string;
 
   constructor(private logService: LogService, private toastService: ToastrService) { }
 
@@ -45,7 +46,11 @@ export class LogsComponent implements OnInit {
       default: return 'secondary'; // Default gray if type is unknown
     }
   }
-
+  onRefresh() {
+    if (this.SelectedType) {
+      this.loadLogs(this.SelectedType);
+    }
+  }
   loadSoftwares() {
     this.SoftwaresLoading = true;
     this.logService.GetSoftwareTypes().subscribe({
@@ -68,6 +73,7 @@ export class LogsComponent implements OnInit {
 
   loadLogs(software: string) {
     if (!software) return;  // Prevent unnecessary API calls
+    this.SelectedType = software;
     this.LogsLoading = true;
     this.logService.GetPastLastMinuteLogs(software).subscribe({
       next: (logs) => {

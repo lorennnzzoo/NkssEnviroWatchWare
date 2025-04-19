@@ -1,9 +1,11 @@
-<div class="">
+<div class="flex justify-between items-center">
     <h2 class="text-3xl font-normal text-gray-500">Logs</h2>
+    <button (click)="onRefresh()" class="px-4 py-1  bg-accent text-white  flex justify-center items-center gap-2
+    rounded-md hover:bg-secondary transition duration-300"><i class="fa-solid fa-rotate-right"></i>Refresh</button>
 </div>
 <div class="my-5 border rounded-lg shadow-md p-4 bg-white">
     <p-selectbutton [options]="Types" [(ngModel)]="value" (ngModelChange)="loadLogs($event)" [multiple]="false"
-        optionLabel="label" optionValue="value" />
+        [allowEmpty]="false" optionLabel="label" optionValue="value" />
 
     <hr class="my-3" />
     <p-table #dt [value]="Logs" [paginator]="true" [rows]="8"
