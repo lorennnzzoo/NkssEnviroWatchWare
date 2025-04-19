@@ -8,6 +8,8 @@ import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { Location } from '@angular/common';
 import { Template } from '../../../Interfaces/DisplayBoard';
+import { Station } from '../../../Interfaces/Station';
+import { StationService } from '../../../Services/station.service';
 
 @Component({
   selector: 'app-display-board-edit-template',
@@ -19,12 +21,14 @@ import { Template } from '../../../Interfaces/DisplayBoard';
 export class DisplayBoardEditTemplateComponent implements OnInit {
   templateId!: string;
   existingFileName: string | null = null;
-
+  StationsLoading: boolean = false;
+  StationChannels: { [stationId: number]: Channel[] } = {};
   displayForm!: FormGroup;
+  Stations: Station[] = [];
   Channels: Channel[] = [];
   Loading: boolean = false;
   ChannelsLoading: boolean = false;
-  constructor(private fb: FormBuilder, private channelService: ChannelService, private route: ActivatedRoute, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
+  constructor(private fb: FormBuilder, private channelService: ChannelService, private stationService: StationService, private route: ActivatedRoute, private location: Location, private displayBoardService: DisplayBoardService, private toastService: ToastrService) { }
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
@@ -40,21 +44,32 @@ export class DisplayBoardEditTemplateComponent implements OnInit {
       FileType: [null, Validators.required],
       Template: [null, Validators.required],
     });
-    this.loadChannels();
+    this.loadAllChannelsGroupedByStation();
   }
-  loadChannels() {
-    this.ChannelsLoading = true;
-    this.channelService.GetAllChannels().subscribe({
-      next: (data) => {
-        this.Channels = data;
-        this.ChannelsLoading = false;
+  loadAllChannelsGroupedByStation() {
+    this.StationsLoading = true;
+    this.stationService.GetAllStations().subscribe({
+      next: (stations) => {
+        this.Stations = stations;
+        this.StationsLoading = false;
+
+        // Load channels per station
+        stations.forEach((station) => {
+          this.channelService.GetAllChannelsByStation(station.Id).subscribe({
+            next: (channels) => {
+              this.StationChannels[station.Id] = channels;
+            },
+            error: (error) => {
+              this.toastService.error(error.error, 'Error loading channels');
+            }
+          });
+        });
       },
       error: (error) => {
-        this.toastService.error(error.error, 'Error');
-        console.log(error);
-        this.ChannelsLoading = false;
+        this.toastService.error(error.error, 'Error loading stations');
+        this.StationsLoading = false;
       }
-    })
+    });
   }
   loadTemplate(id: string) {
     this.displayBoardService.GetTemplateById(id).subscribe({
